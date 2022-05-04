@@ -70,8 +70,8 @@ class Genero_perfil(db.Model):
         }
 class Favoritos(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    nombre_usuario = db.Column(db.String(120), db.ForeignKey('usuario.id'), unique = False, nullable = False)
-    nombre_perfil = db.Column(db.String(120), db.ForeignKey('perfil.id'), unique = False, nullable = False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), unique = False, nullable = False)
+    perfil_id = db.Column(db.Integer, db.ForeignKey('perfil.id'), unique = False, nullable = False)
     usuario = db.relationship(Usuario)
     perfil = db.relationship(Perfil)
 
@@ -134,7 +134,7 @@ class Perfil_favoritos_notificacion(db.Model):
             # do not serialize the password, its a security breach
         }
 
-class Perfil_post_notificacion(db.Model):
+class Usuario_post_notificacion(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), unique = False, nullable = False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), unique = False, nullable = False)
