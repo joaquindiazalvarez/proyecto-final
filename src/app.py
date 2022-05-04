@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
-from api.models import db, Usuario, Perfil, Contacto, Genero, Genero_perfil, Favoritos, Post, Donacion, Perfil_favoritos_notificacion, Usuario_post_notificacion, Perfil_donacion_notificacion
+from api.models import db, User, Profile, Contact, Genre, Genre_profile, Favorites, Post, Donation, Profile_favorites_notification, User_post_notification, Profile_donation_notification
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -80,7 +80,7 @@ def login():
         return "debes especificar un password"
 
     #chequear si el usuario existe
-    user = Usuario.query.filter_by(email=body['email']).first()
+    user = User.query.filter_by(email=body['email']).first()
     
     if user: #si el resultado de user es diferente a None
         if user.password == body['password']:

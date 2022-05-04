@@ -2,168 +2,168 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class Usuario(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    nombre = db.Column(db.String(120), unique = False, nullable = False)
+    name = db.Column(db.String(120), unique = False, nullable = False)
     email = db.Column(db.String(120), unique = True, nullable = False)
     password = db.Column(db.String(80), unique = False, nullable = False)
 
     def serialize(self):
         return {
             "id": self.id,
-            "nombre": self.nombre,
+            "name": self.name,
             "email": self.email,
             # do not serialize the password, its a security breach
         }
 
-class Perfil(db.Model):
+class Profile(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    nombre = db.Column(db.String(120), unique = True, nullable = False)
-    foto = db.Column(db.String(120), unique = False, nullable = True)
-    descripcion = db.Column(db.String(1000), unique = False, nullable = True)
+    name = db.Column(db.String(120), unique = True, nullable = False)
+    photo = db.Column(db.String(120), unique = False, nullable = True)
+    description = db.Column(db.String(1000), unique = False, nullable = True)
     soundcloud = db.Column(db.String(120), unique = True, nullable = True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), unique = False, nullable = False)
-    usuario = db.relationship(Usuario)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique = False, nullable = False)
+    user = db.relationship(User)
     
     def serialize(self):
         return {
             "id": self.id,
-            "nombre": self.nombre,
-            "foto": self.foto,
-            "descripcion": self.descripcion,
+            "name": self.name,
+            "photo": self.photo,
+            "description": self.description,
             # do not serialize the password, its a security breach
         }
 
-class Contacto(db.Model):
+class Contact(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    tipo = db.Column(db.String(120), unique = False, nullable = False)
-    valor = db.Column(db.String(120), unique = False, nullable = False)
-    perfil_id = db.Column(db.Integer, db.ForeignKey('perfil.id'), unique = False, nullable = False)
-    perfil = db.relationship(Perfil)
+    type = db.Column(db.String(120), unique = False, nullable = False)
+    value = db.Column(db.String(120), unique = False, nullable = False)
+    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
+    profile = db.relationship(Profile)
 
     def serialize(self):
         return {
         "id": self.id,
-        "tipo": self.tipo,
-        "valor": self.valor,
-        "perfil_id": self.perfil.id
+        "type": self.type,
+        "value": self.value,
+        "profile_id": self.profile.id
         # do not serialize the password, its a security breach
         }
 
-class Genero(db.Model):
+class Genre(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    genero = db.Column(db.String(120), unique = False, nullable = False)
+    genre = db.Column(db.String(120), unique = False, nullable = False)
 
-class Genero_perfil(db.Model):
+class Genre_profile(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    perfil_id = db.Column(db.Integer, db.ForeignKey('perfil.id'), unique = False, nullable = False)
-    genero_id = db.Column(db.Integer, db.ForeignKey('genero.id'), unique = False, nullable = False)
-    perfil = db.relationship(Perfil)
-    genero = db.relationship(Genero)
+    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
+    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), unique = False, nullable = False)
+    profile = db.relationship(Profile)
+    genre = db.relationship(Genre)
 
     def serialize(self):
         return {
             "id": self.id,
-            "perfil_id": self.perfil_id,
-            "genero_id": self.genero_id
+            "profile_id": self.profile_id,
+            "genre_id": self.genre_id
             # do not serialize the password, its a security breach
         }
-class Favoritos(db.Model):
+class Favorites(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), unique = False, nullable = False)
-    perfil_id = db.Column(db.Integer, db.ForeignKey('perfil.id'), unique = False, nullable = False)
-    usuario = db.relationship(Usuario)
-    perfil = db.relationship(Perfil)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique = False, nullable = False)
+    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
+    user = db.relationship(User)
+    profile = db.relationship(Profile)
 
     def serialize(self):
         return {
             "id": self.id,
-            "nombre_usuario": self.email,
-            "nombre_perfil": self.email
+            "user_id": self.user_id,
+            "profile_id": self.profile_id
             # do not serialize the password, its a security breach
         }
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     post = db.Column(db.String(120), unique = False, nullable = False)
-    perfil_id = db.Column(db.Integer, db.ForeignKey('perfil.id'), unique = False, nullable = False)
-    perfil = db.relationship(Perfil)
+    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
+    profile = db.relationship(Profile)
 
     def serialize(self):
         return {
             "id": self.id,
-            "perfil_id": self.perfil_id,
+            "profile_id": self.profile_id,
             "post": self.post
             # do not serialize the password, its a security breach
         }
 
-class Donacion(db.Model):
+class Donation(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    cantidad = db.Column(db.String(120), unique = False, nullable = False)
-    fecha = db.Column(db.String(120), unique = False, nullable = False)
-    notas = db.Column(db.String(200), unique = False, nullable = False)
-    donador_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), unique = False, nullable = False)
-    donatario_id = db.Column(db.Integer, db.ForeignKey('perfil.id'), unique = False, nullable = False)
-    usuario = db.relationship(Usuario)
-    perfil = db.relationship(Perfil)
+    amount = db.Column(db.String(120), unique = False, nullable = False)
+    date = db.Column(db.String(120), unique = False, nullable = False)
+    notes = db.Column(db.String(200), unique = False, nullable = False)
+    donor_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique = False, nullable = False)
+    donee_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
+    user = db.relationship(User)
+    profile = db.relationship(Profile)
 
     def serialize(self):
         return {
             "id": self.id,
-            "cantidad": self.cantidad,
-            "fecha": self.fecha,
-            "notas": self.notas,
-            "donador_id": self.donador_id,
-            "donatario_id": self.donatario_id
+            "amount": self.amount,
+            "date": self.date,
+            "notes": self.notes,
+            "donor_id": self.donor_id,
+            "donee_id": self.donee_id
             # do not serialize the password, its a security breach
         }
 
-class Perfil_favoritos_notificacion(db.Model):
+class Profile_favorites_notification(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    favoritos_id = db.Column(db.Integer, db.ForeignKey('favoritos.id'), unique = False, nullable = False)
-    perfil_id = db.Column(db.Integer, db.ForeignKey('perfil.id'), unique = False, nullable = False)
-    leido = db.Column(db.Boolean(), nullable = False)
-    favoritos = db.relationship(Favoritos)
-    perfil = db.relationship(Perfil)
+    favorites_id = db.Column(db.Integer, db.ForeignKey('favorites.id'), unique = False, nullable = False)
+    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
+    read = db.Column(db.Boolean(), nullable = False)
+    favorites = db.relationship(Favorites)
+    profile = db.relationship(Profile)
 
     def serialize(self):
         return {
             "id": self.id,
-            "favoritos_id": self.favoritos_id,
-            "perfil_id": self.perfil_id,
-            "leido": self.leido
+            "favorites_id": self.favorites_id,
+            "profile_id": self.profile_id,
+            "read": self.read
             # do not serialize the password, its a security breach
         }
 
-class Usuario_post_notificacion(db.Model):
+class User_post_notification(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), unique = False, nullable = False)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), unique = False, nullable = False)
-    leido = db.Column(db.Boolean(), nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique = False, nullable = False)
+    read = db.Column(db.Boolean(), nullable = False)
     post = db.relationship(Post)
-    usuario = db.relationship(Usuario)
+    user = db.relationship(User)
 
     def serialize(self):
         return {
             "id": self.id,
             "post_id": self.post_id,
-            "usuario_id": self.usuario_id,
-            "leido": self.leido
+            "user_id": self.user_id,
+            "read": self.read
             # do not serialize the password, its a security breach
         }
 
-class Perfil_donacion_notificacion(db.Model):
+class Profile_donation_notification(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    donacion_id = db.Column(db.Integer, db.ForeignKey('donacion.id'), unique = False, nullable = False)
-    perfil_id = db.Column(db.Integer, db.ForeignKey('perfil.id'), unique = False, nullable = False)
-    leido = db.Column(db.Boolean(), nullable = False)
-    donacion = db.relationship(Donacion)
-    perfil = db.relationship(Perfil)
+    donation_id = db.Column(db.Integer, db.ForeignKey('donation.id'), unique = False, nullable = False)
+    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
+    read = db.Column(db.Boolean(), nullable = False)
+    donation = db.relationship(Donation)
+    profile = db.relationship(Profile)
 
     def serialize(self):
         return {
             "id": self.id,
-            "donacion_id": self.donacion_id,
-            "perfil_id": self.perfil_id,
-            "leido": self.leido
+            "donation_id": self.donation_id,
+            "profile_id": self.profile_id,
+            "read": self.read
             # do not serialize the password, its a security breach
         }
