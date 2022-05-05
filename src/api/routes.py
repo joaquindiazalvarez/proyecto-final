@@ -70,8 +70,9 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         return("todo salio bien")
-    else:
+
         return("el usuario ya existe")
+
 @api.route('/autenticacion', methods=['GET'])
 @jwt_required()
 def autenticacion():
