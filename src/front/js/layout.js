@@ -10,6 +10,9 @@ import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import { Login } from "./pages/login";
+import { Signup } from "./pages/signup";
+import { Profile } from "./pages/profile";
 
 //create your first component
 const Layout = () => {
