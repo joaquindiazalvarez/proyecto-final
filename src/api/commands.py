@@ -38,6 +38,8 @@ def setup_commands(app):
         user.name = "testman"
         user.email = "testman_user@test.com"
         user.password = "123456"
+        user.gender = "hombre"
+        user.date_of_birth = "10/10/2003"
         db.session.add(user)
         db.session.commit()
         print("User created")
