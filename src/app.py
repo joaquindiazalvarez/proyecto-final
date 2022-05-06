@@ -95,10 +95,9 @@ def login():
             return jsonify({
                 "mensaje": "inicio de sesión fue satisfactorio",
                 "data": user.serialize(),
-                #"expira_segundos": expiracion.total_seconds(),
+                "expira_segundos": expiracion.total_seconds(),
                 "token": access_token
             })
-
         else:
             return "usuario o clave incorrectos"
 
@@ -114,10 +113,11 @@ def autenticacion():
 @app.route('/user/signup', methods=['POST'])
 def signup():
     decoded_object = json.loads(request.data)
-    checkuser = Usuario.query.filter_by(email=decoded_object['email']).all()
+    checkuser = User.query.filter_by(email=decoded_object['email']).all() #cambio de Usuario a User
     #checkuser = User.query.get(decoded_object['email'])
     if not checkuser:
         new_user = User()
+        new_user.name = decoded_object['name'] #agregado name , daba error "NULL NAME " al hacer el fetch
         new_user.email = decoded_object['email']
         new_user.password = decoded_object['password']
         new_user.is_active = True
