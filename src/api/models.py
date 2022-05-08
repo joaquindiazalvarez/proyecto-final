@@ -35,6 +35,7 @@ class Profile(db.Model):
             "name": self.name,
             "photo": self.photo,
             "description": self.description,
+            "soundcloud": self.soundcloud
             # do not serialize the password, its a security breach
         }
 
