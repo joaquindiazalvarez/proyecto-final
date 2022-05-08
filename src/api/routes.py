@@ -79,3 +79,18 @@ def autenticacion():
     get_token = get_jwt_identity()
     return (get_token)
 
+@api.route('/profile/get', methods=['POST'])
+def get_profile_by_name():
+    body = request.get_json()
+    #validar si el campo existe o no
+    if "name" not in body:
+        return "must specify name"
+    profile = Profile.query.filter_by(name=body['name']).first()
+    if profile:
+        print(profile.serialize())
+        serialized_profile = profile.serialize()
+        return jsonify(serialized_profile)
+    else:
+        return "Profile doesn't exist"
+
+
