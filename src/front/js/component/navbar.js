@@ -6,37 +6,84 @@ export const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-black">
       <div className="container-fluid">
-        <a className="navbar-brand">
-          <Link to="/home">
-            <img className="Logo" src={Logo} />
-          </Link>
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+        <Link to="/" className="navbar-brand">
+          <img className="Logo" src={Logo} />
+        </Link>
+
         <nav className="navbar navbar-light bg-black">
           <form className="container-fluid justify-content-start">
-            <Link
-              to="/demo"
-              className="login btn btn-outline-success me-2"
+            <button
+              className="btn BotonColor me-2"
               type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
             >
               Inicio de sesion
-            </Link>
+            </button>
 
-            <Link
-              to="/register"
-              className="btn  btn-outline-warning"
-              type="button"
+            {/*MODAL*/}
+            <div
+              className="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
             >
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">
+                      HOLA!
+                    </h5>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+
+                  {/*MODALBODY*/}
+                  <div className="modal-body">
+                    <h5>Un gusto tenerte de regreso!</h5>
+                    <div className="form-outline mb-4">
+                      <label className="form-label">Email</label>
+                      <input
+                        type="text"
+                        id="form3Example8"
+                        className="form-control form-control-lg"
+                        placeholder="Email"
+                      />
+                    </div>
+                    <div className="form-outline mb-4">
+                      <label className="form-label">Contraseña</label>
+                      <input
+                        type="text"
+                        id="form3Example8"
+                        className="form-control form-control-lg"
+                        placeholder="Contraseña"
+                      />
+                    </div>
+                  </div>
+
+                  {/*modalfooter*/}
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btnClose"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="button" className="btn btnRegister me-2">
+                      Inicia Sesion
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Link to="/registro" className="btn  BotonColor" type="button">
               Registrate
             </Link>
           </form>

@@ -3,6 +3,7 @@ import rock from "../../img/rock.jpg";
 import festival from "../../img/festival.jpg";
 import publico from "../../img/publico.jpeg";
 import "../../styles/home.css";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   return (
@@ -36,25 +37,25 @@ export const Home = () => {
         </div>
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <img src={rock} className="d-block w-100" alt="..." />
+            <img src={rock} className="d-block w-100" />
             <div className="carousel-caption d-none d-md-block">
-              <h5>First slide label</h5>
-              <p>
-                Some representative placeholder content for the first slide.
-              </p>
+              <h2>
+                ¿ESTAS BUSCANDO BANDAS, MUSICOS O TIENES ALGUN PROYECTO EN
+                MENTE?
+              </h2>
+              <Link to="/registro" className="btn  BotonColor" type="button">
+                Registrate
+              </Link>
             </div>
           </div>
           <div className="carousel-item">
-            <img src={publico} className="d-block w-100" alt="..." />
+            <img src={festival} className="d-block w-100" />
             <div className="carousel-caption d-none d-md-block">
-              <h5>Second slide label</h5>
-              <p>
-                Some representative placeholder content for the second slide.
-              </p>
+              <h2>AQUI PODRAS PATROCINAR BANDAS Y ARTISTAS EMERGENTES</h2>
             </div>
           </div>
           <div className="carousel-item">
-            <img src={festival} className="d-block w-100" alt="..." />
+            <img src={publico} className="d-block w-100" />
             <div className="carousel-caption d-none d-md-block">
               <h5>Third slide label</h5>
               <p>
