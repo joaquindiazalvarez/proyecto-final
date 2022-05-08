@@ -79,7 +79,7 @@ def autenticacion():
     get_token = get_jwt_identity()
     return (get_token)
 
-@api.route('/profile/get', methods=['GET'])
+@api.route('/profile/get', methods=['POST'])
 def get_profile_by_name():
     body = request.get_json()
     #validar si el campo existe o no
