@@ -25,13 +25,13 @@ export const Navbar = () => {
         <nav className="navbar navbar-light bg-black">
           <form className="container-fluid justify-content-start">
             <Link
-              to="/demo"
+              to="/login"
               className="login btn btn-outline-success me-2"
               type="button"
             >
               Inicio de sesion
             </Link>
-
+            
             <Link
               to="/register"
               className="btn  btn-outline-warning"

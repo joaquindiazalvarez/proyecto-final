@@ -25,9 +25,9 @@ def login():
     body = request.get_json()
     #validar si el campo existe o no
     if "email" not in body:
-        return "debes especificar el email"
+        return jsonify({"message":"debes especificar el email"})
     if "password" not in body:
-        return "debes especificar un password"
+        return sonify({"message":"debes especificar un password"})
 
     #chequear si el usuario existe
     user = User.query.filter_by(email=body['email']).first()
@@ -50,11 +50,11 @@ def login():
             })
 
         else:
-            return "usuario o clave incorrectos"
+            return jsonify({"mensaje":"usuario o clave incorrectos"})
 
 
 
-    return "el usuario no existe"
+    return jsonify({"message":"el usuario no existe"})
 
 @api.route('/user/signup', methods=['POST'])
 def signup():
@@ -66,12 +66,14 @@ def signup():
         new_user.name = decoded_object['name']
         new_user.email = decoded_object['email']
         new_user.password = decoded_object['password']
+        new_user.gender = decoded_object['gender']
+        new_user.date_of_birth= decoded_object['date_of_birth']
         new_user.is_active = True
         db.session.add(new_user)
         db.session.commit()
-        return("todo salio bien")
+        return jsonify({"mensaje": "todo salió bien"})
 
-        return("el usuario ya existe")
+    return jsonify({"mensaje":"el usuario ya existe"})
 
 @api.route('/autenticacion', methods=['GET'])
 @jwt_required()

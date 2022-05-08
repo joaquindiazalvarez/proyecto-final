@@ -59,7 +59,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					redirect: 'follow'
 					};
 
-					await fetch(process.env.BACKEND_URL + "/user/login", requestOptions)
+					await fetch(process.env.BACKEND_URL + "/api/user/login", requestOptions)
 					.then(response => response.json())
 					.then(result => {
 						setStore({user:[result]})
@@ -71,7 +71,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 			
-			postRegister : async() => {
+			postRegister : async(registerUser) => {
 				var myHeaders = new Headers();
 					//myHeaders.append("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY1MDcyOTI0NSwianRpIjoiODcwYzY5YTAtMTNhNy00MzE3LTg5ZGYtYjllODgxMmNmNjk0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImVsdGVyY2Vyb0BnbWFpbC5jb20iLCJuYmYiOjE2NTA3MjkyNDUsImV4cCI6MTY1MDcyOTM2NX0.TDrQBQs1hLO9YZfaBjkqNBAo1_pYx2b6mrViaRWRMFs");
 					myHeaders.append("Content-Type", "application/json");
@@ -79,11 +79,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				var requestOptions = {
 					method: 'POST',
 					headers: myHeaders,
-					body: JSON.stringify(user),
+					body: JSON.stringify(registerUser),
 					redirect: 'follow'
 					};
 
-					await fetch(process.env.BACKEND_URL  + "/user/signup", requestOptions)
+					await fetch(process.env.BACKEND_URL  + "/api/user/signup", requestOptions)
 					.then(response => response.json())
 					.then(result => console.log(result))
 					.catch(error => console.log('error', error));
