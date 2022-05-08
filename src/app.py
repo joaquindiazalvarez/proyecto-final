@@ -66,67 +66,6 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0 # avoid cache memory
     return response
 
-#_________________AQUI VAN LAS RUTAS QUE CREAMOS PARA EL LOGIN_____________
-##################____________________________________________#############
-
-@app.route('/user/login', methods=['POST'])
-def login():
-    #recibo info de la solicitud (fetch)
-    body = request.get_json()
-    #validar si el campo existe o no
-    if "email" not in body:
-        return "debes especificar el email"
-    if "password" not in body:
-        return "debes especificar un password"
-
-    #chequear si el usuario existe
-    user = User.query.filter_by(email=body['email']).first()
-    
-    if user: #si el resultado de user es diferente a None
-        if user.password == body['password']:
-            #"usuario y clave correctos"
-            #defino que el token tendrá un tiempo de vida dependiendo de los minutos indicados
-            expiracion = datetime.timedelta(minutes=2) 
-
-            access_token = create_access_token(
-                identity=user.email,
-                expires_delta=expiracion)
-            
-            return jsonify({
-                "mensaje": "inicio de sesión fue satisfactorio",
-                "data": user.serialize(),
-                #"expira_segundos": expiracion.total_seconds(),
-                "token": access_token
-            })
-
-        else:
-            return "usuario o clave incorrectos"
-
-
-
-    return "el usuario no existe"
-
-@app.route('/autenticacion', methods=['GET'])
-@jwt_required()
-def autenticacion():
-    get_token = get_jwt_identity()
-    return (get_token)
-@app.route('/user/signup', methods=['POST'])
-def signup():
-    decoded_object = json.loads(request.data)
-    checkuser = Usuario.query.filter_by(email=decoded_object['email']).all()
-    #checkuser = User.query.get(decoded_object['email'])
-    if not checkuser:
-        new_user = User()
-        new_user.email = decoded_object['email']
-        new_user.password = decoded_object['password']
-        new_user.is_active = True
-        db.session.add(new_user)
-        db.session.commit()
-        return("todo salio bien")
-    else:
-        return("el usuario ya existe")
-
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
