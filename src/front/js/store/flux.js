@@ -63,8 +63,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(response => response.json())
 					.then(result => {
 						setStore({user:[result]})
-						console.log(result)
-					})
+						console.log(result)})
 					.catch(error => console.log('ERROR MI REY !', error)); 
 					// cuando no se hace el login da un error , poder traer los mensajes de error del back al front
 
