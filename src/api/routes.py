@@ -31,12 +31,11 @@ def login():
 
     #chequear si el usuario existe
     user = User.query.filter_by(email=body['email']).first()
-    
     if user: #si el resultado de user es diferente a None
         if user.password == body['password']:
             #"usuario y clave correctos"
             #defino que el token tendrá un tiempo de vida dependiendo de los minutos indicados
-            expiracion = datetime.timedelta(minutes=5) 
+            expiracion = datetime.timedelta(minutes=20) 
 
             access_token = create_access_token(
                 identity=user.email,
@@ -78,11 +77,21 @@ def signup():
 
     return jsonify({"mensaje":"este email ya está en uso"})
 
-@api.route('/autenticacion', methods=['GET'])
+@api.route('/autentication', methods=['GET'])
 @jwt_required()
-def autenticacion():
+def autentication():
     get_token = get_jwt_identity()
-    return (get_token)
+    user = User.query.filter_by(email=get_token).first()
+    profiles = Profile.query.filter_by(user_id=user.id).all()
+    profiles_name_list = list(map(lambda x: x.serialize()["name"], profiles))
+    #profiles_names = list(map(lambda x : x.name, serialized_profiles))
+    profiles_dict = {"name_list": profiles_name_list}
+    if profiles:
+        #return jsonify({"email": get_token, "username": user.name, "profiles": profiles})
+ 
+        return jsonify(profiles_dict)
+    else:
+        return "User doesn't have a profile"
 
 @api.route('/profile/get', methods=['POST'])
 def get_profile_by_name():
