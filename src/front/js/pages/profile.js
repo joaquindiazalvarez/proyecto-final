@@ -7,9 +7,11 @@ import "../../styles/profile.css";
 export const Profile = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
+
   useEffect(() => {
     actions.getUserByName(params);
   }, []);
+
   return (
     <div>
       {/* profile name */}
@@ -27,7 +29,7 @@ export const Profile = () => {
       {/* profile photo */}
       <div className="row">
         <div className="col text-center">
-          <img src={store.profile_name.photo} alt="profile-photo"></img>
+          <img src={store.profile_name.photo} className="profilePhoto" />
         </div>
       </div>
       <div className="row">

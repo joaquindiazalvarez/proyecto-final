@@ -3,3 +3,48 @@
   margin-left: 60px;
   width: 120px;
 }
+
+.imgRegister {
+  height: 900px;
+  width: 500px;
+}
+
+.privicyDiv {
+  margin: 60px;
+  padding: 30px;
+  background-color: whitesmoke;
+}
+.BotonColor {
+  border: 2px solid #47d4bd;
+  color: white;
+  border-radius: 20px;
+}
+
+.BotonColor:hover {
+  border: none;
+  color: rgb(246, 247, 250);
+  background: #47d4bd;
+}
+
+.btnClose {
+  border-radius: 20px;
+
+  background: rgb(189, 44, 44);
+  color: white;
+}
+.btnClose:hover {
+  border: 2px solid rgb(189, 44, 44);
+  background: rgb(189, 44, 44);
+  opacity: 0.9;
+}
+
+.btnRegister {
+  border-radius: 20px;
+  background: #47d4bd;
+  color: white;
+}
+.btnRegister:hover {
+  border-radius: 20px;
+  border: 2px solid #47d4bd;
+  opacity: 0.9;
+}
