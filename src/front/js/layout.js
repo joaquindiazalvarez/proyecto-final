@@ -39,6 +39,9 @@ const Layout = () => {
             <Route exact path="/single/:theid">
               <Single />
             </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
             <Route exact path="/profile/:name">
               <Profile />
             </Route>
