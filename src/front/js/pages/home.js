@@ -43,7 +43,7 @@ export const Home = () => {
                 ¿ESTAS BUSCANDO BANDAS, MUSICOS O TIENES ALGUN PROYECTO EN
                 MENTE?
               </h2>
-              <Link to="/registro" className="btn  BotonColor" type="button">
+              <Link to="/register" className="btn  BotonColor" type="button">
                 Registrate
               </Link>
             </div>

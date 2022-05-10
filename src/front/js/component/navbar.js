@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png";
 
 export const Navbar = () => {
+  const { actions } = useContext(Context);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const user = { email: email, password: password };
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    actions.postLogin(user), e.preventDefault();
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-black">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
           <img className="Logo" src={Logo} />
         </Link>
-
         <nav className="navbar navbar-light bg-black">
           <form className="container-fluid justify-content-start">
             <button
@@ -25,16 +40,13 @@ export const Navbar = () => {
             <div
               className="modal fade"
               id="exampleModal"
-              tabindex="-1"
+              tabIndex="-1"
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
             >
               <div className="modal-dialog">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">
-                      HOLA!
-                    </h5>
                     <button
                       type="button"
                       className="btn-close"
@@ -49,8 +61,9 @@ export const Navbar = () => {
                     <div className="form-outline mb-4">
                       <label className="form-label">Email</label>
                       <input
+                        onChange={handleEmail}
+                        value={email}
                         type="text"
-                        id="form3Example8"
                         className="form-control form-control-lg"
                         placeholder="Email"
                       />
@@ -58,8 +71,9 @@ export const Navbar = () => {
                     <div className="form-outline mb-4">
                       <label className="form-label">Contraseña</label>
                       <input
-                        type="text"
-                        id="form3Example8"
+                        onChange={handlePassword}
+                        value={password}
+                        type="password"
                         className="form-control form-control-lg"
                         placeholder="Contraseña"
                       />
@@ -75,7 +89,11 @@ export const Navbar = () => {
                     >
                       Close
                     </button>
-                    <button type="button" className="btn btnRegister me-2">
+                    <button
+                      onClick={handleSubmit}
+                      type="submit"
+                      className="btn btnRegister me-2"
+                    >
                       Inicia Sesion
                     </button>
                   </div>
@@ -83,7 +101,7 @@ export const Navbar = () => {
               </div>
             </div>
 
-            <Link to="/registro" className="btn  BotonColor" type="button">
+            <Link to="/register" className="btn  BotonColor" type="button">
               Registrate
             </Link>
           </form>
