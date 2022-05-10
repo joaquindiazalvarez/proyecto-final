@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState} from "react";
 import { Context } from "../store/appContext";
+
 
 export const Register = () => {
   const { store, actions } = useContext(Context);
@@ -17,11 +18,49 @@ export const Register = () => {
   const handleBirthDate = (e) => {setBirthDate(e.target.value)}
   const handlegender = (e) => {setgender(e.target.value)}
   const handlefavMusicgenre = (e) => {setFavMusicgenre(e.target.value)}
-
-  const handleSubmit = (e) => {actions.postRegister(registerUser),e.preventDefault();}
   console.log(registerUser)
 
+  const regexname = /^[ \a-zA-Z0-9]+$/;
+  const regexemail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const regexpassword = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/
+  const testname = regexname.test(name)
+  const testemail = regexemail.test(email)
+  const testpassword = regexpassword.test(password)
 
+  const handleSubmit = (e) => {actions.postRegister(registerUser),e.preventDefault();}
+  const preventDef = (e) => {e.preventDefault();}
+  //
+  let colorName = ""
+  if (testname == true) {
+    colorName = "border border-success"
+  }
+    else
+    colorName = "border border-danger"
+  //  
+  let colorEmail = ""
+  if (testemail == true) {
+    colorEmail = "border border-success"
+  }
+  else
+    colorEmail = "border border-danger"
+  //  
+  let colorPassword = ""
+  if (testpassword == true) {
+    colorPassword = "border border-success"
+  }
+  else
+    colorPassword = "border border-danger"  
+
+  const onSubmit = (a,b) => {
+    if (testname == true && testemail == true && testpassword == true){
+      handleSubmit(a,b)
+
+    }
+    else
+      preventDef(a)
+
+
+  }
   return (
     <div className="text-center">
       <h2 className="mt-4">Registrate</h2>
@@ -37,15 +76,17 @@ export const Register = () => {
           <h4>Como quieres que te llamemos?</h4>
           <br />
           <input onChange={handleName} value={name}
+            id="name"
             for="exampleInputEmail1"
-            className="form-label"
+            className={colorName}
             placeholder="Ingrese un usuario"
           />
           <h4 className="mt-3 ">Cual es tu correo electronico?</h4>
           <br />
           <input onChange={handleEmail} value={email}
+            id="email"
             for="exampleInputEmail1"
-            className="form-label"
+            className={colorEmail}
             placeholder="Ingresa tu correo"
           />
           <div id="emailHelp" className="form-text">
@@ -54,14 +95,16 @@ export const Register = () => {
 
           <h4 className="mt-3">Crea una contrasena</h4>
           <br />
-          <input onChange={handlePassword} value={password}
+          <input
+          id="password"
+           onChange={handlePassword} value={password}
             for="exampleInputEmail1"
-            className="form-label"
+            className={colorPassword}
             placeholder="Contrasena"
           />
 
           <div id="emailHelp" className="form-text">
-            Crea una contrasena alfanumerica
+            Tu contraseña debe ser alfanumerica, contener una Mayuscula, una minuscula, un (!@#$%^&*) y ser de almenos 8 caracteres.
           </div>
 
           <h4 className="mt-3">Cual es tu genero?</h4>
@@ -130,7 +173,7 @@ export const Register = () => {
               He leido y acepto las politicas de privacidad
             </label>
           </div>
-          <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+          <button type="submit" className="btn btn-primary" onClick={onSubmit}>
             Registrarme
           </button>
         </div>
