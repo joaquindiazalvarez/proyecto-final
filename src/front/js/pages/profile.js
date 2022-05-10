@@ -7,6 +7,7 @@ import "../../styles/profile.css";
 export const Profile = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
+
   useEffect(() => {
     actions.getUserByName(params);
   }, [params.name]);
