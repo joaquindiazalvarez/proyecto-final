@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Logo from "../../img/Logo.png";
-import { Context } from "../store/appContext";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
@@ -10,7 +9,7 @@ export const Navbar = () => {
   const [profileNames, setProfileNames] = useState(store.profile_names);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const user = { email: email, password: password };   
+  const user = { email: email, password: password };
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
@@ -49,79 +48,81 @@ export const Navbar = () => {
           <form className="container-fluid justify-content-start">
             {/*renders login button if token doesnt exist*/}
             {!token && (
-              <button>
-                to="/login"
-                className="login btn btn-outline-success me-2"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-              >
-                Inicio de sesion
-              </button>
-              {/*MODAL*/}
-            <div
-              className="modal fade"
-              id="exampleModal"
-              tabIndex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div className="modal-dialog">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
+              <div>
+                <button
+                  className="login btn btn-outline-success me-2"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                >
+                  Inicio de sesion
+                </button>
+                {/*MODAL */}
+                <div
+                  className="modal fade"
+                  id="exampleModal"
+                  tabIndex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
 
-                  {/*MODALBODY*/}
-                  <div className="modal-body">
-                    <h5>Un gusto tenerte de regreso!</h5>
-                    <div className="form-outline mb-4">
-                      <label className="form-label">Email</label>
-                      <input
-                        onChange={handleEmail}
-                        value={email}
-                        type="text"
-                        className="form-control form-control-lg"
-                        placeholder="Email"
-                      />
-                    </div>
-                    <div className="form-outline mb-4">
-                      <label className="form-label">Contraseña</label>
-                      <input
-                        onChange={handlePassword}
-                        value={password}
-                        type="password"
-                        className="form-control form-control-lg"
-                        placeholder="Contraseña"
-                      />
-                    </div>
-                  </div>
+                      {/*MODALBODY*/}
+                      <div className="modal-body">
+                        <h5>Un gusto tenerte de regreso!</h5>
+                        <div className="form-outline mb-4">
+                          <label className="form-label">Email</label>
+                          <input
+                            onChange={handleEmail}
+                            value={email}
+                            type="text"
+                            className="form-control form-control-lg"
+                            placeholder="Email"
+                          />
+                        </div>
+                        <div className="form-outline mb-4">
+                          <label className="form-label">Contraseña</label>
+                          <input
+                            onChange={handlePassword}
+                            value={password}
+                            type="password"
+                            className="form-control form-control-lg"
+                            placeholder="Contraseña"
+                          />
+                        </div>
+                      </div>
 
-                  {/*modalfooter*/}
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btnClose"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button
-                      onClick={handleSubmit}
-                      type="submit"
-                      className="btn btnRegister me-2"
-                    >
-                      Inicia Sesion
-                    </button>
+                      {/*modalfooter*/}
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btnClose"
+                          data-bs-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button
+                          onClick={handleSubmit}
+                          type="submit"
+                          className="btn btnRegister me-2"
+                          data-bs-dismiss="modal"
+                        >
+                          Inicia Sesion
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
             )}
             {/*renders profile dropdown only if token exist */}
             {token && (
