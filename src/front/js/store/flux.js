@@ -17,7 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       user: [],
       profile_names: { name_list: ["void"] },
-      profile: [],
+      profile: {},
       loged: false,
       params: "",
     },
