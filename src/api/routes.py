@@ -58,8 +58,11 @@ def login():
 @api.route('/user/signup', methods=['POST'])
 def signup():
     decoded_object = json.loads(request.data)
+
+
     checkuser = User.query.filter_by(email=decoded_object['email']).all()
     #checkuser = User.query.get(decoded_object['email'])
+
     if not checkuser:
         new_user = User()
         new_user.name = decoded_object['name']
@@ -72,7 +75,7 @@ def signup():
         db.session.commit()
         return jsonify({"mensaje": "todo salió bien"})
 
-    return jsonify({"mensaje":"el usuario ya existe"})
+    return jsonify({"mensaje":"este email ya está en uso"})
 
 @api.route('/autentication', methods=['GET'])
 @jwt_required()
