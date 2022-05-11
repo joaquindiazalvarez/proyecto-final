@@ -103,5 +103,10 @@ def get_profile_by_name():
         return jsonify(serialized_profile)
     else:
         return "Profile doesn't exist"
+@api.route('profile/getprofilephoto', methods=['GET'])
+def get_profile_photo():
+    profiles = Profile.query.all()
+    profiles_list = list(map(lambda x: {"name":x.serialize()['name'], "photo":x.serialize()['photo']}, profiles))
+    return jsonify(profiles_list)
 
 
