@@ -22,7 +22,7 @@ export const Navbar = () => {
   useEffect(() => {
     setToken(sessionStorage.getItem("token"));
     setProfileNames(store.profile_names);
-  }, [store.loged]);
+  }, [store.loged, user]);
 
   console.log(store.profile_names);
   return (
