@@ -28,7 +28,7 @@ def login():
         return jsonify({"message":"debes especificar el email"})
     if "password" not in body:
         return jsonify({"message":"debes especificar un password"})
-
+    
     #chequear si el usuario existe
     user = User.query.filter_by(email=body['email']).first()
     if user: #si el resultado de user es diferente a None
@@ -103,6 +103,7 @@ def get_profile_by_name():
         return jsonify(serialized_profile)
     else:
         return "Profile doesn't exist"
+
 @api.route('profile/getprofilephoto', methods=['GET'])
 def get_profile_photo():
     profiles = Profile.query.all()

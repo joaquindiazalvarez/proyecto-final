@@ -93,7 +93,7 @@ export const Register = () => {
                       <input
                         onChange={handlePassword}
                         value={password}
-                        type="text"
+                        type="password"
                         className="form-control form-control-lg"
                         placeholder="Contraseña"
                       />

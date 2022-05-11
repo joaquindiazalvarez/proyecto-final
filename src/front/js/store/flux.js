@@ -151,6 +151,30 @@ const getState = ({ getStore, getActions, setStore }) => {
         sessionStorage.removeItem("token");
         setStore({ loged: false });
       },
+
+      getPhotosProfile: async () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({});
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/profile/getprofilephoto",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((error) => console.log("error", error));
+      },
     },
   };
 };
