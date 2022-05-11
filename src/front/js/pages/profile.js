@@ -8,19 +8,11 @@ export const Profile = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
   const [edit, setEdit] = useState(false);
-  //const [name, setName] = useState(store.profile["name"]);
-  //const [photo, setPhoto] = useState("");
-  //const [description, setDescription] = useState("");
-  //const [soundcloud, setSoundcloud] = useState("");
   useEffect(() => {
     actions.getUserByName(params);
-    //setDeafult(store.profile);
-  }, [params.name]);
+    setDeafult({ ...deafult, name: params.name });
+  }, [params.name, edit]);
   const [deafult, setDeafult] = useState(store.profile);
-  const onChangeName = (e) => {
-    //e.preventDeafult();
-    setDeafult({ ...deafult, name: e.target.value });
-  };
   const onChangePhoto = (e) => {
     setDeafult({ ...deafult, photo: e.target.value });
   };
@@ -31,7 +23,9 @@ export const Profile = () => {
     setDeafult({ ...deafult, soundcloud: e.target.value });
   };
   const handleSubmit = (e) => {
-    actions.postEditProfile(deafult), e.preventDefault();
+    actions.updateProfile(deafult), e.preventDefault();
+    actions.getUserByName(params);
+    console.log("mi console log", deafult);
   };
   return (
     <div>
@@ -50,7 +44,10 @@ export const Profile = () => {
             <button
               type="button"
               className="btn-outline-success"
-              onClick={() => setEdit(false)}
+              onClick={() => {
+                setEdit(false);
+                handleSubmit();
+              }}
             >
               Guardar cambios
             </button>
@@ -119,13 +116,7 @@ export const Profile = () => {
               <i className="far fa-star fa-4x"></i>
             </div>
             <div className="col pt-2">
-              <h5>Editar nombre de perfil</h5>
-
-              <input
-                type="text"
-                value={deafult.name || store.profile.name}
-                onChange={(e) => onChangeName(e)}
-              ></input>
+              <h1>{store.profile["name"]}</h1>
             </div>
             <div className="col-5 text-start pt-1">
               <i className="far fa-star fa-4x"></i>
@@ -157,7 +148,7 @@ export const Profile = () => {
           </div>
           {/*Soundcloud player*/}
           <div className="row">
-            <div className="col d-flex justify-content-center p-4">
+            <div className="col p-4 text-center">
               <h5>Editar URL de soundcloud</h5>
               <input
                 type="text"
@@ -166,7 +157,6 @@ export const Profile = () => {
               ></input>
             </div>
           </div>
-          <button>Submit</button>
         </div>
       )}
     </div>

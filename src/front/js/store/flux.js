@@ -151,6 +151,29 @@ const getState = ({ getStore, getActions, setStore }) => {
         sessionStorage.removeItem("token");
         setStore({ loged: false });
       },
+      updateProfile: async (obj) => {
+        let token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify(obj);
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/profile/update",
+          requestOptions
+        )
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) => console.log("error", error));
+      },
     },
   };
 };
