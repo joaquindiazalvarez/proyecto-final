@@ -103,10 +103,15 @@ export const Home = () => {
           {store.profile.length > 0 &&
             store.profile.map((profile, i) => (
               <div className="card" key={i}>
-                <img src={profile.photo} className="card-img-top" />
-                <div className="card-body">
-                  <h5 className="card-title">{profile.name}</h5>
-                </div>
+                <Link
+                  to={"/profile/" + profile.name}
+                  style={{ textDecoration: "none" }}
+                >
+                  <img src={profile.photo} className="card-img-top" />
+                  <div className="card-body">
+                    <h5 className="card-title">{profile.name}</h5>
+                  </div>
+                </Link>
               </div>
             ))}
         </div>

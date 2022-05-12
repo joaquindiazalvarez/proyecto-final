@@ -71,7 +71,7 @@ export const Profile = () => {
           {/* profile photo if edit = false*/}
           <div className="row">
             <div className="col text-center">
-              <img src={store.profile.photo} alt="profile-photo"></img>
+              <img src={store.profile.photo} className="profilePhoto"></img>
             </div>
           </div>
           {/*description*/}

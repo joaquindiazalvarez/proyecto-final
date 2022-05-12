@@ -10,3 +10,7 @@
 .card {
   margin: 10px;
 }
+.card-body h5,
+.card-body h5:link {
+  color: #000000;
+}
