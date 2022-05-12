@@ -13,23 +13,28 @@ export const Navbar = () => {
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
+
   const handlePassword = (e) => {
     setPassword(e.target.value);
   };
+
   const handleSubmit = (e) => {
     actions.postLogin(user), e.preventDefault();
+    //console.log(store.profile_names);
+    // setProfileNames(store.profile_names);
   };
+
   useEffect(() => {
     setToken(sessionStorage.getItem("token"));
     setProfileNames(store.profile_names);
   }, [store.loged, user]);
 
-  console.log(store.profile_names);
+  //console.log(store.profile_names);
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-black">
       <div className="container-fluid">
         <div className="navbar-brand">
-          <Link to="/home">
+          <Link to="/">
             <img className="Logo" src={Logo} />
           </Link>
         </div>
@@ -50,7 +55,7 @@ export const Navbar = () => {
             {!token && (
               <div>
                 <button
-                  className="login btn btn-outline-success me-2"
+                  className="login btn BotonColor me-2"
                   type="button"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
@@ -128,7 +133,7 @@ export const Navbar = () => {
             {token && (
               <div className="dropdown">
                 <button
-                  className="login btn btn-outline-success me-2 dropdown-toggle"
+                  className="login btn BotonColor me-2 dropdown-toggle"
                   type="button"
                   id="dropdownMenuButton1"
                   data-bs-toggle="dropdown"
@@ -158,19 +163,15 @@ export const Navbar = () => {
             )}
             {/* renders register button if there is not a token*/}
             {!token && (
-              <Link
-                to="/register"
-                className="btn  btn-outline-warning"
-                type="button"
-              >
+              <Link to="/register" className="btn  BotonColor" type="button">
                 Registrate
               </Link>
             )}
             {/* renders logout button if there is a token*/}
             {token && (
               <Link
-                to="/login"
-                className="btn btn-outline-warning"
+                to="/"
+                className="btn BotonColor"
                 type="button"
                 onClick={() => {
                   actions.logout();

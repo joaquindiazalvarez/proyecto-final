@@ -119,6 +119,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
           .catch((error) => console.log("ERROR MI REY !", error));
       },
+
       autentication: async () => {
         const actions = getActions();
         let token = sessionStorage.getItem("token");
@@ -137,7 +138,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
             if ("msg" in result) {
               actions.logout();
             }
@@ -172,6 +172,27 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.text())
           .then((result) => console.log(result))
+          .catch((error) => console.log("error", error));
+      },
+
+      getPhotosProfile: async () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/profile/getprofilephoto",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            setStore({ profile: result });
+          })
           .catch((error) => console.log("error", error));
       },
     },

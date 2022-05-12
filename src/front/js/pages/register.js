@@ -1,8 +1,7 @@
-import React, { useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import registroimg from "../../img/registroimg.jpg";
 import { Link, Redirect } from "react-router-dom";
-
 
 export const Register = () => {
   const { store, actions } = useContext(Context);
@@ -12,63 +11,71 @@ export const Register = () => {
   const [date_of_birth, setBirthDate] = useState("");
   const [gender, setgender] = useState("");
   const [favMusicgenre, setFavMusicgenre] = useState("");
-  const registerUser = {name:name, email:email, password:password, date_of_birth:date_of_birth, gender:gender, favMusicgenre:favMusicgenre}
+  const registerUser = {
+    name: name,
+    email: email,
+    password: password,
+    date_of_birth: date_of_birth,
+    gender: gender,
+    favMusicgenre: favMusicgenre,
+  };
 
-  const handleName = (e) => {setName(e.target.value)}
-  const handleEmail = (e) => {setEmail(e.target.value)}
-  const handlePassword = (e) => {setPassword(e.target.value)}
-  const handleBirthDate = (e) => {setBirthDate(e.target.value)}
-  const handlegender = (e) => {setgender(e.target.value)}
-  const handlefavMusicgenre = (e) => {setFavMusicgenre(e.target.value)}
-  console.log(registerUser)
+  const handleName = (e) => {
+    setName(e.target.value);
+  };
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const handleBirthDate = (e) => {
+    setBirthDate(e.target.value);
+  };
+  const handlegender = (e) => {
+    setgender(e.target.value);
+  };
+  const handlefavMusicgenre = (e) => {
+    setFavMusicgenre(e.target.value);
+  };
+  console.log(registerUser);
 
   const regexname = /^[ \a-zA-Z0-9]+$/;
   const regexemail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  const regexpassword = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/
-  const testname = regexname.test(name)
-  const testemail = regexemail.test(email)
-  const testpassword = regexpassword.test(password)
+  const regexpassword =
+    /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
+  const testname = regexname.test(name);
+  const testemail = regexemail.test(email);
+  const testpassword = regexpassword.test(password);
 
-  
+  const handleSubmit = (e) => {
+    actions.postRegister(registerUser), e.preventDefault();
+  };
+  const preventDef = (e) => {
+    e.preventDefault();
+  };
 
-  const handleSubmit = (e) => {actions.postRegister(registerUser),e.preventDefault();}
-  const preventDef = (e) => {e.preventDefault();}
-  
-    
-    
   //
-  let colorName = ""
+  let colorName = "";
   if (testname == true) {
-    colorName = "form-control form-control-lg border border-success"
-  }
-    else
-    colorName = "form-control form-control-lg border border-danger"
-  //  
-  let colorEmail = ""
+    colorName = "form-control form-control-lg border border-success";
+  } else colorName = "form-control form-control-lg border border-danger";
+  //
+  let colorEmail = "";
   if (testemail == true) {
-    colorEmail = "form-control form-control-lg border border-success"
-  }
-  else
-    colorEmail = "form-control form-control-lg border border-danger"
-  //  
-  let colorPassword = ""
+    colorEmail = "form-control form-control-lg border border-success";
+  } else colorEmail = "form-control form-control-lg border border-danger";
+  //
+  let colorPassword = "";
   if (testpassword == true) {
-    colorPassword = "form-control form-control-lg border border-success"
-  }
-  else
-    colorPassword = "form-control form-control-lg border border-danger"  
+    colorPassword = "form-control form-control-lg border border-success";
+  } else colorPassword = "form-control form-control-lg border border-danger";
 
-  const onSubmit = (a,b) => {
-    if (testname == true && testemail == true && testpassword == true){
-      handleSubmit(a,b)
-        
-    }
-    else
-      preventDef(a)
-
-
-
-  }
+  const onSubmit = (a, b) => {
+    if (testname == true && testemail == true && testpassword == true) {
+      handleSubmit(a, b);
+    } else preventDef(a);
+  };
   return (
     <section className="h-100 bg-light">
       <div className="container py-5 h-100">
@@ -119,13 +126,12 @@ export const Register = () => {
                       <input
                         onChange={handlePassword}
                         value={password}
-                        type="text"
+                        type="password"
                         className={colorPassword}
-                        placeholder="Password segura:(OlitadeMar123@)"
+                        placeholder="Ingresa tu clave"
                       />
-                      <p class="text-muted">debe contener Mayus minus numeros un simbolo y 8 caracteres</p>
+                      <p className="text-muted">Contraseña alfanumerica</p>
                     </div>
-                   
 
                     <div className="d-md-flex justify-content-start align-items-center mb-4 py-2">
                       <h6 className="mb-0 me-4">Genero: </h6>
