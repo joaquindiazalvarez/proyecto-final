@@ -101,7 +101,6 @@ def get_profile_by_name():
         return "must specify name"
     profile = Profile.query.filter_by(name=body['name']).first()
     if profile:
-        print(profile.serialize())
         serialized_profile = profile.serialize()
         return jsonify(serialized_profile)
     else:
@@ -113,3 +112,19 @@ def get_profile_photo():
     return jsonify(profiles_list)
 
 
+@api.route('profile/update', methods=['POST'])
+@jwt_required()
+def update_profile():
+    body = request.get_json()
+    if "photo" in body or "description" in body or "soundcloud" in body:
+        profile = Profile.query.filter_by(name=body['name']).first()
+        if "photo" in body:
+            profile.photo = body['photo']
+        if "description" in body:
+            profile.description = body['description']
+        if "soundcloud" in body:
+            profile.soundcloud = body['soundcloud']
+        db.session.commit()
+        return("profile updated")
+    else:
+        return("nothing to update")

@@ -31,18 +31,38 @@ def setup_commands(app):
 
         ### Insert the code to populate others tables if needed
             ###PARA AGREGAR EL USUARIO Y LOS PERFILES ESCRIBIR EN CONSOLA
-    ###     flask insert-test-1-user-6-profiles
-    @app.cli.command("insert-test-1-user-6-profiles") # name of our command
-    def insert_1_user_6_profiles():
-        user = User()
-        user.name = "testman"
-        user.email = "testman_user@test.com"
-        user.password = "123456"
-        user.gender = "hombre"
-        user.date_of_birth = "10/10/2003"
-        db.session.add(user)
+    ###     flask insert-test-3-user-6-profiles
+    @app.cli.command("insert-test-3-user-6-profiles") # name of our command
+    def insert_3_user_6_profiles():
+        user1 = User()
+        user1.name = "testman1"
+        user1.email = "testman1@testman.com"
+        user1.password = "123456"
+        user1.gender = "hombre"
+        user1.date_of_birth = "10/10/2003"
+        db.session.add(user1)
         db.session.commit()
-        print("User created")
+        print("User testman1 created")
+
+        user2 = User()
+        user2.name = "testman2"
+        user2.email = "testman2@testman.com"
+        user2.password = "123456"
+        user2.gender = "hombre"
+        user2.date_of_birth = "10/10/2003"
+        db.session.add(user2)
+        db.session.commit()
+        print("User testman 2 created")
+
+        user3 = User()
+        user3.name = "testman3"
+        user3.email = "testman3@testman.com"
+        user3.password = "123456"
+        user3.gender = "hombre"
+        user3.date_of_birth = "10/10/2003"
+        db.session.add(user3)
+        db.session.commit()
+        print("User testman 3 created")
         
         print("Creating test profiles")
         profile1 = Profile()
@@ -70,7 +90,7 @@ def setup_commands(app):
         profile3.photo = "https://i1.sndcdn.com/avatars-isaOJM13mJFtKRgk-MF4KhQ-t500x500.jpg"
         profile3.description = "𝖏𝖆𝖗𝖉í𝖓 𝖉𝖊 𝖗𝖔𝖘𝖆𝖘🦧"
         profile3.soundcloud = "https://soundcloud.com/ricardo-sepulveda-villa/me-haces-sentir-que-la-vida-es-hermosa"
-        profile3.user_id = 1
+        profile3.user_id = 2
         db.session.add(profile3)
         db.session.commit()
         print("Profile 3, Soothing Things created.")
@@ -80,7 +100,7 @@ def setup_commands(app):
         profile4.photo = "https://i1.sndcdn.com/avatars-SRhwNTbzeNhC9Cke-FrnX1g-t500x500.jpg"
         profile4.description = "Hardstyle, Edm, Trance Producer"
         profile4.soundcloud = "https://soundcloud.com/thierry-estev/mog-1"
-        profile4.user_id = 1
+        profile4.user_id = 2
         db.session.add(profile4)
         db.session.commit()
         print("Profile 4, Tevvez created.")
@@ -90,7 +110,7 @@ def setup_commands(app):
         profile5.photo = "https://i1.sndcdn.com/avatars-wxJowXBhgqzwLWzn-MZTu1w-t500x500.jpg"
         profile5.description = "Award winning Producer, Singer, Songwriter, Guitarist in the Haitian Music Industry. Credits : Wyclef Jean, Djakout Mizik, Djakout #1, Rutshelle, Arly Lariviere, Tabou Combo, Beethova Obas, Haiti Twoubadou ... Get to know me !"
         profile5.soundcloud = "https://soundcloud.com/elie-lapointe/dans-tes-bras-elie-lapointe-feat-rutshelle"
-        profile5.user_id = 1
+        profile5.user_id = 3
         db.session.add(profile5)
         db.session.commit()
         print("Profile 5, Elie Lapointe created.")
@@ -100,7 +120,7 @@ def setup_commands(app):
         profile6.photo = "https://i1.sndcdn.com/avatars-GJ9g5SkRoNC5CDWj-ym44Rg-t500x500.jpg"
         profile6.description = "Beatmaker • Producer • Singer • Composer"
         profile6.soundcloud = "https://soundcloud.com/pierrejeanhaiti/pierre-jean-anvi-viv"
-        profile6.user_id = 1
+        profile6.user_id = 3
         db.session.add(profile6)
         db.session.commit()
         print("Profile 6, Pierre Jean Haiti")
