@@ -70,8 +70,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({ user: [result] });
             sessionStorage.setItem("token", result.token);
             console.log(result);
-            actions.autentication();
             setStore({ loged: true });
+            actions.autentication();
           })
           .catch((error) => console.log("ERROR MI REY !", error));
         // cuando no se hace el login da un error , poder traer los mensajes de error del back al front
