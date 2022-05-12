@@ -100,14 +100,15 @@ export const Home = () => {
       <h3 className="ms-4">Top 5, artistas mas escuchados</h3>
       <div className="cards">
         <div className="card-group ">
-          {store.profile.map((profile, i) => (
-            <div className="card" key={i}>
-              <img src={profile.photo} className="card-img-top" />
-              <div className="card-body">
-                <h5 className="card-title">{profile.name}</h5>
+          {store.profile.length > 0 &&
+            store.profile.map((profile, i) => (
+              <div className="card" key={i}>
+                <img src={profile.photo} className="card-img-top" />
+                <div className="card-body">
+                  <h5 className="card-title">{profile.name}</h5>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>
