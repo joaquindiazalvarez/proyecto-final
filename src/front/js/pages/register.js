@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import registroimg from "../../img/registroimg.jpg";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 export const Register = () => {
   const { store, actions } = useContext(Context);
@@ -38,11 +38,44 @@ export const Register = () => {
   const handlefavMusicgenre = (e) => {
     setFavMusicgenre(e.target.value);
   };
+  console.log(registerUser);
+
+  const regexname = /^[ \a-zA-Z0-9]+$/;
+  const regexemail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const regexpassword =
+    /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
+  const testname = regexname.test(name);
+  const testemail = regexemail.test(email);
+  const testpassword = regexpassword.test(password);
 
   const handleSubmit = (e) => {
     actions.postRegister(registerUser), e.preventDefault();
   };
+  const preventDef = (e) => {
+    e.preventDefault();
+  };
 
+  //
+  let colorName = "";
+  if (testname == true) {
+    colorName = "form-control form-control-lg border border-success";
+  } else colorName = "form-control form-control-lg border border-danger";
+  //
+  let colorEmail = "";
+  if (testemail == true) {
+    colorEmail = "form-control form-control-lg border border-success";
+  } else colorEmail = "form-control form-control-lg border border-danger";
+  //
+  let colorPassword = "";
+  if (testpassword == true) {
+    colorPassword = "form-control form-control-lg border border-success";
+  } else colorPassword = "form-control form-control-lg border border-danger";
+
+  const onSubmit = (a, b) => {
+    if (testname == true && testemail == true && testpassword == true) {
+      handleSubmit(a, b);
+    } else preventDef(a);
+  };
   return (
     <section className="h-100 bg-light">
       <div className="container py-5 h-100">
@@ -67,7 +100,7 @@ export const Register = () => {
                             onChange={handleName}
                             value={name}
                             type="text"
-                            className="form-control form-control-lg"
+                            className={colorName}
                             placeholder="Ingrese un usuario"
                           />
                         </div>
@@ -81,7 +114,7 @@ export const Register = () => {
                             onChange={handleEmail}
                             value={email}
                             type="text"
-                            className="form-control form-control-lg"
+                            className={colorEmail}
                             placeholder="Email"
                           />
                         </div>
@@ -94,9 +127,10 @@ export const Register = () => {
                         onChange={handlePassword}
                         value={password}
                         type="password"
-                        className="form-control form-control-lg"
-                        placeholder="Contraseña"
+                        className={colorPassword}
+                        placeholder="Ingresa tu clave"
                       />
+                      <p className="text-muted">Contraseña alfanumerica</p>
                     </div>
 
                     <div className="d-md-flex justify-content-start align-items-center mb-4 py-2">
@@ -171,9 +205,9 @@ export const Register = () => {
 
                     <div className="d-flex justify-content-center pt-3">
                       <button
-                        onClick={handleSubmit}
-                        type="submit"
-                        id="buttonRegister"
+                        onClick={onSubmit}
+                        type="submit "
+                        id="buttonRegister liveAlertBtn"
                         className="btn btn-warning btn-lg ms-2 rounded-pill"
                       >
                         Registrarme

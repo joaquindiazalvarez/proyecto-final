@@ -70,8 +70,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({ user: [result] });
             sessionStorage.setItem("token", result.token);
             console.log(result);
-            actions.autentication();
             setStore({ loged: true });
+            actions.autentication();
           })
           .catch((error) => console.log("ERROR MI REY !", error));
         // cuando no se hace el login da un error , poder traer los mensajes de error del back al front
@@ -119,6 +119,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
           .catch((error) => console.log("ERROR MI REY !", error));
       },
+
       autentication: async () => {
         const actions = getActions();
         let token = sessionStorage.getItem("token");
@@ -137,7 +138,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
             if ("msg" in result) {
               actions.logout();
             }
@@ -156,12 +156,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify({});
-
         var requestOptions = {
           method: "GET",
           headers: myHeaders,
-          body: raw,
           redirect: "follow",
         };
 
@@ -171,7 +168,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
+            setStore({ profile: result });
           })
           .catch((error) => console.log("error", error));
       },

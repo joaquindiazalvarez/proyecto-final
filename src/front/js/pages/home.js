@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import rock from "../../img/rock.jpg";
 import festival from "../../img/festival.jpg";
 import publico from "../../img/publico.jpeg";
 import "../../styles/home.css";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Home = () => {
+  const { store, actions } = useContext(Context);
+  useEffect(() => {
+    actions.getPhotosProfile();
+  }, []);
+
   return (
     <div>
       <div
@@ -37,7 +43,7 @@ export const Home = () => {
         </div>
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <img src={rock} className="d-block w-100" />
+            <img src={rock} className="d-block w-100 imgCarousel" />
             <div className="carousel-caption d-none d-md-block">
               <h2>
                 ¿ESTAS BUSCANDO BANDAS, MUSICOS O TIENES ALGUN PROYECTO EN
@@ -49,13 +55,13 @@ export const Home = () => {
             </div>
           </div>
           <div className="carousel-item">
-            <img src={festival} className="d-block w-100" />
+            <img src={festival} className="d-block w-100 imgCarousel" />
             <div className="carousel-caption d-none d-md-block">
               <h2>AQUI PODRAS PATROCINAR BANDAS Y ARTISTAS EMERGENTES</h2>
             </div>
           </div>
           <div className="carousel-item">
-            <img src={publico} className="d-block w-100" />
+            <img src={publico} className="d-block w-100 imgCarousel" />
             <div className="carousel-caption d-none d-md-block">
               <h5>Third slide label</h5>
               <p>
@@ -90,41 +96,18 @@ export const Home = () => {
         </button>
       </div>
       <br />
-      <div className="card-group" id="cards">
-        <div className="card">
-          <img src="..." className="card-img-top" />
-          <div className="card-body">
-            <h5 className="card-title">Artista</h5>
-            <p className="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-          </div>
-        </div>
-        <div className="card">
-          <img src="..." className="card-img-top" />
-          <div className="card-body">
-            <h5 className="card-title">Card title</h5>
-            <p className="card-text">
-              This card has supporting text below as a natural lead-in to
-              additional content.
-            </p>
-          </div>
-        </div>
-        <div className="card">
-          <img src="..." className="card-img-top" />
-          <div className="card-body">
-            <h5 className="card-title">Card title</h5>
-            <p className="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This card has even longer content
-              than the first to show that equal height action.
-            </p>
-            <p className="card-text">
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </p>
-          </div>
+
+      <h3 className="ms-4">Top 5, artistas mas escuchados</h3>
+      <div className="cards">
+        <div className="card-group ">
+          {store.profile.map((profile, i) => (
+            <div className="card" key={i}>
+              <img src={profile.photo} className="card-img-top" />
+              <div className="card-body">
+                <h5 className="card-title">{profile.name}</h5>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
