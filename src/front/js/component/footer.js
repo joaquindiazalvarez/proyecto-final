@@ -84,7 +84,7 @@ export const Footer = () => {
       </section>
       <div className="text-center p-4">
         © 2021 Copyright:
-        <a className="text-reset fw-bold" href="...">
+        <a className="text-reset fw-bold" href="">
           Bandfolio.com
         </a>
       </div>
