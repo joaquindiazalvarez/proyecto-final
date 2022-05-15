@@ -16,8 +16,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       ],
 
       user: [],
-      profile_names: { name_list: ["void"] },
+      user_profile: { actual_profile: ["void"] },
       profile: {},
+      favorites: {},
       loged: false,
       params: "",
     },
@@ -71,9 +72,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             sessionStorage.setItem("token", result.token);
             console.log(result);
             setStore({ loged: true });
-            actions.autentication();
           })
-          .catch((error) => console.log("ERROR MI REY !", error));
+          .catch((error) => console.log("ERROR AL LOGUEAR MI REY !", error));
         // cuando no se hace el login da un error , poder traer los mensajes de error del back al front
       },
 
@@ -95,16 +95,16 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => console.log(result))
-          .catch((error) => console.log("error", error));
+          .catch((error) => console.log("ERROR AL REGISTRASE", error));
       },
-      getUserByName: async (name) => {
+      getProfileByName: async (name) => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         var requestOptions = {
           method: "POST",
           headers: myHeaders,
-          body: JSON.stringify(name),
+          body: JSON.stringify({ name: name }),
           redirect: "follow",
         };
 
@@ -117,15 +117,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({ profile: result });
             console.log(result);
           })
-          .catch((error) => console.log("ERROR MI REY !", error));
+          .catch((error) =>
+            console.log("ERROR AL OBTENER PROFILE MI REY !", error)
+          );
       },
 
-      autentication: async () => {
+      getProfileByUser: async () => {
         const actions = getActions();
         let token = sessionStorage.getItem("token");
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
-        myHeaders.append("Content-Type", "application/json");
         var requestOptions = {
           method: "GET",
           headers: myHeaders,
@@ -133,15 +134,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
 
         await fetch(
-          process.env.BACKEND_URL + "/api/autentication",
+          process.env.BACKEND_URL + "/api/profile/getbyuser",
           requestOptions
         )
           .then((response) => response.json())
           .then((result) => {
-            if ("msg" in result) {
-              actions.logout();
-            }
-            setStore({ profile_names: result });
+            setStore({ user_profile: result.actual_profile });
+            console.log("autorizado", result);
           })
           .catch((error) =>
             console.log("ERROR DE AUTENTICACION MI REY !", error)
@@ -172,7 +171,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.text())
           .then((result) => console.log(result))
-          .catch((error) => console.log("error", error));
+          .catch((error) =>
+            console.log("ERROR AL HACER UPDATE MI REY !", error)
+          );
       },
 
       getPhotosProfile: async () => {
@@ -193,7 +194,30 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((result) => {
             setStore({ profile: result });
           })
-          .catch((error) => console.log("error", error));
+          .catch((error) =>
+            console.log("ERROR AL OBTENER FOTOS MI REY !", error)
+          );
+      },
+      getAllFavorites: async () => {
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        fetch(process.env.BACKEND_URL + "/api/favorites/getall", requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            setStore({ favorites: result });
+          })
+          .catch((error) =>
+            console.log("ERROR AL OBTENER FAVORITOS MI REY !", error)
+          );
       },
     },
   };

@@ -25,9 +25,9 @@ def login():
     body = request.get_json()
     #validar si el campo existe o no
     if "email" not in body:
-        return jsonify({"message":"debes especificar el email"})
+        return jsonify({"message":"must specify email"})
     if "password" not in body:
-        return jsonify({"message":"debes especificar un password"})
+        return jsonify({"message":"must specify a password"})
     
     #chequear si el usuario existe
     user = User.query.filter_by(email=body['email']).first()
@@ -35,25 +35,25 @@ def login():
         if user.password == body['password']:
             #"usuario y clave correctos"
             #defino que el token tendrá un tiempo de vida dependiendo de los minutos indicados
-            expiracion = datetime.timedelta(minutes=20) 
+            expiration = datetime.timedelta(minutes=20) 
 
             access_token = create_access_token(
                 identity=user.email,
-                expires_delta=expiracion)
+                expires_delta=expiration)
             
             return jsonify({
-                "mensaje": "inicio de sesión fue satisfactorio",
+                "message": "inicio de sesión fue satisfactorio",
                 "data": user.serialize(),
-                "expira_segundos": expiracion.total_seconds(),
+                "expires_seconds": expiration.total_seconds(),
                 "token": access_token
             })
 
         else:
-            return jsonify({"mensaje":"usuario o clave incorrectos"})
+            return jsonify({"message":"wrong user or password"})
 
 
 
-    return jsonify({"message":"el usuario no existe"})
+    return jsonify({"message":"user does not exist"})
 
 @api.route('/user/signup', methods=['POST'])
 def signup():
@@ -73,20 +73,20 @@ def signup():
         new_user.is_active = True
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({"mensaje": "todo salió bien"})
+        return jsonify({"message": "all went well"})
 
-    return jsonify({"mensaje":"este email ya está en uso"})
+    return jsonify({"message":"this email is already in use"})
 
-@api.route('/autentication', methods=['GET'])
+@api.route('/profile/getbyuser', methods=['GET'])
 @jwt_required()
-def autentication():
+def get_profile_by_user():
     get_token = get_jwt_identity()
     user = User.query.filter_by(email=get_token).first()
-    profiles = Profile.query.filter_by(user_id=user.id).all()
-    profiles_name_list = list(map(lambda x: x.serialize()["name"], profiles))
+    profile = Profile.query.filter_by(user_id=user.id).first()
+    actual_profile = profile.serialize()
     #profiles_names = list(map(lambda x : x.name, serialized_profiles))
-    profiles_dict = {"name_list": profiles_name_list}
-    if profiles:
+    profiles_dict = {"actual_profile": actual_profile}
+    if profile:
         #return jsonify({"email": get_token, "username": user.name, "profiles": profiles})
  
         return jsonify(profiles_dict)
@@ -129,3 +129,36 @@ def update_profile():
         return("profile updated")
     else:
         return("nothing to update")
+
+@api.route('favorites/add', methods=['POST'])
+@jwt_required()
+def add_to_favorites():
+    get_token = get_jwt_identity()
+    body = request.get_json()
+    user = User.query.filter_by(email = get_token).first()
+    if "profile" in body:
+        profile = Profile.query.filter_by(name=body['profile']).first()
+        favorite = Favorites()
+        favorite.profile_id = profile.id
+        favorite.user_id = user.id
+        exist = Favorites.query.filter_by(profile_id=favorite.profile_id).first()
+        if exist:
+            return("already a favorite")
+        else:
+            db.session.add(favorite)
+            db.session.commit()
+        return("added favorite successfully")
+    else:
+        return("must specify profile")
+
+@api.route('/favorites/getall', methods=['GET'])
+@jwt_required()
+def get_all_favorites():
+
+    get_token = get_jwt_identity()
+    user = User.query.filter_by(email=get_token).first()
+    favorites = Favorites.query.filter_by(user_id=user.id).all()
+    favorites_profiles_serialized = list(map( lambda x: Profile.query.filter_by(id=x.profile_id).first().serialize(), favorites))
+    fav_dict = {"favorites_list":favorites_profiles_serialized}
+    return jsonify(fav_dict)    
+

@@ -8,10 +8,6 @@ export const Profile = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
   const [edit, setEdit] = useState(false);
-  useEffect(() => {
-    actions.getUserByName(params);
-    setDeafult({ ...deafult, name: params.name });
-  }, [params.name, edit]);
   const [deafult, setDeafult] = useState(store.profile);
   const onChangePhoto = (e) => {
     setDeafult({ ...deafult, photo: e.target.value });
@@ -24,12 +20,15 @@ export const Profile = () => {
   };
   const handleSubmit = (e) => {
     actions.updateProfile(deafult), e.preventDefault();
-    actions.getUserByName(params);
-    console.log("mi console log", deafult);
   };
+  useEffect(() => {
+    actions.getProfileByName(params.name);
+    setDeafult({ ...deafult, name: params.name });
+    console.log("miparams", params);
+  }, [params.name, edit]);
   return (
     <div>
-      {store.profile_names.name_list?.includes(params.name) && (
+      {store.user_profile.name && (
         <div className="text-end p-5">
           {!edit && (
             <button

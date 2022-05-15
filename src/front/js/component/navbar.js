@@ -6,7 +6,6 @@ import Logo from "../../img/Logo.png";
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
   const [token, setToken] = useState("");
-  const [profileNames, setProfileNames] = useState(store.profile_names);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const user = { email: email, password: password };
@@ -20,15 +19,15 @@ export const Navbar = () => {
 
   const handleSubmit = (e) => {
     actions.postLogin(user), e.preventDefault();
-    //console.log(store.profile_names);
-    // setProfileNames(store.profile_names);
+    actions.getProfileByUser();
   };
 
   useEffect(() => {
     setToken(sessionStorage.getItem("token"));
-    setProfileNames(store.profile_names);
   }, [store.loged, user]);
-
+  useEffect(() => {
+    console.log("miconsole.log.profilename", store.user_profile.name);
+  });
   //console.log(store.profile_names);
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-black">
@@ -127,12 +126,22 @@ export const Navbar = () => {
                     </div>
                   </div>
                 </div>
+                <Link to="/register" className="btn  BotonColor" type="button">
+                  Registrate
+                </Link>
               </div>
             )}
-            {/*renders profile dropdown only if token exist */}
+            {/*renders profile dropdown and link to favorites only if token exist */}
             {token && (
               <div className="dropdown">
-                <button
+                <Link
+                  to={"/favorites"}
+                  className="favorites btn BotonColor me-2"
+                  type="button"
+                >
+                  Favoritos
+                </Link>
+                {/* <button
                   className="login btn BotonColor me-2 dropdown-toggle"
                   type="button"
                   id="dropdownMenuButton1"
@@ -140,13 +149,20 @@ export const Navbar = () => {
                   aria-expanded="false"
                 >
                   Perfil
-                </button>
-                <ul
+                </button> */}
+                {/* <ul
                   className="dropdown-menu"
                   aria-labelledby="dropdownMenuButton1"
+                > */}
+                {/*renders profile names inside the dropdown*/}
+                <Link
+                  type="button"
+                  className="btn BotonColor me-2"
+                  to={"/profile/" + store.user_profile.name}
                 >
-                  {/*renders profile names inside the dropdown*/}
-                  {profileNames["name_list"]?.map((value, index) => {
+                  Perfil
+                </Link>
+                {/* {["name_list"]?.map((value, index) => {
                     return (
                       <li key={index}>
                         <Link
@@ -158,28 +174,20 @@ export const Navbar = () => {
                       </li>
                     );
                   })}
-                </ul>
+                </ul> */}
+                <Link
+                  to="/"
+                  className="btn BotonColor"
+                  type="button"
+                  onClick={() => {
+                    actions.logout();
+                  }}
+                >
+                  Logout
+                </Link>
               </div>
             )}
-            {/* renders register button if there is not a token*/}
-            {!token && (
-              <Link to="/register" className="btn  BotonColor" type="button">
-                Registrate
-              </Link>
-            )}
             {/* renders logout button if there is a token*/}
-            {token && (
-              <Link
-                to="/"
-                className="btn BotonColor"
-                type="button"
-                onClick={() => {
-                  actions.logout();
-                }}
-              >
-                Logout
-              </Link>
-            )}
           </form>
         </nav>
       </div>
