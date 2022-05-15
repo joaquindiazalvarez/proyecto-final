@@ -8,10 +8,15 @@ export const Profile = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
   const [edit, setEdit] = useState(false);
+  const [editName, setEditName] = useState(false);
+  const [editPhoto, setEditPhoto] = useState(false);
+  const [editDescription, setEditDescription] = useState(false);
+  const [editUlrMusic, setEditUrlMusic] = useState(false);  
+
   useEffect(() => {
     actions.getUserByName(params);
     setDeafult({ ...deafult, name: params.name });
-  }, [params.name, edit]);
+  }, [params.name, edit, editDescription]);
   const [deafult, setDeafult] = useState(store.profile);
   const onChangePhoto = (e) => {
     setDeafult({ ...deafult, photo: e.target.value });
@@ -30,6 +35,7 @@ export const Profile = () => {
   return (
     <div>
       {store.profile_names.name_list?.includes(params.name) && (
+        <>
         <div className="text-end p-5">
           {!edit && (
             <button
@@ -47,12 +53,43 @@ export const Profile = () => {
               onClick={() => {
                 setEdit(false);
                 handleSubmit();
-              }}
+              } }
             >
               Guardar cambios
             </button>
           )}
+
         </div>
+        <div className="text-end p-5">
+            {!editDescription && (
+              <button
+                type="button"
+                className="btn-outline-success"
+                onClick={() => setEditDescription(true)}
+              >
+                Edit descripcion
+              </button>
+            )}
+            {editDescription && (
+              <button
+                type="button"
+                className="btn-outline-success"
+                onClick={() => {
+                  setEditDescription(false);
+                  handleSubmit();
+                } }
+              >
+                Save descripcion
+              </button>
+            )}
+
+          </div>
+          
+
+        </>
+        
+        
+        
       )}
       {/* profile name non editing mode*/}
       {!edit && (
@@ -74,14 +111,7 @@ export const Profile = () => {
               <img src={store.profile.photo} className="profilePhoto"></img>
             </div>
           </div>
-          {/*description*/}
-          <div className="row">
-            <div className="col-4"></div>
-            <div className="col text-center p-4">
-              {store.profile.description}
-            </div>
-            <div className="col-4"></div>
-          </div>
+          
           {/*add to favorites button*/}
           <div className="row">
             <div className="col text-center">
@@ -146,6 +176,34 @@ export const Profile = () => {
             </div>
             <div className="col-4"></div>
           </div>
+          <div className="text-end p-5">
+            {!editDescription && (
+              <button
+                type="button"
+                className="btn-outline-success"
+                onClick={() => setEditDescription(true)}
+              >
+                Edit descripcion
+              </button>
+            )}
+            {editDescription && (
+              <button
+                type="button"
+                className="btn-outline-success"
+                onClick={() => {
+                  setEditDescription(false);
+                  handleSubmit();
+                } }
+              >
+                Save descripcion
+              </button>
+            )}
+          </div>
+
+
+
+
+
           {/*Soundcloud player*/}
           <div className="row">
             <div className="col p-4 text-center">
@@ -159,6 +217,32 @@ export const Profile = () => {
           </div>
         </div>
       )}
+
+              {!editDescription && (
+                  <div className="row">
+              <div className="col-4"></div>
+              <div className="col text-center p-4">
+                {store.profile.description}
+              </div>
+              <div className="col-4"></div>
+            </div>
+              )}
+
+            {editDescription && (
+                    <div className="row">
+            <div className="col-4"></div>
+            <div className="col text-center p-4">
+              <h5>Editar descripcion</h5>
+              <input
+                type="text"
+                value={deafult.description || store.profile.description}
+                onChange={(e) => onChangeDescription(e)}
+              ></input>
+            </div>
+            <div className="col-4"></div>
+          </div>
+          )}
+
     </div>
   );
 };
