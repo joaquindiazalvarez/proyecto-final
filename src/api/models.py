@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
+#FALTA CAMBIAR EL PERFIL_USER ID A UNIQUE
 db = SQLAlchemy()
 
 class User(db.Model):

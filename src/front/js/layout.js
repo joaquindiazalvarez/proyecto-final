@@ -9,6 +9,8 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Profile } from "./pages/profile";
 import { Register } from "./pages/register";
+import { ProtectedRoute } from "./pages/protected_route";
+import { Favorites } from "./pages/favorites";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -34,6 +36,7 @@ const Layout = () => {
             <Route exact path="/register">
               <Register />
             </Route>
+            <ProtectedRoute exact path="/favorites" component={Favorites} />
             <Route>
               <h1>Not found!</h1>
             </Route>
