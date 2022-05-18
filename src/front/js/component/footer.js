@@ -66,7 +66,7 @@ export const Footer = () => {
               <h6 className="text-uppercase fw-bold mb-4">Contactos</h6>
               <p>
                 <i className="fas fa-home me-3"></i>Santiago, Region
-                Metropolitna, Chile.
+                Metropolitana, Chile.
               </p>
               <p>
                 <i className="fas fa-envelope me-3"></i>
