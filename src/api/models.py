@@ -128,8 +128,10 @@ class Profile_favorites_notification(db.Model):
     favorites_id = db.Column(db.Integer, db.ForeignKey('favorites.id'), unique = False, nullable = False)
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
     read = db.Column(db.Boolean(), nullable = False)
+    fecha = db.Column(db.String(200), unique=False, nullable=True)
     favorites = db.relationship(Favorites)
     profile = db.relationship(Profile)
+    
 
     def serialize(self):
         return {

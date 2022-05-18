@@ -130,9 +130,9 @@ export const Navbar = () => {
                 </Link>
               </div>
             )}
-            {/*renders profile dropdown and link to favorites only if token exist */}
+            {/*renders buttons when session is loged*/}
             {token && (
-              <div className="dropdown">
+              <div>
                 <Link
                   to={"/favorites"}
                   className="favorites btn BotonColor me-2"
@@ -140,20 +140,6 @@ export const Navbar = () => {
                 >
                   Favoritos
                 </Link>
-                {/* <button
-                  className="login btn BotonColor me-2 dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Perfil
-                </button> */}
-                {/* <ul
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton1"
-                > */}
-                {/*renders profile names inside the dropdown*/}
                 <Link
                   type="button"
                   className="btn BotonColor me-2"
@@ -161,19 +147,6 @@ export const Navbar = () => {
                 >
                   Perfil
                 </Link>
-                {/* {["name_list"]?.map((value, index) => {
-                    return (
-                      <li key={index}>
-                        <Link
-                          className="dropdown-item"
-                          to={"/profile/" + value}
-                        >
-                          {value}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul> */}
                 <Link
                   to="/"
                   className="btn BotonColor"

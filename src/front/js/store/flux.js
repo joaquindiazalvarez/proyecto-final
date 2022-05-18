@@ -18,7 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       user: [],
       user_profile: { name: "void" },
       profile: {},
-      favorites: {},
+      favorites: { favorites_list: [] },
       loged: false,
       params: "",
     },
@@ -123,8 +123,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       getProfileByUser: async () => {
-        const actions = getActions();
-        let token = sessionStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
         var requestOptions = {
@@ -139,8 +138,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            setStore({ user_profile: result.actual_profile });
-            console.log("autorizado", result);
+            console.log("miresult", result);
+            setStore({ user_profile: result["actual_profile"] });
           })
           .catch((error) =>
             console.log("ERROR DE AUTENTICACION MI REY !", error)
@@ -217,6 +216,54 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
           .catch((error) =>
             console.log("ERROR AL OBTENER FAVORITOS MI REY !", error)
+          );
+      },
+      addToFavorites: async (name) => {
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          profile: name,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        fetch(process.env.BACKEND_URL + "/api/favorites/add", requestOptions)
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) =>
+            console.log("ERROR AL AGREGAR A FAVORITOS MI REY !", error)
+          );
+      },
+      deleteFromFavorites: async (name) => {
+        var myHeaders = new Headers();
+        const token = sessionStorage.getItem("token");
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          profile: name,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        fetch(process.env.BACKEND_URL + "/api/favorites/delete", requestOptions)
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) =>
+            console.log("ERROR AL ELIMINAR DE FAVORITOS MI REY !", error)
           );
       },
     },

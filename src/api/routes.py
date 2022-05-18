@@ -85,10 +85,10 @@ def get_profile_by_user():
     profile = Profile.query.filter_by(user_id=user.id).first()
     actual_profile = profile.serialize()
     #profiles_names = list(map(lambda x : x.name, serialized_profiles))
-    profiles_dict = {"actual_profile": actual_profile}
+    profiles_dict = {"actual_profile":actual_profile}
     if profile:
         #return jsonify({"email": get_token, "username": user.name, "profiles": profiles})
- 
+        print(profiles_dict)
         return jsonify(profiles_dict)
     else:
         return "User doesn't have a profile"
@@ -141,6 +141,8 @@ def add_to_favorites():
         favorite = Favorites()
         favorite.profile_id = profile.id
         favorite.user_id = user.id
+        if profile.user_id == user.id:
+            return("you cant add your own profile to favorites")
         exist = Favorites.query.filter_by(profile_id=favorite.profile_id).first()
         if exist:
             return("already a favorite")
@@ -162,6 +164,20 @@ def get_all_favorites():
     fav_dict = {"favorites_list":favorites_profiles_serialized}
     return jsonify(fav_dict)    
 
+@api.route('favorites/delete', methods=['POST'])
+@jwt_required()
+def delete_favorite():
+    get_token = get_jwt_identity()
+    body = request.get_json()
+    user = User.query.filter_by(email=get_token).first()
+    if "profile" in body:
+        profile = Profile.query.filter_by(name=body["profile"]).first()
+        favorite_target = Favorites.query.filter_by(user_id=user.id, profile_id=profile.id).first()
+        db.session.delete(favorite_target)
+        db.session.commit()
+        return(f"se borró el favorito")
+    else:
+        return("debe especificar un profile a eliminar")
 
 @api.route('/profile/posting', methods=['POST'])
 @jwt_required()

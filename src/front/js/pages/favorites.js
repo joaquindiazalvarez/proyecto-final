@@ -9,16 +9,36 @@ export const Favorites = () => {
   }, []);
   return (
     <div>
-      <h1>Favoritos</h1>
+      <h1 className="text-center p-3">Favoritos</h1>
       <div className="container">
         <div className="row">
-          <div className="col-3">
-            {store.favorites["favorites_list"]?.map((value, index) => {
-              console.log("holaaa");
-              return <Card index={index} name={value.name} />;
-            })}
-          </div>
+          {store.favorites["favorites_list"]?.map((value, index) => {
+            return (
+              <div className="col-4">
+                <Card index={index} name={value.name} />
+              </div>
+            );
+          })}
         </div>
+        {store.favorites.favorites_list.length == 0 && (
+          <div>
+            <h2 className="text-center p-3">Aun no tienes favoritos!</h2>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+          </div>
+        )}
       </div>
     </div>
   );
