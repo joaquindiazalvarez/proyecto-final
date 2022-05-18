@@ -18,16 +18,16 @@ export const Navbar = () => {
   };
 
   const handleSubmit = (e) => {
-    actions.postLogin(user), e.preventDefault();
-    actions.getProfileByUser();
+    e.preventDefault();
+    actions.postLogin(user).then(() => {
+      actions.getProfileByUser();
+    });
   };
 
   useEffect(() => {
     setToken(sessionStorage.getItem("token"));
   }, [store.loged, user]);
-  useEffect(() => {
-    console.log("miconsole.log.profilename", store.user_profile.name);
-  });
+
   //console.log(store.profile_names);
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-black">
