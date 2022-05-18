@@ -1,5 +1,40 @@
 .profilePhoto {
   border-radius: 50%;
-  height: 200px;
-  max-width: 200px;
+  height: 250px;
+  max-width: 250px;
+}
+
+.divbutton {
+  width: 38px;
+}
+
+.btnDonate {
+  border: 2px solid #000000;
+  border-radius: 20px;
+  background: #47d4bd;
+  color: rgb(91, 22, 22);}
+
+.btnDonate:hover {
+  border: 2px solid #47d4bd;
+  border-radius: 20px;
+  opacity: 0.8;
+}
+
+.btnFollow {
+  border: 2px solid #000000;
+  border-radius: 20px;
+  background: #47d4bd;
+  color: rgb(101, 25, 25);}
+
+.btnFollow:hover {
+  border: 2px solid #47d4bd;
+  border-radius: 20px;
+  opacity: 0.8;
+}
+
+.btnStatus {
+  border: 2px solid #000000;
+  border-radius: 20px;
+  background: #00ff8c;
+  color: rgb(245, 62, 62);
 }
