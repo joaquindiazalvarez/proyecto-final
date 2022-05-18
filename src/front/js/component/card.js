@@ -4,22 +4,28 @@ import { Context } from "../store/appContext";
 
 export const Card = (props) => {
   const { store, actions } = useContext(Context);
+  const handleDelete = (e) => {
+    actions.deleteFromFavorites(props.name);
+  };
   useEffect(() => {
-    const name = props.name;
-    actions.getProfileByName(props.name);
-    console.log("mi console log", store.profile);
-  }, []);
+    actions.getAllFavorites();
+    console.log("miconsolelog");
+  }, [store.favorites.favorites_list]);
+
   return (
     <div className="card" key={props.index}>
-      <Link
-        to={"/profile/" + store.profile.name}
-        style={{ textDecoration: "none" }}
-      >
-        <img src={store.profile.photo} className="card-img-top" />
+      <Link to={"/profile/" + props.name} style={{ textDecoration: "none" }}>
+        <img
+          src={store.favorites.favorites_list[props.index].photo}
+          className="card-img-top"
+        />
         <div className="card-body">
-          <h5 className="card-title">{store.profile.name}</h5>
+          <h5 className="card-title">{props.name}</h5>
         </div>
       </Link>
+      <button type="button" className="btn BotonDelete" onClick={handleDelete}>
+        Quitar de Favoritos
+      </button>
     </div>
   );
 };

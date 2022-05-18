@@ -48,3 +48,27 @@
   border: 2px solid #47d4bd;
   opacity: 0.9;
 }
+
+.BotonFavorite {
+  border: 2px solid #ff9900;
+  color: #ff9900;
+  border-radius: 20px;
+}
+
+.BotonFavorite:hover {
+  border: none;
+  color: rgb(246, 247, 250);
+  background: #ff9900;
+}
+
+.BotonDelete {
+  border: 2px solid black;
+  color: black;
+  border-radius: 20px;
+}
+
+.BotonDelete:hover {
+  border: none;
+  color: black;
+  background: black;
+}

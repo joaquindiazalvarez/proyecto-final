@@ -84,8 +84,12 @@ export const Profile = () => {
           {/*add to favorites button*/}
           <div className="row">
             <div className="col text-center">
-              <button className="btn btn-outline-success" type="button">
-                Agregar a Favoritos
+              <button
+                type="button"
+                className="btn BotonFavorite"
+                onClick={() => actions.addToFavorites(params.name)}
+              >
+                Agregar a Favoritos <i class="far fa-heart"></i>
               </button>
             </div>
           </div>
