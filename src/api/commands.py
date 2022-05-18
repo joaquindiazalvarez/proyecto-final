@@ -1,6 +1,6 @@
 
 import click
-from api.models import db, User, Profile
+from api.models import db, User, Profile, Favorites, Profile_favorites_notification
 
 """
 In this file, you can add as many commands as you want using the @app.cli.command decorator
@@ -31,7 +31,7 @@ def setup_commands(app):
 
         ### Insert the code to populate others tables if needed
             ###PARA AGREGAR EL USUARIO Y LOS PERFILES ESCRIBIR EN CONSOLA
-    ###     flask insert-6-user-6-profiles
+    ###     flask insert-6-users-6-profiles
     @app.cli.command("insert-6-users-6-profiles") # name of our command
     def insert_6_user_6_profiles():
         for x in range(1, 7):
@@ -108,3 +108,47 @@ def setup_commands(app):
         print("Profile 6, Pierre Jean Haiti")
 
         print("All test users and profiles created")
+
+    #flask insert-favorites
+    @app.cli.command("insert-favorites")
+    def insert_favorites():
+        favorite1 = Favorites()
+        favorite1.user_id = 1
+        favorite1.profile_id = 2
+        db.session.add(favorite1)
+        db.session.commit()
+        print("Favorite from user 1 to profile 2 created")
+
+        favorite2 = Favorites()
+        favorite2.user_id = 2
+        favorite2.profile_id = 3
+        db.session.add(favorite2)
+        db.session.commit()
+        print("Favorite from user 2 to profile 3 created")
+
+    #flask insert-notifications
+    @app.cli.command("insert-notifications")
+    def insert_notifications():
+        
+        notifications1= Profile_favorites_notification()
+        notifications1.favorites_id= 1
+        notifications1.profile_id = 1
+        notifications1.read= True
+        db.session.add(notifications1)
+        db.session.commit()
+        print('the first notification was created')
+        
+        notifications2= Profile_favorites_notification()
+        notifications2.favorites_id= 2
+        notifications2.profile_id= 1
+        notifications2.read= True
+        db.session.add(notifications2)
+        db.session.commit()
+        print('the second notification was created')
+
+
+
+
+
+
+
