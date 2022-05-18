@@ -178,3 +178,15 @@ def delete_favorite():
         return(f"se borró el favorito")
     else:
         return("debe especificar un profile a eliminar")
+@api.route('/notifications/getall', methods=['GET'])
+@jwt_required()
+def get_all_notifications():
+
+    get_token = get_jwt_identity()
+    user=User.query.filter_by(email=get_token).first()
+    profile= Profile.query.filter_by(user_id=user.id).first()
+    notifications= Profile_favorites_notification.query.filter_by(profile_id=profile.id).all()
+    notifications_serialized= list(map( lambda x: x.serialize(), notifications ))
+    notifications_dict= {"notifications_list":notifications_serialized}
+
+    return jsonify(notifications_dict)
