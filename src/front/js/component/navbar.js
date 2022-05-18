@@ -27,7 +27,6 @@ export const Navbar = () => {
   useEffect(() => {
     setToken(sessionStorage.getItem("token"));
   }, [store.loged, user]);
-
   //console.log(store.profile_names);
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-black">

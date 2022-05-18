@@ -162,6 +162,30 @@ def get_all_favorites():
     fav_dict = {"favorites_list":favorites_profiles_serialized}
     return jsonify(fav_dict)    
 
+
+@api.route('/profile/posting', methods=['POST'])
+@jwt_required()
+def posting():
+
+    get_token = get_jwt_identity()
+    #user = User.query.all()
+    user = User.query.filter_by(email=get_token).first()
+    profile = Profile.query.filter_by(user_id=user.id).first()
+    body = request.get_json()
+    post = body["post"]
+    new_post = Post()
+    new_post.post = post
+    new_post.profile_id = profile.id
+    #users = list((map(lambda x: x.serialize(),user)))
+    db.session.add(new_post)
+    db.session.commit()
+
+    print(users)
+    return("holahola")
+
+    
+
+
 @api.route('/notifications/getall', methods=['GET'])
 @jwt_required()
 def get_all_notifications():
