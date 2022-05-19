@@ -10,7 +10,7 @@ export const Card = (props) => {
   useEffect(() => {
     actions.getAllFavorites();
     console.log("miconsolelog");
-  }, [store.favorites.favorites_list]);
+  }, []);
 
   return (
     <div className="card" key={props.index}>

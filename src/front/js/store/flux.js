@@ -266,6 +266,26 @@ const getState = ({ getStore, getActions, setStore }) => {
             console.log("ERROR AL ELIMINAR DE FAVORITOS MI REY !", error)
           );
       },
+      posting: (post) =>{         
+        var myHeaders = new Headers();
+        let token = sessionStorage.getItem("token");
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: JSON.stringify(post),
+          redirect: 'follow'
+        };
+
+        fetch(process.env.BACKEND_URL +  "/api/profile/posting", requestOptions)
+          .then(response => response.json())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
+          
+      },
     },
   };
 };

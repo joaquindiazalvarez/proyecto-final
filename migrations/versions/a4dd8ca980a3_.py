@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: a0101726b87a
+Revision ID: a4dd8ca980a3
 Revises: 
-Create Date: 2022-05-16 00:59:01.486235
+Create Date: 2022-05-18 22:01:43.655591
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a0101726b87a'
+revision = 'a4dd8ca980a3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -92,6 +92,7 @@ def upgrade():
     sa.Column('donation_id', sa.Integer(), nullable=False),
     sa.Column('profile_id', sa.Integer(), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
+    sa.Column('date', sa.String(length=200), nullable=True),
     sa.ForeignKeyConstraint(['donation_id'], ['donation.id'], ),
     sa.ForeignKeyConstraint(['profile_id'], ['profile.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -101,6 +102,7 @@ def upgrade():
     sa.Column('favorites_id', sa.Integer(), nullable=False),
     sa.Column('profile_id', sa.Integer(), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
+    sa.Column('date', sa.String(length=200), nullable=True),
     sa.ForeignKeyConstraint(['favorites_id'], ['favorites.id'], ),
     sa.ForeignKeyConstraint(['profile_id'], ['profile.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -110,6 +112,7 @@ def upgrade():
     sa.Column('post_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
+    sa.Column('date', sa.String(length=200), nullable=True),
     sa.ForeignKeyConstraint(['post_id'], ['post.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')

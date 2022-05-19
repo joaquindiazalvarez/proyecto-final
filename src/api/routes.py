@@ -196,8 +196,7 @@ def posting():
     db.session.add(new_post)
     db.session.commit()
 
-    print(users)
-    return("holahola")
+    return jsonify("holahola")
 
     
 
