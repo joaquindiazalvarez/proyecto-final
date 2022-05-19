@@ -59,7 +59,7 @@ class Contact(db.Model):
 
 class Genre(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    genre = db.Column(db.String(120), unique = False, nullable = False)
+    genre = db.Column(db.String(120), unique = True, nullable = False)
     deafult = db.Column(db.Boolean(), nullable=False)
 
     def serialize(self):
@@ -72,7 +72,7 @@ class Genre(db.Model):
 class Genre_profile(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
-    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), unique = False, nullable = False)
+    genre_genre = db.Column(db.String(120), db.ForeignKey('genre.genre'), unique = True, nullable = False)
     profile = db.relationship(Profile)
     genre = db.relationship(Genre)
 
@@ -80,7 +80,7 @@ class Genre_profile(db.Model):
         return {
             "id": self.id,
             "profile_id": self.profile_id,
-            "genre_id": self.genre_id
+            "genre_genre": self.genre_genre
             # do not serialize the password, its a security breach
         }
 class Favorites(db.Model):

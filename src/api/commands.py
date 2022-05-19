@@ -163,19 +163,20 @@ def setup_commands(app):
     def insert_user1_genres():
         genre1 = Genre_profile()
         genre1.profile_id = 1
-        genre1.genre_id = 18
+        genre1.genre_genre = "Metal"
         db.session.add(genre1)
         db.session.commit()
         print("added Metal Genre to  profile 'Note'")
 
         genre2 = Genre_profile()
         genre2.profile_id = 1
-        genre2.genre_id = 24
+        genre2.genre_genre = "Rock"
         db.session.add(genre2)
         db.session.commit()
         print("added Rock Genre to profile 'Note'")
 
 
+       #ALL COMMANDS
 
        #flask insert-6-users-6-profiles
        #flask insert-favorites

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 27697107dc40
+Revision ID: 5f893f8031b2
 Revises: 
-Create Date: 2022-05-19 01:27:03.444838
+Create Date: 2022-05-19 13:14:55.898146
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '27697107dc40'
+revision = '5f893f8031b2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,7 +22,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('genre', sa.String(length=120), nullable=False),
     sa.Column('deafult', sa.Boolean(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('genre')
     )
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -77,10 +78,11 @@ def upgrade():
     op.create_table('genre_profile',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('profile_id', sa.Integer(), nullable=False),
-    sa.Column('genre_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['genre_id'], ['genre.id'], ),
+    sa.Column('genre_genre', sa.String(length=120), nullable=False),
+    sa.ForeignKeyConstraint(['genre_genre'], ['genre.genre'], ),
     sa.ForeignKeyConstraint(['profile_id'], ['profile.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('genre_genre')
     )
     op.create_table('post',
     sa.Column('id', sa.Integer(), nullable=False),
