@@ -63,10 +63,7 @@ export const Home = () => {
           <div className="carousel-item">
             <img src={publico} className="d-block w-100 imgCarousel" />
             <div className="carousel-caption d-none d-md-block">
-              <h5>Third slide label</h5>
-              <p>
-                Some representative placeholder content for the third slide.
-              </p>
+              <h2>SIGUE A TUS ARTISTAS FAVORITOS</h2>
             </div>
           </div>
         </div>

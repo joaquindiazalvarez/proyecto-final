@@ -268,7 +268,13 @@ export const Profile = () => {
             <div className="row">
               {/*donate button----------------------------------------------------*/}
               <div className="col-2 text-center ms-1">
-                <button className="btn btnDonate col-12">Donate</button>
+                <a
+                  href="https://ko-fi.com/"
+                  target="_blank"
+                  className="btn btnDonate col-12"
+                >
+                  Donate
+                </a>
               </div>
               {/*add to favorites button---------------------------------------*/}
               <div className="col-1 text-center">

@@ -43,7 +43,7 @@ export const Register = () => {
   const regexname = /^[ \a-zA-Z0-9]+$/;
   const regexemail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const regexpassword =
-    /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
+    /^(?=.*[A-Z])(?=.*[!@#$&*.+-_])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
   const testname = regexname.test(name);
   const testemail = regexemail.test(email);
   const testpassword = regexpassword.test(password);
