@@ -44,6 +44,7 @@ class Contact(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     type = db.Column(db.String(120), unique = False, nullable = False)
     value = db.Column(db.String(120), unique = False, nullable = False)
+    public = db.Column(db.Boolean(), nullable = False)
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
     profile = db.relationship(Profile)
 
@@ -59,6 +60,14 @@ class Contact(db.Model):
 class Genre(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     genre = db.Column(db.String(120), unique = False, nullable = False)
+    deafult = db.Column(db.Boolean(), nullable=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "genre": self.genre,
+            "deafult": self.deafult
+        }
 
 class Genre_profile(db.Model):
     id = db.Column(db.Integer, primary_key = True)

@@ -1,6 +1,6 @@
 
 import click
-from api.models import db, User, Profile, Favorites, Profile_favorites_notification
+from api.models import db, User, Profile, Favorites, Profile_favorites_notification, Genre, Genre_profile
 
 """
 In this file, you can add as many commands as you want using the @app.cli.command decorator
@@ -146,9 +146,39 @@ def setup_commands(app):
         db.session.commit()
         print('the second notification was created')
 
+    #flask insert-deafult-genres
+    @app.cli.command("insert-deafult-genres")
+    def insert_deafult_genres():
+        genres = ["Alternative Rock","Ambient","Classical","Country","Dance & EDM","Dancehall", "DeepHouse", "Disco","Drum & Bass", "Dubstep", "Electronic", "Folk & Singer-Songwriter", "Hip-hop & Rap", "House", "Indie", "Jazz & Blues", "Latin", "Metal", "Piano", "Pop", "R&B & Soul", "Reggae","Reggaeton","Rock","Soundtrack", "Techno","Trance","Trap","Triphop","World"]
+        for element in genres:
+            genre1 = Genre()
+            genre1.genre = element 
+            genre1.deafult = True
+            db.session.add(genre1)
+            db.session.commit()
+            print(f'{element} added')
+
+    #flask insert-user1-genres /// insert genres to profile "Note"
+    @app.cli.command("insert-profile1-genres")
+    def insert_user1_genres():
+        genre1 = Genre_profile()
+        genre1.profile_id = 1
+        genre1.genre_id = 18
+        db.session.add(genre1)
+        db.session.commit()
+        print("added Metal Genre to  profile 'Note'")
+
+        genre2 = Genre_profile()
+        genre2.profile_id = 1
+        genre2.genre_id = 24
+        db.session.add(genre2)
+        db.session.commit()
+        print("added Rock Genre to profile 'Note'")
 
 
 
-
-
-
+       #flask insert-6-users-6-profiles
+       #flask insert-favorites
+       #flask insert-notifications
+       #flask insert-deafult-genres
+       #flask insert-profile1-genres

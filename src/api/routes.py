@@ -182,7 +182,6 @@ def delete_favorite():
 @api.route('/profile/posting', methods=['POST'])
 @jwt_required()
 def posting():
-
     get_token = get_jwt_identity()
     #user = User.query.all()
     user = User.query.filter_by(email=get_token).first()
@@ -199,9 +198,6 @@ def posting():
     print(users)
     return("holahola")
 
-    
-
-
 @api.route('/notifications/getall', methods=['GET'])
 @jwt_required()
 def get_all_notifications():
@@ -214,3 +210,10 @@ def get_all_notifications():
     notifications_dict= {"notifications_list":notifications_serialized}
 
     return jsonify(notifications_dict)
+
+@api.route('/genre/getall', methods=['Get'])
+def get_all_deafult_genres():
+    genres = Genre.query.filter_by(deafult=True).all()
+    genres_serialized = list(map(lambda x: x.serialize(), genres))
+    genres_dict = {"genres_default_list":genres_serialized}
+    return jsonify(genres_dict)
