@@ -1,6 +1,6 @@
 
 import click
-from api.models import db, User, Profile, Favorites, Profile_favorites_notification, Genre, Genre_profile
+from api.models import db, User, Profile, Favorites, Profile_favorites_notification, Genre, Genre_profile, Contact
 
 """
 In this file, you can add as many commands as you want using the @app.cli.command decorator
@@ -175,7 +175,61 @@ def setup_commands(app):
         db.session.commit()
         print("added Rock Genre to profile 'Note'")
 
+    #flask insert-contacts-first-profile
+    @app.cli.command('insert-contacts-first-profile')
+    def insert_contacts_to_first_profile():
+        contact = Contact()
+        contact.type = "facebook"
+        contact.value = "jorge"
+        contact.public = True
+        contact.profile_id = 1
+        db.session.add(contact)
+        db.session.commit()
 
+        print("added facebook profile name")
+
+        contact = Contact()
+        contact.type = "instagram"
+        contact.value = "jorge"
+        contact.public = True
+        contact.profile_id = 1
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added instagram profile")
+
+
+        contact = Contact()
+        contact.type = "youtube"
+        contact.value = "EsquizofreniaNatural"
+        contact.public = True
+        contact.profile_id = 1
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("youtube channel added")
+
+        
+        contact = Contact()
+        contact.type = "phone_number"
+        contact.value = "+56967678989"
+        contact.public = False
+        contact.profile_id = 1
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added phone_number")
+
+
+        contact = Contact()
+        contact.type = "email"
+        contact.value = "jorge@cesar.com"
+        contact.public = False
+        contact.profile_id = 1
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("added email")
        #ALL COMMANDS
 
        #flask insert-6-users-6-profiles
@@ -183,3 +237,4 @@ def setup_commands(app):
        #flask insert-notifications
        #flask insert-deafult-genres
        #flask insert-profile1-genres
+       #flask insert-contacts-first-profile

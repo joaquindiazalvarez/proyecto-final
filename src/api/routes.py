@@ -259,3 +259,51 @@ def get_genres_by_profile_name():
     profile_genres_serialized = list(map(lambda x: x.serialize()["genre_genre"], profile_genres))
     genres_dict = {"profile_genres_list":profile_genres_serialized}
     return jsonify(genres_dict)
+
+@api.route('contact/add', methods=['POST'])
+@jwt_required()
+def add_contact_info():
+    get_token = get_jwt_identity()
+    body = request.get_json()
+    user = User.query.filter_by(email = get_token).first()
+    profile = Profile.query.filter_by(user_id=user.id).first()
+    if "type" in body and "value" in body and "public" in body:
+        contact = Contact()
+        contact.type = body['type']
+        contact.value = body['value']
+        contact.public = body['public']
+        contact.profile_id = profile.id
+        db.session.add(contact)
+        db.session.commit()
+        return("added successfully")
+    else:
+        return("must specify all parameters")
+
+@api.route('contact/public/getbyprofilename', methods =["GET"])
+def get_public_contact():
+    body = request.get_json()
+    if "profile" not in body:
+        return("must specify profile")
+    profile = Profile.query.filter_by(name = body['profile']).first()
+    contact = Contact.query.filter_by(public = True).all()
+    contact_serialized = list(map(lambda x: x.serialize(), contact))
+    contact_serialized_dict = {"public_contact_list": contact_serialized}
+    return jsonify(contact_serialized_dict)
+
+@api.route('contact/private/getfromfavorite', methods = ['GET'])
+@jwt_required()
+def get_private_contact_from_favorite():
+    get_token = get_jwt_identity()
+    body = request.get_json()
+    user = User.query.filter_by(email = get_token).first()
+    profile = Profile.query.filter_by(name = body['profile']).first()
+    #user_favorites = Favorites.query.filter_by(user_id = user.id)
+    favorite = Favorites.query.filter_by(user_id = user.id, profile_id = profile.id).first()
+    if favorite:
+        contact = Contact.query.filter_by(profile_id = profile.id, public = False).all()
+        contact_serialized = list(map(lambda x: x.serialize(), contact))
+        contact_dict = {"contact_private_list": contact_serialized}
+        return jsonify(contact_dict)
+    else:
+        return("not added to favorite")
+
