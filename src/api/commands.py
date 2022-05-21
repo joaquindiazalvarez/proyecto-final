@@ -126,26 +126,79 @@ def setup_commands(app):
         db.session.commit()
         print("Favorite from user 2 to profile 3 created")
 
+        favorite = Favorites()
+        favorite.user_id = 3
+        favorite.profile_id = 4
+        db.session.add(favorite)
+        db.session.commit()
+        print("Favorite from user 3 to profile 4 created")
+
+        favorite = Favorites()
+        favorite.user_id = 4
+        favorite.profile_id = 5
+        db.session.add(favorite)
+        db.session.commit()
+        print("Favorite from user 4 to profile 5 created")
+
+        favorite = Favorites()
+        favorite.user_id = 5
+        favorite.profile_id = 6
+        db.session.add(favorite)
+        db.session.commit()
+        print("Favorite from user 5 to profile 6 created")
+
+        favorite = Favorites()
+        favorite.user_id = 6
+        favorite.profile_id = 1
+        db.session.add(favorite)
+        db.session.commit()
+        print("Favorite from user 6 to profile 1 created")
+
     #flask insert-notifications
     @app.cli.command("insert-notifications")
     def insert_notifications():
         
         notifications1= Profile_favorites_notification()
-        notifications1.favorites_id= 1
-        notifications1.profile_id = 1
-        notifications1.read= True
+        notifications1.favorites_id = 1
+        notifications1.read= False
         db.session.add(notifications1)
         db.session.commit()
         print('the first notification was created')
         
         notifications2= Profile_favorites_notification()
-        notifications2.favorites_id= 2
-        notifications2.profile_id= 1
-        notifications2.read= True
+        notifications2.favorites_id = 2
+        notifications2.read = False
         db.session.add(notifications2)
         db.session.commit()
         print('the second notification was created')
 
+        notifications = Profile_favorites_notification()
+        notifications.favorites_id = 3
+        notifications.read = False
+        db.session.add(notifications)
+        db.session.commit()
+        print('the third notification was created')
+
+        notifications = Profile_favorites_notification()
+        notifications.favorites_id = 4
+        notifications.read = False
+        db.session.add(notifications)
+        db.session.commit()
+        print('the fourth notification was created')
+
+        notifications= Profile_favorites_notification()
+        notifications.favorites_id = 5
+        notifications.read = False
+        db.session.add(notifications)
+        db.session.commit()
+        print('the fifth notification was created')
+
+        notifications = Profile_favorites_notification()
+        notifications.favorites_id = 6
+        notifications.read = False
+        db.session.add(notifications)
+        db.session.commit()
+        print('the sixth notification was created')
     #flask insert-deafult-genres
     @app.cli.command("insert-deafult-genres")
     def insert_deafult_genres():
@@ -158,25 +211,95 @@ def setup_commands(app):
             db.session.commit()
             print(f'{element} added')
 
-    #flask insert-user1-genres /// insert genres to profile "Note"
-    @app.cli.command("insert-profile1-genres")
+    #flask insert-profiles-genres /// insert genres to profile "Note"
+    @app.cli.command("insert-profiles-genres")
     def insert_user1_genres():
-        genre1 = Genre_profile()
-        genre1.profile_id = 1
-        genre1.genre_genre = "Metal"
-        db.session.add(genre1)
+        genre = Genre_profile()
+        genre.profile_id = 1
+        genre.genre_genre = "Metal"
+        db.session.add(genre)
         db.session.commit()
         print("added Metal Genre to  profile 'Note'")
 
-        genre2 = Genre_profile()
-        genre2.profile_id = 1
-        genre2.genre_genre = "Rock"
-        db.session.add(genre2)
+        genre = Genre_profile()
+        genre.profile_id = 1
+        genre.genre_genre = "Rock"
+        db.session.add(genre)
         db.session.commit()
         print("added Rock Genre to profile 'Note'")
 
-    #flask insert-contacts-first-profile
-    @app.cli.command('insert-contacts-first-profile')
+        genre = Genre_profile()
+        genre.profile_id = 2
+        genre.genre_genre = "Metal"
+        db.session.add(genre)
+        db.session.commit()
+        print("added Metal Genre to  profile 'KROD'")
+
+        genre = Genre_profile()
+        genre.profile_id = 2
+        genre.genre_genre = "Rock"
+        db.session.add(genre)
+        db.session.commit()
+        print("added Rock Genre to profile 'KROD'")
+
+        genre1 = Genre_profile()
+        genre1.profile_id = 3
+        genre1.genre_genre = "Techno"
+        db.session.add(genre1)
+        db.session.commit()
+        print("added Techno Genre to  profile 'Ricky Chamoi'")
+
+        genre2 = Genre_profile()
+        genre2.profile_id = 3
+        genre2.genre_genre = "Electronic"
+        db.session.add(genre2)
+        db.session.commit()
+        print("added Electronic Genre to profile 'Ricky Chamoi'")
+
+        genre2 = Genre_profile()
+        genre2.profile_id = 4
+        genre2.genre_genre = "Techno"
+        db.session.add(genre2)
+        db.session.commit()
+        print("added Techno Genre to profile 'Tevvez'")
+
+        genre2 = Genre_profile()
+        genre2.profile_id = 4
+        genre2.genre_genre = "Electronic"
+        db.session.add(genre2)
+        db.session.commit()
+        print("added Electronic Genre to profile 'Tevvez'")
+
+        genre2 = Genre_profile()
+        genre2.profile_id = 5
+        genre2.genre_genre = "World"
+        db.session.add(genre2)
+        db.session.commit()
+        print("added World Genre to profile 'Ellie Lapointe'")
+
+        genre2 = Genre_profile()
+        genre2.profile_id = 5
+        genre2.genre_genre = "Reggaeton"
+        db.session.add(genre2)
+        db.session.commit()
+        print("added Reggaeton Genre to profile 'Ellie Lapointe'")
+
+        genre2 = Genre_profile()
+        genre2.profile_id = 6
+        genre2.genre_genre = "World"
+        db.session.add(genre2)
+        db.session.commit()
+        print("added World Genre to profile 'Pierre Jean Haiti'")
+
+        genre2 = Genre_profile()
+        genre2.profile_id = 6
+        genre2.genre_genre = "Reggae"
+        db.session.add(genre2)
+        db.session.commit()
+        print("added Reggae Genre to profile 'Pierre Jean Haiti'")
+
+    #flask insert-contacts-to-profiles
+    @app.cli.command('insert-contacts-to-profiles')
     def insert_contacts_to_first_profile():
         contact = Contact()
         contact.type = "facebook"
@@ -229,12 +352,289 @@ def setup_commands(app):
         db.session.add(contact)
         db.session.commit()
         
+         ##########2############
         print("added email")
+
+        contact = Contact()
+        contact.type = "facebook"
+        contact.value = "camilo"
+        contact.public = True
+        contact.profile_id = 2
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added facebook profile name")
+
+        contact = Contact()
+        contact.type = "instagram"
+        contact.value = "camilo"
+        contact.public = True
+        contact.profile_id = 2
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added instagram profile")
+
+
+        contact = Contact()
+        contact.type = "youtube"
+        contact.value = "camilo"
+        contact.public = True
+        contact.profile_id = 2
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("youtube channel added")
+
+        
+        contact = Contact()
+        contact.type = "phone_number"
+        contact.value = "+56967673459"
+        contact.public = False
+        contact.profile_id = 2
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added phone_number")
+
+
+        contact = Contact()
+        contact.type = "email"
+        contact.value = "camilo@example"
+        contact.public = False
+        contact.profile_id = 2
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("added email")
+
+        ##############3##############
+
+        contact = Contact()
+        contact.type = "facebook"
+        contact.value = "daniel"
+        contact.public = True
+        contact.profile_id = 2
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added facebook profile name")
+
+        contact = Contact()
+        contact.type = "instagram"
+        contact.value = "daniel"
+        contact.public = True
+        contact.profile_id = 3
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added instagram profile")
+
+
+        contact = Contact()
+        contact.type = "youtube"
+        contact.value = "EsquizofreniaNatural"
+        contact.public = True
+        contact.profile_id = 3
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("youtube channel added")
+
+        
+        contact = Contact()
+        contact.type = "phone_number"
+        contact.value = "+56923423489"
+        contact.public = False
+        contact.profile_id = 3
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added phone_number")
+
+
+        contact = Contact()
+        contact.type = "email"
+        contact.value = "daniel@cesar.com"
+        contact.public = False
+        contact.profile_id = 3
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("added email")
+
+        ############4#############
+
+        contact = Contact()
+        contact.type = "facebook"
+        contact.value = "andres"
+        contact.public = True
+        contact.profile_id = 4
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added facebook profile name")
+
+        contact = Contact()
+        contact.type = "instagram"
+        contact.value = "andre"
+        contact.public = True
+        contact.profile_id = 4
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added instagram profile")
+
+
+        contact = Contact()
+        contact.type = "youtube"
+        contact.value = "EsquizofreniaNatural"
+        contact.public = True
+        contact.profile_id = 4
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("youtube channel added")
+
+        
+        contact = Contact()
+        contact.type = "phone_number"
+        contact.value = "+56945645645"
+        contact.public = False
+        contact.profile_id = 4
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added phone_number")
+
+
+        contact = Contact()
+        contact.type = "email"
+        contact.value = "andres@cesar.com"
+        contact.public = False
+        contact.profile_id = 4
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("added email")
+
+        ############5#############
+
+        contact = Contact()
+        contact.type = "facebook"
+        contact.value = "claudio"
+        contact.public = True
+        contact.profile_id = 5
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added facebook profile name")
+
+        contact = Contact()
+        contact.type = "instagram"
+        contact.value = "claudio"
+        contact.public = True
+        contact.profile_id = 5
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added instagram profile")
+
+
+        contact = Contact()
+        contact.type = "youtube"
+        contact.value = "EsquizofreniaNatural"
+        contact.public = True
+        contact.profile_id = 5
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("youtube channel added")
+
+        
+        contact = Contact()
+        contact.type = "phone_number"
+        contact.value = "+56923423434"
+        contact.public = False
+        contact.profile_id = 5
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added phone_number")
+
+
+        contact = Contact()
+        contact.type = "email"
+        contact.value = "claudio@cesar.com"
+        contact.public = False
+        contact.profile_id = 5
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("added email")
+
+        ############6#############
+
+        contact = Contact()
+        contact.type = "facebook"
+        contact.value = "matias"
+        contact.public = True
+        contact.profile_id = 6
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added facebook profile name")
+
+        contact = Contact()
+        contact.type = "instagram"
+        contact.value = "matias"
+        contact.public = True
+        contact.profile_id = 6
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added instagram profile")
+
+
+        contact = Contact()
+        contact.type = "youtube"
+        contact.value = "EsquizofreniaNatural"
+        contact.public = True
+        contact.profile_id = 6
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("youtube channel added")
+
+        
+        contact = Contact()
+        contact.type = "phone_number"
+        contact.value = "+56235645645"
+        contact.public = False
+        contact.profile_id = 6
+        db.session.add(contact)
+        db.session.commit()
+
+        print("added phone_number")
+
+
+        contact = Contact()
+        contact.type = "email"
+        contact.value = "matias@cesar.com"
+        contact.public = False
+        contact.profile_id = 6
+        db.session.add(contact)
+        db.session.commit()
+        
+        print("added email")
+
+        
+        
        #ALL COMMANDS
 
        #flask insert-6-users-6-profiles
        #flask insert-favorites
        #flask insert-notifications
        #flask insert-deafult-genres
-       #flask insert-profile1-genres
-       #flask insert-contacts-first-profile
+       #flask insert-profiles-genres
+       #flask insert-contacts-to-profiles
