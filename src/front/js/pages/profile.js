@@ -39,7 +39,6 @@ export const Profile = () => {
   useEffect(() => {
     actions.getProfileByName(params.name);
     setDeafult({ ...deafult, name: params.name });
-    console.log("miparams", params);
   }, [
     params.name,
     editDescription,
@@ -56,7 +55,7 @@ export const Profile = () => {
             <div className="bg-light" style={{ maxwidth: "1090px" }}>
               <div className="row container g-0">
                 <div
-                  class="col-md-4 p-0 d-flex justify-content-center align-items-center"
+                  className="col-md-4 p-0 d-flex justify-content-center align-items-center"
                   style={{ maxHeight: "300px" }}
                 >
                   {/* profile photo if edit = false----------------------------------------------*/}
@@ -204,7 +203,7 @@ export const Profile = () => {
                           <div className="col text-center">
                             <h5>Editar descripcion</h5>
                             <textarea
-                              class="form-control"
+                              className="form-control"
                               id="exampleFormControlTextarea1"
                               rows={5}
                               type="text"

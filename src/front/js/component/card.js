@@ -9,7 +9,6 @@ export const Card = (props) => {
   };
   useEffect(() => {
     actions.getAllFavorites();
-    console.log("miconsolelog");
   }, []);
 
   return (

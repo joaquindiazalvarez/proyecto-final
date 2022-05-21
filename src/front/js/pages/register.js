@@ -38,7 +38,6 @@ export const Register = () => {
   const handlefavMusicgenre = (e) => {
     setFavMusicgenre(e.target.value);
   };
-  console.log(registerUser);
 
   const regexname = /^[ \a-zA-Z0-9]+$/;
   const regexemail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -213,18 +212,12 @@ export const Register = () => {
                         Registrarme
                       </button>
                     </div>
-                    <div className="mb-3 form-check mt-3 d-flex justify-content-center">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="exampleCheck1"
-                      />
-                      <div className="form-check-label ms-3 ">
-                        He leido y acepto las
-                        <Link to="/privacy" className="ms-1">
-                          politicas de privacidad.
-                        </Link>
-                      </div>
+                    <br />
+                    <div className="form-check-label ms-5 ">
+                      He leido y acepto las
+                      <Link to="/privacy" className="ms-1">
+                        politicas de privacidad.
+                      </Link>
                     </div>
                   </div>
                 </div>
