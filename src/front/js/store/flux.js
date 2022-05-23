@@ -25,6 +25,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       notifications: [],
       profile_public_contact_list: [],
       profile_private_contact_list: [],
+      populated: [],
+      profile_by_genre: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -473,6 +475,53 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
           .catch((error) =>
             console.log("error al conseguir notificaciones", error)
+          );
+      },
+      getPopulatedGenres: async () => {
+        var requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/genre/populatedgenres/get",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            setStore({ populated: result.populated });
+          })
+          .catch((error) =>
+            console.log("ERROR AL OBTENER GENEROS MI REY !", error)
+          );
+      },
+      getProfilesByGenre: async (genre) => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          genre: genre,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/profile/getbygenre",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            setStore({ profile_by_genre: result.genre_profile_name });
+          })
+          .catch((error) =>
+            console.log("ERROR AL OBTENER PERFILES POR GENERO MI REY !", error)
           );
       },
     },
