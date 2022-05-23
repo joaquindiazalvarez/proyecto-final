@@ -137,32 +137,38 @@ export const Navbar = () => {
             {/*renders buttons when session is loged*/}
             {token && (
               <div className="">
-                <span className="dropdown">
+                <span className="dropdown dropstart">
                   <button
                     type="button"
-                    className="btn BotonColor position-relative dropdown-toggle me-2"
+                    className="btn BotonColor position-relative dropdown-toggle me-2 "
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     <i className="far fa-bell"></i>
 
-                    {notifications.length > 0 && (
+                    {notifications && notifications.length > 0 && (
                       <span className="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                         <span className="visually-hidden">New alerts</span>
                       </span>
                     )}
                   </button>
                   <ul
-                    className="dropdown-menu"
+                    className="dropdown-menu  dropdown-menu-dark"
                     aria-labelledby="dropdownMenuButton1"
                   >
-                    {notifications.map((notification, i) => {
-                      return (
-                        <li key={i}>
-                          <p className="dropdown-item">{notification.id}</p>
-                        </li>
-                      );
-                    })}
+                    {notifications &&
+                      notifications.map((notifications, i) => {
+                        return (
+                          <li key={i}>
+                            <p className="dropdown-item">
+                              {notifications.name}
+                              {notifications.type == "favorite"
+                                ? " added  you to  " + notifications.type
+                                : " has a new " + notifications.type}
+                            </p>
+                          </li>
+                        );
+                      })}
                   </ul>
                 </span>
 

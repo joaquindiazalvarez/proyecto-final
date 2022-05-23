@@ -22,12 +22,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       loged: false,
       deafult_genres_list: [],
       profile_genres_list: [],
-<<<<<<< HEAD
       notifications: [],
-=======
       profile_public_contact_list: [],
       profile_private_contact_list: [],
->>>>>>> ea9fb6b57a945086a09797d8ba02ec92e9bf8abf
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -357,10 +354,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             console.log("ERROR AL OBTENER GENEROS MI REY !", error)
           );
       },
-<<<<<<< HEAD
-
-      getAllNotifications: async () => {
-=======
       addContact: async (type, value, publicBool) => {
         //OJO, public es booleano
         //este fetch agrega un contacto con el tipo:"facebook", "instagram", "youtube", "email", "phone_number", "address", etc
@@ -368,17 +361,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         //en el caso de facebook vendría siendo lo que viene después del slash https://web.facebook.com/, igual que instagram, y youtube https://www.youtube.com/c/ porque hay que anteponer un /c/ para entrar al canal
         //y la variable public es = true para mostrarlo a todos en el perfil o = false para que solo se pueda obtener en privado como el telefono, la dirección etc
         //sirve para cuando se crea un perfil
->>>>>>> ea9fb6b57a945086a09797d8ba02ec92e9bf8abf
         const token = sessionStorage.getItem("token");
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
         myHeaders.append("Content-Type", "application/json");
 
-<<<<<<< HEAD
-        var requestOptions = {
-          method: "GET",
-          headers: myHeaders,
-=======
         var raw = JSON.stringify({
           type: type,
           value: value,
@@ -414,27 +401,15 @@ const getState = ({ getStore, getActions, setStore }) => {
           method: "GET",
           headers: myHeaders,
           body: raw,
->>>>>>> ea9fb6b57a945086a09797d8ba02ec92e9bf8abf
           redirect: "follow",
         };
 
         fetch(
-<<<<<<< HEAD
-          process.env.BACKEND_URL + "/api/notifications/getall",
-=======
           process.env.BACKEND_URL + "/api/contact/public/getbyprofilename",
->>>>>>> ea9fb6b57a945086a09797d8ba02ec92e9bf8abf
           requestOptions
         )
           .then((response) => response.json())
           .then((result) => {
-<<<<<<< HEAD
-            setStore({ notifications: result.notifications_list });
-          })
-          .catch((error) =>
-            console.log("error al conseguir notificaciones", error)
-          );
-=======
             console.log(result);
             setStore({
               profile_public_contact_list: result.public_contact_list,
@@ -446,7 +421,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         //este fetch se trae los items de contactos privados solo si el usuario logueado tiene en favoritos al profile
         //tiene como argumento el profile del cual se quieren obtener los contactos privados
         //
-        const token = sessionStorage("token");
+        const token = sessionStorage.getItem("token");
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
         myHeaders.append("Content-Type", "application/json");
@@ -474,7 +449,31 @@ const getState = ({ getStore, getActions, setStore }) => {
               profile_private_contact_list: result.contact_private_list,
             });
           });
->>>>>>> ea9fb6b57a945086a09797d8ba02ec92e9bf8abf
+      },
+
+      getAllNotifications: async () => {
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/notifications/getall",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            setStore({ notifications: result.notification_list });
+            console.log(result);
+          })
+          .catch((error) =>
+            console.log("error al conseguir notificaciones", error)
+          );
       },
     },
   };
