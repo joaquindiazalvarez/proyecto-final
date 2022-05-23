@@ -237,14 +237,14 @@ def setup_commands(app):
 
         genre = Genre_profile()
         genre.profile_id = 2
-        genre.genre_genre = "Rock"
+        genre.genre_genre = "Alternative Rock"
         db.session.add(genre)
         db.session.commit()
         print("added Rock Genre to profile 'KROD'")
 
         genre1 = Genre_profile()
         genre1.profile_id = 3
-        genre1.genre_genre = "Techno"
+        genre1.genre_genre = "Dance & EDM"
         db.session.add(genre1)
         db.session.commit()
         print("added Techno Genre to  profile 'Ricky Chamoi'")
