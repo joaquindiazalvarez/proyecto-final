@@ -7,20 +7,23 @@ import "../../styles/profile.css";
 export const Profile = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
-  const [edit, setEdit] = useState(false);
   const [deafult, setDeafult] = useState(store.profile);
-  const [editStatus, setEditStatus] = useState("");
   const [editName, setEditName] = useState(false);
   const [editPhoto, setEditPhoto] = useState(false);
   const [editDescription, setEditDescription] = useState(false);
   const [editSoundCloud, setEditSoundCloud] = useState(false);
+  
 
+  const [editStatus, setEditStatus] = useState("");
   const post = {post:editStatus}
   const submitPost = (e) => {
     editStatus == ""? null:
-    actions.posting(post), e.preventDefault();
-  };
+    actions.posting(post),actions.getPost(), e.preventDefault();
+  //const eliminatePost = () => {setDeletePost(store.post.filter(function (item,i){return i !== key}))}
+  const eliminatePost = {post:sad}
 
+
+  };
   const onChangePhoto = (e) => {
     setDeafult({ ...deafult, photo: e.target.value });
   };
@@ -43,6 +46,7 @@ export const Profile = () => {
   useEffect(() => {
     actions.getProfileByName(params.name);
     setDeafult({ ...deafult, name: params.name });
+    //setGetPost({...getPost})
     console.log("miparams", params);
   }, [
     params.name,
@@ -50,13 +54,13 @@ export const Profile = () => {
     editPhoto,
     editSoundCloud,
     editName,
+
   ]);
   return (
-    <div className="d-flex justify-content-center">
-      <div className="row w-75 bg-light">
+    <div className=" webback d-flex justify-content-center">
+      <div className="row w-75 cardbackground">
         <div>
-          <div className="">
-            <div className="bg-light" style={{ maxwidth: "1090px" }}>
+            <div className="headbackground" style={{ maxwidth: "1090px" }}>
               <div className="row container g-0">
                 <div
                   class="col-md-4 p-0 d-flex justify-content-center align-items-center"
@@ -72,7 +76,7 @@ export const Profile = () => {
                     </div>
                   )}
                   {editPhoto && (
-                    <div className="col text">
+                    <div className="col text-center">
                       <h6>URL de tu foto</h6>
                       <input
                         type="text"
@@ -138,10 +142,10 @@ export const Profile = () => {
                     {/* profile name ---------------------------*/}
                     <div>
                       {!editName && (
-                        <h1 className="card-title">{store.profile["name"]}</h1>
+                        <h1 className="card-title text-center bandname">{store.profile["name"]}</h1>
                       )}
                       {editName && (
-                        <div className="row text-center p-5">
+                        <div className="row text-center">
                           <div className="col pt-2">
                             <input
                               type="text"
@@ -196,8 +200,8 @@ export const Profile = () => {
                       )}
                       {/*description-----------------------------------------------------------*/}
                       {!editDescription && (
-                        <div className="row">
-                          <div className="col text-center p-4 m-3">
+                        <div className="row  p-3 m-2 description">
+                          <div className="col text-center">
                             {store.profile.description}
                           </div>
                         </div>
@@ -217,7 +221,6 @@ export const Profile = () => {
                               onChange={(e) => onChangeDescription(e)}
                             ></textarea>
                           </div>
-                          <div className="col-4"></div>
                         </div>
                       )}
                       {store.user_profile.name && (
@@ -304,18 +307,27 @@ export const Profile = () => {
                   </div>
                   <input
                   type="text"
-                  className="input-group-sm mb-3 form-control col me-4"
+                  className="input-group-sm mb-3 form-control col me-4 posting"
                   aria-label="Sizing example input"
                   aria-describedby="inputGroup-sizing-sm"
                   value={editStatus}
                   onChange={(e) => setEditStatus(e.target.value)}
-                  />          
+                  />      
               </div>
-
+          <div className="row">
+            <div className="col-5"> 
+            <div>
+              <div>DATOS DE CONTACTO y otros</div>
+              <div>DATOS DE CONTACTO y otros</div>
+              <div>DATOS DE CONTACTO y otros</div>
+              <div>DATOS DE CONTACTO y otros</div>
+              <div>DATOS DE CONTACTO y otros</div>
+              <div>DATOS DE CONTACTO y otros</div>
+            </div>
             {/*Soundcloud player-----------------------------------------------*/}
             <div className="row sticky-top">
             {!editSoundCloud && (
-                <div className="col-5 p-4 ">
+                <div className="col-12 p-4 ">
                   <ReactPlayer
                     width="100%"
                     height="250px"
@@ -379,6 +391,23 @@ export const Profile = () => {
               </div>
             )}
             </div>
+          </div>
+
+            <div className="col-6">       
+                    {store.post.map((value,b) =>{
+                      return(<p className="message" key={b}>{value.post}
+                  <button
+									className="deletebtn"
+									onClick= {() => {actions.deletePost(eliminatePost)}}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
+                  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                  </svg>
+								</button></p>)
+                      
+                    })}
+
+                  </div>    
+
           </div>
         </div>
       </div>

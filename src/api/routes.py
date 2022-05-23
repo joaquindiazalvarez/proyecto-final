@@ -182,7 +182,6 @@ def delete_favorite():
 @api.route('/profile/posting', methods=['POST'])
 @jwt_required()
 def posting():
-
     get_token = get_jwt_identity()
     #user = User.query.all()
     user = User.query.filter_by(email=get_token).first()
@@ -195,11 +194,38 @@ def posting():
     #users = list((map(lambda x: x.serialize(),user)))
     db.session.add(new_post)
     db.session.commit()
+    return jsonify("Post Hecho")
 
-    return jsonify("holahola")
+@api.route('/profile/getpost', methods=['GET'])
+@jwt_required()
+def get_post():
+    get_token = get_jwt_identity()
+    user = User.query.filter_by(email=get_token).first()
+    profile = Profile.query.filter_by(user_id=user.id).first()
+    posts_by_profile = Post.query.filter_by(profile_id=profile.id).all()
+    post_serialized = list((map(lambda x: x.serialize(), posts_by_profile )))
+    return jsonify(post_serialized)
 
-    
 
+@api.route('/profile/deletepost', methods=['POST'])
+@jwt_required()
+def delete_post():
+    get_token = get_jwt_identity()
+    user = User.query.filter_by(email=get_token).first()
+    profile = Profile.query.filter_by(user_id=user.id).first()
+    posts_by_profile = Post.query.filter_by(profile_id=profile.id).all()
+    post_serialized = list((map(lambda x: x.serialize(), posts_by_profile )))
+    search_id = "id"
+    post_ids = [a_dict[search_id] for a_dict in post_serialized]
+    body = request.get_json()
+    post_id = body["id"]
+    delete_a_post = Post.query.filter_by(profile_id=profile.id, id=post_id ).first()
+    if post_id in post_ids:
+        db.session.delete(delete_a_post)
+        db.session.commit()
+        return jsonify("Post eliminado compipa")
+    else:
+        return jsonify("c:")
 
 @api.route('/notifications/getall', methods=['GET'])
 @jwt_required()
@@ -213,3 +239,52 @@ def get_all_notifications():
     notifications_dict= {"notifications_list":notifications_serialized}
 
     return jsonify(notifications_dict)
+
+@api.route('/genre/getalldeafult', methods=['GET'])
+def get_all_deafult_genres():
+    genres = Genre.query.filter_by(deafult=True).all()
+    genres_serialized = list(map(lambda x: x.serialize(), genres))
+    genres_dict = {"genres_default_list":genres_serialized}
+    return jsonify(genres_dict)
+
+@api.route('/genre/addtoprofile', methods=['POST'])
+@jwt_required()
+def add_genres_to_profile():
+    body = request.get_json()
+    get_token = get_jwt_identity()
+    user = User.query.filter_by(email=get_token).first()
+    profile = Profile.query.filter_by(user_id = user.id).first()
+    old_profile_genres_query = Genre_profile.query.filter_by(profile_id=profile.id).all()
+    old_profile_list = list(map(lambda x: x.serialize()["genre_genre"], old_profile_genres_query))
+    if "genres_list" in body:
+        all_genres_deafult = Genre.query.filter_by(deafult=True).all()
+        all_genres_deafult_serialized = list(map(lambda x: x.serialize()['genre'], all_genres_deafult))
+        print(all_genres_deafult_serialized)
+        for element in body["genres_list"]:
+            if element not in all_genres_deafult_serialized:
+                genre = Genre()
+                genre.genre = element
+                genre.deafult = False
+                db.session.add(genre)
+                db.session.commit()
+            if element not in old_profile_list:
+                profile_genre = Genre_profile()
+                profile_genre.profile_id = profile.id
+                profile_genre.genre_genre = element
+                db.session.add(profile_genre)
+                db.session.commit()
+        return("genres added to profile")
+            
+    else:
+        return("you must specify genres list(genres_list)")
+
+@api.route('/profile/getgenresbyprofilename', methods=['POST'])
+def get_genres_by_profile_name():
+    body = request.get_json()
+    if "profile" not in body:
+        return("you must specify a profile")
+    profile = Profile.query.filter_by(name=body['profile']).first()
+    profile_genres = Genre_profile.query.filter_by(profile_id = profile.id).all()
+    profile_genres_serialized = list(map(lambda x: x.serialize()["genre_genre"], profile_genres))
+    genres_dict = {"profile_genres_list":profile_genres_serialized}
+    return jsonify(genres_dict)

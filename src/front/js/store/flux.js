@@ -20,7 +20,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       profile: {},
       favorites: { favorites_list: [] },
       loged: false,
-      params: "",
+      deafult_genres_list: [],
+      profile_genres_list: [],
+      post: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -174,7 +176,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             console.log("ERROR AL HACER UPDATE MI REY !", error)
           );
       },
-
       getPhotosProfile: async () => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -208,7 +209,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           redirect: "follow",
         };
 
-        fetch(process.env.BACKEND_URL + "/api/favorites/getall", requestOptions)
+        await fetch(
+          process.env.BACKEND_URL + "/api/favorites/getall",
+          requestOptions
+        )
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
@@ -235,7 +239,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           redirect: "follow",
         };
 
-        fetch(process.env.BACKEND_URL + "/api/favorites/add", requestOptions)
+        await fetch(
+          process.env.BACKEND_URL + "/api/favorites/add",
+          requestOptions
+        )
           .then((response) => response.text())
           .then((result) => console.log(result))
           .catch((error) =>
@@ -259,32 +266,146 @@ const getState = ({ getStore, getActions, setStore }) => {
           redirect: "follow",
         };
 
-        fetch(process.env.BACKEND_URL + "/api/favorites/delete", requestOptions)
+        await fetch(
+          process.env.BACKEND_URL + "/api/favorites/delete",
+          requestOptions
+        )
           .then((response) => response.text())
           .then((result) => console.log(result))
           .catch((error) =>
             console.log("ERROR AL ELIMINAR DE FAVORITOS MI REY !", error)
           );
       },
-      posting: (post) =>{         
+      posting: async (post) => {
         var myHeaders = new Headers();
         let token = sessionStorage.getItem("token");
         myHeaders.append("Authorization", "Bearer " + token);
         myHeaders.append("Content-Type", "application/json");
 
-
         var requestOptions = {
-          method: 'POST',
+          method: "POST",
           headers: myHeaders,
           body: JSON.stringify(post),
+          redirect: "follow",
+        };
+
+        await fetch(process.env.BACKEND_URL + "/api/profile/posting", requestOptions)
+          .then((response) => response.json())
+          .then((result) => console.log(result))
+          .catch((error) => console.log("error", error));
+      },
+      getPost: async () =>{
+        const store = getStore()
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        //myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + token);
+      
+        var requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
           redirect: 'follow'
         };
 
-        fetch(process.env.BACKEND_URL +  "/api/profile/posting", requestOptions)
+        await fetch(process.env.BACKEND_URL + "/api/profile/getpost", requestOptions)
+          .then(response => response.json())
+          .then(result =>  { setStore({ post:result}),
+            console.log("PRINT!!!",store.post)})
+          .catch(error => console.log('error', error));
+
+      },
+      deletePost: async (eliminatePost) => {
+        var myHeaders = new Headers();
+        let token = sessionStorage.getItem("token");
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+        
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: JSON.stringify(eliminatePost),
+          redirect: 'follow'
+        };
+        
+        await fetch(process.env.BACKEND_URL + "/api/profile/deletepost", requestOptions)
           .then(response => response.json())
           .then(result => console.log(result))
-          .catch(error => console.log('error', error));
-          
+          .catch(error => console.log('ERROR AL ELIMINAR POST MI REY!', error));
+      },
+
+      getAllDeafultGenres: async () => {
+        var requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/genre/getalldeafult",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            setStore({ deafult_genres_list: result.genres_deafult_list });
+          })
+          .catch((error) =>
+            console.log("ERROR AL OBTENER GENEROS MI REY !", error)
+          );
+      },
+      addGenresToProfile: async (genres_arr) => {
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          genres_list: genres_arr,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/genre/addtoprofile",
+          requestOptions
+        )
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) =>
+            console.log("ERROR AL AGREGAR GENEROS MI REY !", error)
+          );
+      },
+      getGenresByProfileName: async (name) => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          profile: name,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        fetch(
+          process.env.BACKEND_URL + "/api/profile/getgenresbyprofilename",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            setStore({ profile_genres_list: result.profile_genres_list });
+          })
+          .catch((error) =>
+            console.log("ERROR AL OBTENER GENEROS MI REY !", error)
+          );
       },
     },
   };

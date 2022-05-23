@@ -29,7 +29,7 @@ export const Navbar = () => {
   }, [store.loged, user]);
   //console.log(store.profile_names);
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-black">
+    <nav className="navbar navbar-expand-lg navbar-light bg-black rounded">
       <div className="container-fluid">
         <div className="navbar-brand">
           <Link to="/">
