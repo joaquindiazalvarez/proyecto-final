@@ -12,7 +12,8 @@
   border: 2px solid #000000;
   border-radius: 20px;
   background: #47d4bd;
-  color: rgb(91, 22, 22);}
+  color: rgb(91, 22, 22);
+}
 
 .btnDonate:hover {
   border: 2px solid #47d4bd;
@@ -24,7 +25,8 @@
   border: 2px solid #000000;
   border-radius: 20px;
   background: #47d4bd;
-  color: rgb(101, 25, 25);}
+  color: rgb(101, 25, 25);
+}
 
 .btnFollow:hover {
   border: 2px solid #47d4bd;
@@ -37,4 +39,26 @@
   border-radius: 20px;
   background: #00ff8c;
   color: rgb(245, 62, 62);
+}
+
+.genre span {
+  background: rgba(71, 212, 189, 0.2);
+  border-radius: 25%;
+  padding: 10px;
+}
+.edit .input-group {
+  display: flex;
+  width: 180px;
+}
+.edit .input-group input {
+  border-radius: 25%;
+}
+.nostyle {
+  background: none !important;
+  border-radius: 0% !important;
+  padding: 0px !important;
+  margin-left: 10px !important;
+}
+.edit-genres {
+  display: flex;
 }

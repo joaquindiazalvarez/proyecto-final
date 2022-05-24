@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
+import { Genre } from "../component/genre.js";
 import ReactPlayer from "react-player";
 import "../../styles/profile.css";
 
@@ -404,6 +405,7 @@ export const Profile = () => {
                     </svg>
                   </button>
                 )}
+                <Genre name={params.name} edit={true} />
               </div>
             )}
           </div>

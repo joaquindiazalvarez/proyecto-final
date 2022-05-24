@@ -1,8 +1,14 @@
 """empty message
 
+<<<<<<< HEAD:migrations/versions/3ced034e733a_.py
 Revision ID: 3ced034e733a
 Revises: 
 Create Date: 2022-05-23 20:21:23.097183
+=======
+Revision ID: f54a949b6140
+Revises: 
+Create Date: 2022-05-22 18:14:56.822649
+>>>>>>> 21b9e0bd0f7ea1a44fc31ea18b60ac0b1f472759:migrations/versions/f54a949b6140_.py
 
 """
 from alembic import op
@@ -10,7 +16,11 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
+<<<<<<< HEAD:migrations/versions/3ced034e733a_.py
 revision = '3ced034e733a'
+=======
+revision = 'f54a949b6140'
+>>>>>>> 21b9e0bd0f7ea1a44fc31ea18b60ac0b1f472759:migrations/versions/f54a949b6140_.py
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -94,7 +104,6 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('donation_id', sa.Integer(), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
-    sa.Column('date', sa.String(length=200), nullable=True),
     sa.ForeignKeyConstraint(['donation_id'], ['donation.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -102,7 +111,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('favorites_id', sa.Integer(), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
-    sa.Column('date', sa.String(length=200), nullable=True),
+    sa.Column('fecha', sa.String(length=200), nullable=True),
     sa.ForeignKeyConstraint(['favorites_id'], ['favorites.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -110,7 +119,6 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('post_id', sa.Integer(), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
-    sa.Column('date', sa.String(length=200), nullable=True),
     sa.ForeignKeyConstraint(['post_id'], ['post.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
