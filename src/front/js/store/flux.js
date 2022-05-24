@@ -454,6 +454,33 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
           });
       },
+      deleteGenreFromProfile: async (genero) => {
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          genre: genero,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/genre/delete",
+          requestOptions
+        )
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) =>
+            console.log("ERROR AL BORRAR GENERO MI REY !", error)
+          );
+      },
     },
   };
 };

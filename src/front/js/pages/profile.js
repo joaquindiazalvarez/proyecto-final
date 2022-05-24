@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
+import { Genre } from "../component/genre.js";
 import ReactPlayer from "react-player";
 import "../../styles/profile.css";
 
@@ -56,7 +57,7 @@ export const Profile = () => {
             <div className="bg-light" style={{ maxwidth: "1090px" }}>
               <div className="row container g-0">
                 <div
-                  class="col-md-4 p-0 d-flex justify-content-center align-items-center"
+                  className="col-md-4 p-0 d-flex justify-content-center align-items-center"
                   style={{ maxHeight: "300px" }}
                 >
                   {/* profile photo if edit = false----------------------------------------------*/}
@@ -399,6 +400,7 @@ export const Profile = () => {
                     </svg>
                   </button>
                 )}
+                <Genre name={params.name} edit={true} />
               </div>
             )}
           </div>

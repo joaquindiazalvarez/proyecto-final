@@ -215,7 +215,7 @@ def get_all_notifications():
 def get_all_deafult_genres():
     genres = Genre.query.filter_by(deafult=True).all()
     genres_serialized = list(map(lambda x: x.serialize(), genres))
-    genres_dict = {"genres_default_list":genres_serialized}
+    genres_dict = {"genres_deafult_list":genres_serialized}
     return jsonify(genres_dict)
 
 @api.route('/genre/addtoprofile', methods=['POST'])
@@ -248,6 +248,21 @@ def add_genres_to_profile():
             
     else:
         return("you must specify genres list(genres_list)")
+
+@api.route('genre/delete', methods=['POST'])
+@jwt_required()
+def delete_genre():
+    body = request.get_json()
+    get_token = get_jwt_identity()
+    user = User.query.filter_by(email = get_token).first()
+    profile = Profile.query.filter_by(user_id = user.id).first()
+    genre_deleted = Genre_profile.query.filter_by(genre_genre = body['genre']).first()
+    if genre_deleted:
+        db.session.delete(genre_deleted)
+        db.session.commit()
+    else:
+        return("genre not found")
+    return("genre deleted")
 
 @api.route('/profile/getgenresbyprofilename', methods=['POST'])
 def get_genres_by_profile_name():
