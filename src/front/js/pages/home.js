@@ -21,8 +21,8 @@ export const Home = () => {
   }
   useEffect(() => {
     actions.getPhotosProfile();
-    actions.getPopulatedGenres().then(() => {
-      setArray(getArrayOfProfiles());
+    actions.getPopulated().then(() => {
+      console.log(store.populated_genres);
     });
   }, []);
 
@@ -119,21 +119,21 @@ export const Home = () => {
             ))}
         </div>
       </div>
-      {array.length > 0 &&
-        array.map((genre, i) => {
+      {store.populated_genres.length > 0 &&
+        store.populated_genres.map((genre, i) => {
           return (
             <div>
               <h3 className="ms-4 text-center" key={i}>
-                {store.populated[i]}
+                {genre.genre}
               </h3>
               <div className="cards">
                 <div className="card-group">
-                  {genre.map((profile, j) => {
+                  {genre.profiles_array.map((profile, j) => {
                     return (
                       <div className="card2" key={j}>
                         <Card_for_home
-                          name={profile.name}
-                          photo={profile.photo}
+                          name={profile.profile_name}
+                          photo={profile.profile_photo}
                         />
                       </div>
                     );
