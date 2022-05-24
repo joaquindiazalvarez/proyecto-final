@@ -17,10 +17,14 @@ export const Genre = (props) => {
     setAdd(e.target.value);
   };
   const handleSubmit = () => {
-    actions.addGenresToProfile([add]).then(() => window.location.reload(false));
+    actions
+      .addGenresToProfile([add])
+      .then(() => actions.getGenresByProfileName(props.name));
   };
   const handleDelete = (e) => {
-    actions.deleteGenreFromProfile(e).then(() => window.location.reload(false));
+    actions
+      .deleteGenreFromProfile(e)
+      .then(() => actions.getGenresByProfileName(props.name));
     //.then(() => window.location.reload(false));
   };
 
