@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 6a61b755aa60
+Revision ID: cb578ea79298
 Revises: 
-Create Date: 2022-05-19 19:32:33.824807
+Create Date: 2022-05-23 16:44:31.508439
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '6a61b755aa60'
+revision = 'cb578ea79298'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -81,8 +81,7 @@ def upgrade():
     sa.Column('genre_genre', sa.String(length=120), nullable=False),
     sa.ForeignKeyConstraint(['genre_genre'], ['genre.genre'], ),
     sa.ForeignKeyConstraint(['profile_id'], ['profile.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('genre_genre')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('post',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -94,31 +93,25 @@ def upgrade():
     op.create_table('profile_donation_notification',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('donation_id', sa.Integer(), nullable=False),
-    sa.Column('profile_id', sa.Integer(), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
     sa.Column('date', sa.String(length=200), nullable=True),
     sa.ForeignKeyConstraint(['donation_id'], ['donation.id'], ),
-    sa.ForeignKeyConstraint(['profile_id'], ['profile.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('profile_favorites_notification',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('favorites_id', sa.Integer(), nullable=False),
-    sa.Column('profile_id', sa.Integer(), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
     sa.Column('date', sa.String(length=200), nullable=True),
     sa.ForeignKeyConstraint(['favorites_id'], ['favorites.id'], ),
-    sa.ForeignKeyConstraint(['profile_id'], ['profile.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user_post_notification',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('post_id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
     sa.Column('date', sa.String(length=200), nullable=True),
     sa.ForeignKeyConstraint(['post_id'], ['post.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

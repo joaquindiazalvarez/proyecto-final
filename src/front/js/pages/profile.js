@@ -12,18 +12,27 @@ export const Profile = () => {
   const [editPhoto, setEditPhoto] = useState(false);
   const [editDescription, setEditDescription] = useState(false);
   const [editSoundCloud, setEditSoundCloud] = useState(false);
-  
+
 
   const [editStatus, setEditStatus] = useState("");
   const post = {post:editStatus}
   const submitPost = (e) => {
     editStatus == ""? null:
-    actions.posting(post),actions.getPost(), e.preventDefault();
-  //const eliminatePost = () => {setDeletePost(store.post.filter(function (item,i){return i !== key}))}
-  const eliminatePost = {post:sad}
-
-
+    actions.posting(post),actions.getPost(), e.preventDefault(),setEditStatus("");
   };
+  //store.post.reverse();
+  
+  const submitDeletePost = () => {
+    actions.deletePost(eliminatePost)
+  }
+  const eliminatePost = {id:40}
+  console.log(store.post, "SOY EL CONSOLE LOG")
+
+
+  const submitFav = () => {
+    actions.addToFavorites(params.name);
+  };
+
   const onChangePhoto = (e) => {
     setDeafult({ ...deafult, photo: e.target.value });
   };
@@ -46,6 +55,7 @@ export const Profile = () => {
   useEffect(() => {
     actions.getProfileByName(params.name);
     setDeafult({ ...deafult, name: params.name });
+    actions.posting(post)
     //setGetPost({...getPost})
     console.log("miparams", params);
   }, [
@@ -211,7 +221,7 @@ export const Profile = () => {
                           <div className="col text-center">
                             <h5>Editar descripcion</h5>
                             <textarea
-                              class="form-control"
+                              className="form-control"
                               id="exampleFormControlTextarea1"
                               rows={5}
                               type="text"
@@ -281,7 +291,7 @@ export const Profile = () => {
               </div>
               {/*add to favorites button---------------------------------------*/}
               <div className="col-1 text-center">
-                <button className="btn btnFollow">Follow</button>
+                <button className="btn btnFollow" onClick={submitFav}>Fav</button>
               </div>
               {/*StatusButton and input---------------------------------------*/}
                 <div className="ms-5 col-1">
@@ -395,10 +405,10 @@ export const Profile = () => {
 
             <div className="col-6">       
                     {store.post.map((value,b) =>{
-                      return(<p className="message" key={b}>{value.post}
+                      return(<p className="message text" key={b}>{value.post}
                   <button
 									className="deletebtn"
-									onClick= {() => {actions.deletePost(eliminatePost)}}>
+									onClick={submitDeletePost}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
                   <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                   </svg>
