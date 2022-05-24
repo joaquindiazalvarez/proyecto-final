@@ -152,7 +152,13 @@ def add_to_favorites():
         else:
             db.session.add(favorite)
             db.session.commit()
-        return("added favorite successfully")
+            notifications=Profile_notifications_favorites()
+            notifications.favorite_id = favorite.id
+            notifications.read=False
+            db.session.add(notifications)
+            db.session.commit()
+            return("added favorite successfully")
+
     else:
         return("must specify profile")
 
@@ -208,9 +214,40 @@ def get_all_notifications():
     get_token = get_jwt_identity()
     user=User.query.filter_by(email=get_token).first()
     profile= Profile.query.filter_by(user_id=user.id).first()
-    notifications= Profile_favorites_notification.query.filter_by(profile_id=profile.id).all()
-    notifications_serialized= list(map( lambda x: x.serialize(), notifications ))
-    notifications_dict= {"notifications_list":notifications_serialized}
+    favorites= Favorites.query.filter_by(profile_id=profile.id).all()
+    #notifications= Profile_favorites_notification.query.filter_by(profile_id=profile.id).all()
+    #notifications_serialized= list(map( lambda x: x.serialize(), notifications ))
+    notifications_serialized= []
+
+    for element in favorites:
+        #favorites=Favorites.query.filter_by(id=element.favorites_id)
+        user_who_added= User.query.filter_by(id=element.user_id).first()
+        profile_who_added= Profile.query.filter_by(user_id=user_who_added.id).first()
+        notification= Profile_favorites_notification.query.filter_by(favorites_id=element.id).first()
+        notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite"})
+    
+    posts_all=[]
+    favorites=Favorites.query.filter_by(user_id=user.id).all()
+
+    for element in favorites:
+        #user_who_added= User.query.filter_by(id=element.user_id).first()
+        profile=Profile.query.filter_by(id=element.profile_id).first()
+        print(profile)
+        posts=Post.query.filter_by(profile_id=profile.id).all()
+        print(posts)
+        #posts_serialized= list(map(lambda x:{"post": x.serialze()["post"],post},posts ))
+
+        post_by_user=[]
+        for element2 in posts:
+           # profile=Profile.query.filter_by(id=element.profile_id).first()
+            notification= User_post_notification.query.filter_by(post_id=element.id).first()
+            post_dict={"name":profile.name, "read":notification.read, "type":"post"}
+            post_by_user.append(post_dict)
+            print(post_dict)
+
+        posts_all= posts_all+post_by_user
+
+    notifications_dict= {"notification_list":notifications_serialized + posts_all}
 
     return jsonify(notifications_dict)
 
@@ -324,6 +361,7 @@ def get_private_contact_from_favorite():
         return jsonify(contact_dict)
     else:
         return("not added to favorite")
+
 
 @api.route('/genre/populatedgenres/get', methods = ['GET'])
 def get_all_populated_genres():

@@ -40,7 +40,6 @@ export const Profile = () => {
   useEffect(() => {
     actions.getProfileByName(params.name);
     setDeafult({ ...deafult, name: params.name });
-    console.log("miparams", params);
   }, [
     params.name,
     editDescription,
@@ -205,7 +204,7 @@ export const Profile = () => {
                           <div className="col text-center">
                             <h5>Editar descripcion</h5>
                             <textarea
-                              class="form-control"
+                              className="form-control"
                               id="exampleFormControlTextarea1"
                               rows={5}
                               type="text"
@@ -269,7 +268,13 @@ export const Profile = () => {
             <div className="row">
               {/*donate button----------------------------------------------------*/}
               <div className="col-2 text-center ms-1">
-                <button className="btn btnDonate col-12">Donate</button>
+                <a
+                  href="https://ko-fi.com/"
+                  target="_blank"
+                  className="btn btnDonate col-12"
+                >
+                  Donate
+                </a>
               </div>
               {/*add to favorites button---------------------------------------*/}
               <div className="col-1 text-center">
