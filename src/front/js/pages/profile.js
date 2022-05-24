@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
+import { Genre } from "../component/genre.js";
 import ReactPlayer from "react-player";
 import "../../styles/profile.css";
 
@@ -25,7 +26,8 @@ export const Profile = () => {
   const submitDeletePost = () => {
     actions.deletePost(eliminatePost)
   }
-  const eliminatePost = {id:40}
+  const eliminatePost = {id:40} //AQUI DEBO ENVIAR EL ID  Y SE ELIMINA EL POST LO QUE NO SE ME OCURRIó ES 
+                                //COMO ENVIO EL ID DEL POST AL QUE LE HICE CLICK 
   console.log(store.post, "SOY EL CONSOLE LOG")
 
 
@@ -55,9 +57,6 @@ export const Profile = () => {
   useEffect(() => {
     actions.getProfileByName(params.name);
     setDeafult({ ...deafult, name: params.name });
-    actions.posting(post)
-    //setGetPost({...getPost})
-    console.log("miparams", params);
   }, [
     params.name,
     editDescription,
@@ -73,7 +72,7 @@ export const Profile = () => {
             <div className="headbackground" style={{ maxwidth: "1090px" }}>
               <div className="row container g-0">
                 <div
-                  class="col-md-4 p-0 d-flex justify-content-center align-items-center"
+                  className="col-md-4 p-0 d-flex justify-content-center align-items-center"
                   style={{ maxHeight: "300px" }}
                 >
                   {/* profile photo if edit = false----------------------------------------------*/}
@@ -166,7 +165,7 @@ export const Profile = () => {
                         </div>
                       )}
                       {store.user_profile.name && (
-                        <div className="">
+                        <div className="d-flex justify-content-end">
                           {!editName && (
                             <button
                               type="button"
@@ -210,7 +209,7 @@ export const Profile = () => {
                       )}
                       {/*description-----------------------------------------------------------*/}
                       {!editDescription && (
-                        <div className="row  p-3 m-2 description">
+                        <div className="row  p-3 m-2 description ">
                           <div className="col text-center">
                             {store.profile.description}
                           </div>
@@ -234,7 +233,7 @@ export const Profile = () => {
                         </div>
                       )}
                       {store.user_profile.name && (
-                        <div className="">
+                        <div className="d-flex justify-content-end">
                           {!editDescription && (
                             <button
                               type="button"
@@ -287,7 +286,13 @@ export const Profile = () => {
             <div className="row">
               {/*donate button----------------------------------------------------*/}
               <div className="col-2 text-center ms-1">
-                <button className="btn btnDonate col-12">Donate</button>
+                <a
+                  href="https://ko-fi.com/"
+                  target="_blank"
+                  className="btn btnDonate col-12"
+                >
+                  Donate
+                </a>
               </div>
               {/*add to favorites button---------------------------------------*/}
               <div className="col-1 text-center">
@@ -327,12 +332,8 @@ export const Profile = () => {
           <div className="row">
             <div className="col-5"> 
             <div>
-              <div>DATOS DE CONTACTO y otros</div>
-              <div>DATOS DE CONTACTO y otros</div>
-              <div>DATOS DE CONTACTO y otros</div>
-              <div>DATOS DE CONTACTO y otros</div>
-              <div>DATOS DE CONTACTO y otros</div>
-              <div>DATOS DE CONTACTO y otros</div>
+            <Genre name={params.name} edit={true} />
+
             </div>
             {/*Soundcloud player-----------------------------------------------*/}
             <div className="row sticky-top">
@@ -347,7 +348,7 @@ export const Profile = () => {
             )}
             {editSoundCloud && (
 
-                <div className="col p-4">
+                <div className="col-12 p-4">
                   <h5>Editar URL de soundcloud</h5>
                   <input
                     type="text"
@@ -358,7 +359,7 @@ export const Profile = () => {
 
             )}
             {store.user_profile.name && (
-              <div className="col-1 ">
+              <div className="col-1">
                 {!editSoundCloud && (
                   <button
                     type="button"
@@ -380,7 +381,7 @@ export const Profile = () => {
                 {editSoundCloud && (
                   <button
                     type="button"
-                    className="btn"
+                    className="btn d-flex justify-content-start"
                     onClick={() => {
                       setEditSoundCloud(false);
                       handleSubmit();

@@ -110,7 +110,10 @@ def get_profile_by_name():
 def get_profile_photo():
     profiles = Profile.query.all()
     profiles_list = list(map(lambda x: {"name":x.serialize()['name'], "photo":x.serialize()['photo']}, profiles))
-    return jsonify(profiles_list)
+    reversed_list = []
+    for i in range(len(profiles_list)-1, 0, -1):
+        reversed_list.append(profiles_list[i])
+    return jsonify(reversed_list)
 
 
 @api.route('profile/update', methods=['POST'])
@@ -154,7 +157,13 @@ def add_to_favorites():
         else:
             db.session.add(favorite)
             db.session.commit()
-        return jsonify("added favorite successfully")
+            notifications=Profile_notifications_favorites()
+            notifications.favorite_id = favorite.id
+            notifications.read=False
+            db.session.add(notifications)
+            db.session.commit()
+            return("added favorite successfully")
+
     else:
         return jsonify("must specify profile")
 
@@ -241,9 +250,40 @@ def get_all_notifications():
     get_token = get_jwt_identity()
     user=User.query.filter_by(email=get_token).first()
     profile= Profile.query.filter_by(user_id=user.id).first()
-    notifications= Profile_favorites_notification.query.filter_by(profile_id=profile.id).all()
-    notifications_serialized= list(map( lambda x: x.serialize(), notifications ))
-    notifications_dict= {"notifications_list":notifications_serialized}
+    favorites= Favorites.query.filter_by(profile_id=profile.id).all()
+    #notifications= Profile_favorites_notification.query.filter_by(profile_id=profile.id).all()
+    #notifications_serialized= list(map( lambda x: x.serialize(), notifications ))
+    notifications_serialized= []
+
+    for element in favorites:
+        #favorites=Favorites.query.filter_by(id=element.favorites_id)
+        user_who_added= User.query.filter_by(id=element.user_id).first()
+        profile_who_added= Profile.query.filter_by(user_id=user_who_added.id).first()
+        notification= Profile_favorites_notification.query.filter_by(favorites_id=element.id).first()
+        notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite"})
+    
+    posts_all=[]
+    favorites=Favorites.query.filter_by(user_id=user.id).all()
+
+    for element in favorites:
+        #user_who_added= User.query.filter_by(id=element.user_id).first()
+        profile=Profile.query.filter_by(id=element.profile_id).first()
+        print(profile)
+        posts=Post.query.filter_by(profile_id=profile.id).all()
+        print(posts)
+        #posts_serialized= list(map(lambda x:{"post": x.serialze()["post"],post},posts ))
+
+        post_by_user=[]
+        for element2 in posts:
+           # profile=Profile.query.filter_by(id=element.profile_id).first()
+            notification= User_post_notification.query.filter_by(post_id=element.id).first()
+            post_dict={"name":profile.name, "read":notification.read, "type":"post"}
+            post_by_user.append(post_dict)
+            print(post_dict)
+
+        posts_all= posts_all+post_by_user
+
+    notifications_dict= {"notification_list":notifications_serialized + posts_all}
 
     return jsonify(notifications_dict)
 
@@ -251,7 +291,7 @@ def get_all_notifications():
 def get_all_deafult_genres():
     genres = Genre.query.filter_by(deafult=True).all()
     genres_serialized = list(map(lambda x: x.serialize(), genres))
-    genres_dict = {"genres_default_list":genres_serialized}
+    genres_dict = {"genres_deafult_list":genres_serialized}
     return jsonify(genres_dict)
 
 @api.route('/genre/addtoprofile', methods=['POST'])
@@ -285,6 +325,21 @@ def add_genres_to_profile():
     else:
         return("you must specify genres list(genres_list)")
 
+@api.route('genre/delete', methods=['POST'])
+@jwt_required()
+def delete_genre():
+    body = request.get_json()
+    get_token = get_jwt_identity()
+    user = User.query.filter_by(email = get_token).first()
+    profile = Profile.query.filter_by(user_id = user.id).first()
+    genre_deleted = Genre_profile.query.filter_by(genre_genre = body['genre']).first()
+    if genre_deleted:
+        db.session.delete(genre_deleted)
+        db.session.commit()
+    else:
+        return("genre not found")
+    return("genre deleted")
+
 @api.route('/profile/getgenresbyprofilename', methods=['POST'])
 def get_genres_by_profile_name():
     body = request.get_json()
@@ -296,7 +351,7 @@ def get_genres_by_profile_name():
     genres_dict = {"profile_genres_list":profile_genres_serialized}
     return jsonify(genres_dict)
 
-@api.route('contact/add', methods=['POST'])
+@api.route('/contact/add', methods=['POST'])
 @jwt_required()
 def add_contact_info():
     get_token = get_jwt_identity()
@@ -315,7 +370,7 @@ def add_contact_info():
     else:
         return("must specify all parameters")
 
-@api.route('contact/public/getbyprofilename', methods =["GET"])
+@api.route('/contact/public/getbyprofilename', methods =["GET"])
 def get_public_contact():
     body = request.get_json()
     if "profile" not in body:
@@ -326,7 +381,7 @@ def get_public_contact():
     contact_serialized_dict = {"public_contact_list": contact_serialized}
     return jsonify(contact_serialized_dict)
 
-@api.route('contact/private/getfromfavorite', methods = ['GET'])
+@api.route('/contact/private/getfromfavorite', methods = ['GET'])
 @jwt_required()
 def get_private_contact_from_favorite():
     get_token = get_jwt_identity()
@@ -343,3 +398,24 @@ def get_private_contact_from_favorite():
     else:
         return("not added to favorite")
 
+
+@api.route('/genre/populatedgenres/get', methods = ['GET'])
+def get_all_populated_genres():
+    populated_genres = set()
+    all_genres = Genre_profile.query.all()
+    for element in all_genres:
+        populated_genres.add(element.genre_genre)
+    populated_genres = list(populated_genres)
+    genres_dict = {"populated": populated_genres}
+    return jsonify(genres_dict)
+
+@api.route('/profile/getbygenre', methods = ['POST'])
+def get_profiles_by_genre():
+    body = request.get_json()
+    genre_profile = Genre_profile.query.filter_by(genre_genre = body['genre']).all()
+    all_names = []
+    for element in genre_profile:
+        profile = Profile.query.filter_by(id = element.profile_id).first()
+        all_names.append({"name":profile.name, "photo":profile.photo})
+    names_dict = {"genre_profile_name":all_names}
+    return jsonify(names_dict)

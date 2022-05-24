@@ -99,3 +99,25 @@
   border: 1px solid whitesmoke;
   box-shadow: 1px 1px 5px 1px rgb(170, 170, 170)
 }
+
+.genre span {
+  background: rgba(71, 212, 189, 0.2);
+  border-radius: 25%;
+  padding: 10px;
+}
+.edit .input-group {
+  display: flex;
+  width: 180px;
+}
+.edit .input-group input {
+  border-radius: 25%;
+}
+.nostyle {
+  background: none !important;
+  border-radius: 0% !important;
+  padding: 0px !important;
+  margin-left: 10px !important;
+}
+.edit-genres {
+  display: flex;
+}

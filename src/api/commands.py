@@ -1,6 +1,6 @@
 
 import click
-from api.models import db, User, Profile, Favorites, Profile_favorites_notification, Genre, Genre_profile, Contact
+from api.models import db, User, Profile, Favorites, Profile_favorites_notification, Genre, Genre_profile, Contact, Post, User_post_notification 
 
 """
 In this file, you can add as many commands as you want using the @app.cli.command decorator
@@ -154,6 +154,21 @@ def setup_commands(app):
         db.session.commit()
         print("Favorite from user 6 to profile 1 created")
 
+    @app.cli.command('insert-post')
+    def insert_post(): 
+        post= Post()
+        post.profile_id=2
+        post.post="prueba"
+        db.session.add(post)
+        db.session.commit()
+
+        post= Post()
+        post.profile_id=2
+        post.post="prueba2"
+        db.session.add(post)
+        db.session.commit()
+    
+
     #flask insert-notifications
     @app.cli.command("insert-notifications")
     def insert_notifications():
@@ -199,6 +214,19 @@ def setup_commands(app):
         db.session.add(notifications)
         db.session.commit()
         print('the sixth notification was created')
+
+        notifications = User_post_notification()
+        notifications.post_id = 1
+        notifications.read = False 
+        db.session.add(notifications)
+        db.session.commit()
+
+        notifications = User_post_notification()
+        notifications.post_id = 2
+        notifications.read = False 
+        db.session.add(notifications)
+        db.session.commit()
+
     #flask insert-deafult-genres
     @app.cli.command("insert-deafult-genres")
     def insert_deafult_genres():
@@ -237,14 +265,14 @@ def setup_commands(app):
 
         genre = Genre_profile()
         genre.profile_id = 2
-        genre.genre_genre = "Rock"
+        genre.genre_genre = "Alternative Rock"
         db.session.add(genre)
         db.session.commit()
         print("added Rock Genre to profile 'KROD'")
 
         genre1 = Genre_profile()
         genre1.profile_id = 3
-        genre1.genre_genre = "Techno"
+        genre1.genre_genre = "Dance & EDM"
         db.session.add(genre1)
         db.session.commit()
         print("added Techno Genre to  profile 'Ricky Chamoi'")
@@ -628,12 +656,13 @@ def setup_commands(app):
         
         print("added email")
 
-        
-        
-       #ALL COMMANDS
+   
 
+
+       #ALL COMMANDS
        #flask insert-6-users-6-profiles
        #flask insert-favorites
+       #flask insert-post
        #flask insert-notifications
        #flask insert-deafult-genres
        #flask insert-profiles-genres

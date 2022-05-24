@@ -23,8 +23,11 @@ const getState = ({ getStore, getActions, setStore }) => {
       deafult_genres_list: [],
       profile_genres_list: [],
       post: [],
+      notifications: [],
       profile_public_contact_list: [],
       profile_private_contact_list: [],
+      populated: [],
+      profile_by_genre: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -74,7 +77,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((result) => {
             setStore({ user: [result] });
             sessionStorage.setItem("token", result.token);
-            console.log(result);
+            // console.log(result);
             setStore({ loged: true });
           })
           .catch((error) => console.log("ERROR AL LOGUEAR MI REY !", error));
@@ -119,7 +122,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((response) => response.json())
           .then((result) => {
             setStore({ profile: result });
-            console.log(result);
           })
           .catch((error) =>
             console.log("ERROR AL OBTENER PROFILE MI REY !", error)
@@ -142,7 +144,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log("miresult", result);
             setStore({ user_profile: result["actual_profile"] });
           })
           .catch((error) =>
@@ -217,7 +218,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
             setStore({ favorites: result });
           })
           .catch((error) =>
@@ -349,7 +349,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
             setStore({ deafult_genres_list: result.genres_deafult_list });
           })
           .catch((error) =>
@@ -408,7 +407,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
             setStore({ profile_genres_list: result.profile_genres_list });
           })
           .catch((error) =>
@@ -482,7 +480,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         //este fetch se trae los items de contactos privados solo si el usuario logueado tiene en favoritos al profile
         //tiene como argumento el profile del cual se quieren obtener los contactos privados
         //
-        const token = sessionStorage("token");
+        const token = sessionStorage.getItem("token");
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
         myHeaders.append("Content-Type", "application/json");
@@ -510,6 +508,105 @@ const getState = ({ getStore, getActions, setStore }) => {
               profile_private_contact_list: result.contact_private_list,
             });
           });
+      },
+
+      getAllNotifications: async () => {
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/notifications/getall",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            setStore({ notifications: result.notification_list });
+            console.log(result);
+          })
+          .catch((error) =>
+            console.log("error al conseguir notificaciones", error)
+          );
+      },
+      getPopulatedGenres: async () => {
+        var requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/genre/populatedgenres/get",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            setStore({ populated: result.populated });
+          })
+          .catch((error) =>
+            console.log("ERROR AL OBTENER GENEROS MI REY !", error)
+          );
+      },
+      getProfilesByGenre: async (genre) => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          genre: genre,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/profile/getbygenre",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            setStore({ profile_by_genre: result.genre_profile_name });
+          })
+          .catch((error) =>
+            console.log("ERROR AL OBTENER PERFILES POR GENERO MI REY !", error)
+          );
+      },
+      deleteGenreFromProfile: async (genero) => {
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          genre: genero,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/genre/delete",
+          requestOptions
+        )
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) =>
+            console.log("ERROR AL BORRAR GENERO MI REY !", error)
+          );
       },
     },
   };

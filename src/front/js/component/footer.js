@@ -41,22 +41,22 @@ export const Footer = () => {
             <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Links</h6>
               <p>
-                <a href="#!" className="text-reset">
+                <a href="#!" className="text-reset text-decoration-none">
                   Bandas
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset">
+                <a href="#!" className="text-reset text-decoration-none">
                   Artistas
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset">
+                <a href="#!" className="text-reset text-decoration-none">
                   Mi Perfil
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset">
+                <a href="#!" className="text-reset text-decoration-none">
                   Acerca de nosotros
                 </a>
               </p>
