@@ -1,15 +1,29 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import rock from "../../img/rock.jpg";
 import festival from "../../img/festival.jpg";
 import publico from "../../img/publico.jpeg";
 import "../../styles/home.css";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { Card_for_home } from "../component/card_for_home";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
+  const [array, setArray] = useState([]);
+  function getArrayOfProfiles() {
+    var arr = [];
+    for (let i = 0; i < store.populated.length; i++) {
+      actions.getProfilesByGenre(store.populated[i]).then(() => {
+        arr.push(store.profile_by_genre);
+      });
+    }
+    return arr;
+  }
   useEffect(() => {
     actions.getPhotosProfile();
+    actions.getPopulatedGenres().then(() => {
+      setArray(getArrayOfProfiles());
+    });
   }, []);
 
   return (
@@ -97,25 +111,41 @@ export const Home = () => {
       </div>
       <br />
 
-      <h3 className="ms-4">Top 5, artistas mas escuchados</h3>
+      <h3 className="ms-4 text-center">Artistas Nuevos</h3>
       <div className="cards">
         <div className="card-group ">
           {store.profile.length > 0 &&
             store.profile.map((profile, i) => (
               <div className="card" key={i}>
-                <Link
-                  to={"/profile/" + profile.name}
-                  style={{ textDecoration: "none" }}
-                >
-                  <img src={profile.photo} className="card-img-top" />
-                  <div className="card-body">
-                    <h5 className="card-title">{profile.name}</h5>
-                  </div>
-                </Link>
+                <Card_for_home name={profile.name} photo={profile.photo} />
               </div>
             ))}
         </div>
       </div>
+      {array.length > 0 &&
+        array.map((genre, i) => {
+          return (
+            <div>
+              <h3 className="ms-4 text-center" key={i}>
+                {store.populated[i]}
+              </h3>
+              <div className="cards">
+                <div className="card-group">
+                  {genre.map((profile, j) => {
+                    return (
+                      <div className="card2" key={j}>
+                        <Card_for_home
+                          name={profile.name}
+                          photo={profile.photo}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          );
+        })}
     </div>
   );
 };
