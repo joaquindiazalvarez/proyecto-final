@@ -419,3 +419,22 @@ def get_profiles_by_genre():
         all_names.append({"name":profile.name, "photo":profile.photo})
     names_dict = {"genre_profile_name":all_names}
     return jsonify(names_dict)
+
+@api.route('profile/getpopulated', methods=['GET'])
+def get_populated():
+    populated_genres = set()
+    all_genres = Genre_profile.query.all()
+    for element in all_genres:
+        populated_genres.add(element.genre_genre)
+    populated_genres = list(populated_genres)
+    final_genre_list = []
+    for element in populated_genres:
+        genres_plural = Genre_profile.query.filter_by(genre_genre=element).all()
+        array = []
+        for element2 in genres_plural:
+            profile = Profile.query.filter_by(id=element2.profile_id).first()
+            array.append({"profile_name":profile.name, "profile_photo":profile.photo})
+        final_genre_list.append({"genre":element, "profiles_array":array})
+    final_dict = {"populated_array":final_genre_list}
+    return jsonify(final_dict)
+

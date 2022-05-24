@@ -28,6 +28,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       profile_private_contact_list: [],
       populated: [],
       profile_by_genre: [],
+      populated_genres: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -606,6 +607,25 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((result) => console.log(result))
           .catch((error) =>
             console.log("ERROR AL BORRAR GENERO MI REY !", error)
+          );
+      },
+      getPopulated: async () => {
+        var requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+
+        fetch(
+          process.env.BACKEND_URL + "/api/profile/getpopulated",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            setStore({ populated_genres: result.populated_array });
+          })
+          .catch((error) =>
+            console.log("ERROR AL TRAER PERFILES POR GENERO MI REY !", error)
           );
       },
     },
