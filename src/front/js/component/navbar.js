@@ -137,7 +137,7 @@ export const Navbar = () => {
             {/*renders buttons when session is loged*/}
             {token && (
               <div className="">
-                <span className="dropdown dropstart">
+                <span className="dropdown">
                   <button
                     type="button"
                     className="btn BotonColor position-relative dropdown-toggle me-2 "
