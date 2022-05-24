@@ -22,6 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       loged: false,
       deafult_genres_list: [],
       profile_genres_list: [],
+      notifications: [],
       profile_public_contact_list: [],
       profile_private_contact_list: [],
       populated: [],
@@ -75,7 +76,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((result) => {
             setStore({ user: [result] });
             sessionStorage.setItem("token", result.token);
-            console.log(result);
+            // console.log(result);
             setStore({ loged: true });
           })
           .catch((error) => console.log("ERROR AL LOGUEAR MI REY !", error));
@@ -120,7 +121,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((response) => response.json())
           .then((result) => {
             setStore({ profile: result });
-            console.log(result);
           })
           .catch((error) =>
             console.log("ERROR AL OBTENER PROFILE MI REY !", error)
@@ -143,7 +143,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log("miresult", result);
             setStore({ user_profile: result["actual_profile"] });
           })
           .catch((error) =>
@@ -219,7 +218,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
             setStore({ favorites: result });
           })
           .catch((error) =>
@@ -294,7 +292,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
             setStore({ deafult_genres_list: result.genres_deafult_list });
           })
           .catch((error) =>
@@ -353,7 +350,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
             setStore({ profile_genres_list: result.profile_genres_list });
           })
           .catch((error) =>
@@ -427,7 +423,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         //este fetch se trae los items de contactos privados solo si el usuario logueado tiene en favoritos al profile
         //tiene como argumento el profile del cual se quieren obtener los contactos privados
         //
-        const token = sessionStorage("token");
+        const token = sessionStorage.getItem("token");
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
         myHeaders.append("Content-Type", "application/json");
@@ -455,6 +451,31 @@ const getState = ({ getStore, getActions, setStore }) => {
               profile_private_contact_list: result.contact_private_list,
             });
           });
+      },
+
+      getAllNotifications: async () => {
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/notifications/getall",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            setStore({ notifications: result.notification_list });
+            console.log(result);
+          })
+          .catch((error) =>
+            console.log("error al conseguir notificaciones", error)
+          );
       },
       getPopulatedGenres: async () => {
         var requestOptions = {

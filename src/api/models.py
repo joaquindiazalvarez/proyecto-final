@@ -136,7 +136,7 @@ class Profile_favorites_notification(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     favorites_id = db.Column(db.Integer, db.ForeignKey('favorites.id'), unique = False, nullable = False)
     read = db.Column(db.Boolean(), nullable = False)
-    fecha = db.Column(db.String(200), unique=False, nullable=True)
+    date = db.Column(db.String(200), unique=False, nullable=True)
     favorites = db.relationship(Favorites)
     
 
@@ -152,6 +152,7 @@ class User_post_notification(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), unique = False, nullable = False)
     read = db.Column(db.Boolean(), nullable = False)
+    date = db.Column(db.String(200), unique=False, nullable=True)
     post = db.relationship(Post)
 
     def serialize(self):
@@ -166,6 +167,7 @@ class Profile_donation_notification(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     donation_id = db.Column(db.Integer, db.ForeignKey('donation.id'), unique = False, nullable = False)
     read = db.Column(db.Boolean(), nullable = False)
+    date = db.Column(db.String(200), unique=False, nullable=True)
     donation = db.relationship(Donation)
 
     def serialize(self):
