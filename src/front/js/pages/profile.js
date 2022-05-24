@@ -8,13 +8,32 @@ import "../../styles/profile.css";
 export const Profile = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
-  const [edit, setEdit] = useState(false);
   const [deafult, setDeafult] = useState(store.profile);
-  const [editStatus, setEditStatus] = useState(false);
   const [editName, setEditName] = useState(false);
   const [editPhoto, setEditPhoto] = useState(false);
   const [editDescription, setEditDescription] = useState(false);
   const [editSoundCloud, setEditSoundCloud] = useState(false);
+
+
+  const [editStatus, setEditStatus] = useState("");
+  const post = {post:editStatus}
+  const submitPost = (e) => {
+    editStatus == ""? null:
+    actions.posting(post),actions.getPost(), e.preventDefault(),setEditStatus("");
+  };
+  //store.post.reverse();
+  
+  const submitDeletePost = () => {
+    actions.deletePost(eliminatePost)
+  }
+  const eliminatePost = {id:40} //AQUI DEBO ENVIAR EL ID  Y SE ELIMINA EL POST LO QUE NO SE ME OCURRIó ES 
+                                //COMO ENVIO EL ID DEL POST AL QUE LE HICE CLICK 
+  console.log(store.post, "SOY EL CONSOLE LOG")
+
+
+  const submitFav = () => {
+    actions.addToFavorites(params.name);
+  };
 
   const onChangePhoto = (e) => {
     setDeafult({ ...deafult, photo: e.target.value });
@@ -25,9 +44,7 @@ export const Profile = () => {
   const onChangeDescription = (e) => {
     setDeafult({ ...deafult, description: e.target.value });
   };
-  const onChangeStatus = (e) => {
-    setDeafult({ ...deafult, post: e.target.value });
-  };
+
   const onChangeSoundcloud = (e) => {
     setDeafult({ ...deafult, soundcloud: e.target.value });
   };
@@ -46,14 +63,13 @@ export const Profile = () => {
     editPhoto,
     editSoundCloud,
     editName,
-    editStatus,
+
   ]);
   return (
-    <div className="d-flex justify-content-center">
-      <div className="row w-75 bg-light">
+    <div className=" webback d-flex justify-content-center">
+      <div className="row w-75 cardbackground">
         <div>
-          <div className="">
-            <div className="bg-light" style={{ maxwidth: "1090px" }}>
+            <div className="headbackground" style={{ maxwidth: "1090px" }}>
               <div className="row container g-0">
                 <div
                   className="col-md-4 p-0 d-flex justify-content-center align-items-center"
@@ -69,7 +85,7 @@ export const Profile = () => {
                     </div>
                   )}
                   {editPhoto && (
-                    <div className="col text">
+                    <div className="col text-center">
                       <h6>URL de tu foto</h6>
                       <input
                         type="text"
@@ -135,10 +151,10 @@ export const Profile = () => {
                     {/* profile name ---------------------------*/}
                     <div>
                       {!editName && (
-                        <h1 className="card-title">{store.profile["name"]}</h1>
+                        <h1 className="card-title text-center bandname">{store.profile["name"]}</h1>
                       )}
                       {editName && (
-                        <div className="row text-center p-5">
+                        <div className="row text-center">
                           <div className="col pt-2">
                             <input
                               type="text"
@@ -149,7 +165,7 @@ export const Profile = () => {
                         </div>
                       )}
                       {store.user_profile.name && (
-                        <div className="">
+                        <div className="d-flex justify-content-end">
                           {!editName && (
                             <button
                               type="button"
@@ -193,8 +209,8 @@ export const Profile = () => {
                       )}
                       {/*description-----------------------------------------------------------*/}
                       {!editDescription && (
-                        <div className="row">
-                          <div className="col text-center p-4 m-3">
+                        <div className="row  p-3 m-2 description ">
+                          <div className="col text-center">
                             {store.profile.description}
                           </div>
                         </div>
@@ -214,16 +230,18 @@ export const Profile = () => {
                               onChange={(e) => onChangeDescription(e)}
                             ></textarea>
                           </div>
-                          <div className="col-4"></div>
                         </div>
                       )}
                       {store.user_profile.name && (
-                        <div className="">
+                        <div className="d-flex justify-content-end">
                           {!editDescription && (
                             <button
                               type="button"
                               className="btn"
-                              onClick={() => setEditDescription(true)}
+                              onClick={() => {
+                                setEditDescription(true);
+
+                              }}
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -278,16 +296,14 @@ export const Profile = () => {
               </div>
               {/*add to favorites button---------------------------------------*/}
               <div className="col-1 text-center">
-                <button className="btn btnFollow">Follow</button>
+                <button className="btn btnFollow" onClick={submitFav}>Fav</button>
               </div>
               {/*StatusButton and input---------------------------------------*/}
-              {store.user_profile.name && (
                 <div className="ms-5 col-1">
-                  {!edit && (
                     <button
                       type="button"
                       className="btn btnStatus mx-1 col-12"
-                      onClick={() => setEditStatus(true)}
+                      onClick={submitPost}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -303,58 +319,36 @@ export const Profile = () => {
                         />
                       </svg>
                     </button>
-                  )}
-                  {edit && (
-                    <button
-                      type="button"
-                      className="btn btnStatus mx-1 col-12"
-                      onClick={() => {
-                        setEditStatus(false);
-                        handleSubmit();
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="currentColor"
-                        className="bi bi-activity"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"
-                        />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-              )}
-              <input
-                type="text"
-                className="input-group-sm mb-3 form-control col me-4"
-                aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-sm"
-                value={deafult.soundcloud || store.profile.soundcloud}
-                onChange={(e) => onChangeStatus(e)}
-              />
-            </div>
+                  </div>
+                  <input
+                  type="text"
+                  className="input-group-sm mb-3 form-control col me-4 posting"
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-sm"
+                  value={editStatus}
+                  onChange={(e) => setEditStatus(e.target.value)}
+                  />      
+              </div>
+          <div className="row">
+            <div className="col-5"> 
+            <div>
+            <Genre name={params.name} edit={true} />
 
+            </div>
             {/*Soundcloud player-----------------------------------------------*/}
+            <div className="row sticky-top">
             {!editSoundCloud && (
-              <div className="row">
-                <div className="player-wrapper col d-flex justify-content-end p-4 ">
+                <div className="col-12 p-4 ">
                   <ReactPlayer
-                    width="50%"
-                    height="60%"
+                    width="100%"
+                    height="250px"
                     url={store.profile.soundcloud}
                   />
                 </div>
-              </div>
             )}
             {editSoundCloud && (
-              <div className="row">
-                <div className="col p-4 text-center">
+
+                <div className="col-12 p-4">
                   <h5>Editar URL de soundcloud</h5>
                   <input
                     type="text"
@@ -362,10 +356,10 @@ export const Profile = () => {
                     onChange={(e) => onChangeSoundcloud(e)}
                   ></input>
                 </div>
-              </div>
+
             )}
             {store.user_profile.name && (
-              <div className="">
+              <div className="col-1">
                 {!editSoundCloud && (
                   <button
                     type="button"
@@ -387,7 +381,7 @@ export const Profile = () => {
                 {editSoundCloud && (
                   <button
                     type="button"
-                    className="btn"
+                    className="btn d-flex justify-content-start"
                     onClick={() => {
                       setEditSoundCloud(false);
                       handleSubmit();
@@ -405,9 +399,26 @@ export const Profile = () => {
                     </svg>
                   </button>
                 )}
-                <Genre name={params.name} edit={true} />
               </div>
             )}
+            </div>
+          </div>
+
+            <div className="col-6">       
+                    {store.post.map((value,b) =>{
+                      return(<p className="message text" key={b}>{value.post}
+                  <button
+									className="deletebtn"
+									onClick={submitDeletePost}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
+                  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                  </svg>
+								</button></p>)
+                      
+                    })}
+
+                  </div>    
+
           </div>
         </div>
       </div>

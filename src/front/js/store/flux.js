@@ -22,6 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       loged: false,
       deafult_genres_list: [],
       profile_genres_list: [],
+      post: [],
       notifications: [],
       profile_public_contact_list: [],
       profile_private_contact_list: [],
@@ -179,7 +180,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             console.log("ERROR AL HACER UPDATE MI REY !", error)
           );
       },
-
       getPhotosProfile: async () => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -246,7 +246,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           process.env.BACKEND_URL + "/api/favorites/add",
           requestOptions
         )
-          .then((response) => response.text())
+          .then((response) => response.json())
           .then((result) => console.log(result))
           .catch((error) =>
             console.log("ERROR AL AGREGAR A FAVORITOS MI REY !", error)
@@ -279,6 +279,63 @@ const getState = ({ getStore, getActions, setStore }) => {
             console.log("ERROR AL ELIMINAR DE FAVORITOS MI REY !", error)
           );
       },
+      posting: async (post) => {
+        var myHeaders = new Headers();
+        let token = sessionStorage.getItem("token");
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: JSON.stringify(post),
+          redirect: "follow",
+        };
+
+        await fetch(process.env.BACKEND_URL + "/api/profile/posting", requestOptions)
+          .then((response) => response.json())
+          .then((result) => console.log(result))
+          .catch((error) => console.log("error", error));
+      },
+      getPost: async () =>{
+        const store = getStore()
+        const token = sessionStorage.getItem("token");
+        var myHeaders = new Headers();
+        //myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + token);
+      
+        var requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow'
+        };
+
+        await fetch(process.env.BACKEND_URL + "/api/profile/getpost", requestOptions)
+          .then(response => response.json())
+          .then(result =>  { setStore({ post:result}),
+            console.log("PRINT!!!",store.post)})
+          .catch(error => console.log('error', error));
+
+      },
+      deletePost: async (eliminatePost) => {
+        var myHeaders = new Headers();
+        let token = sessionStorage.getItem("token");
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+        
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: JSON.stringify(eliminatePost),
+          redirect: 'follow'
+        };
+        
+        await fetch(process.env.BACKEND_URL + "/api/profile/deletepost", requestOptions)
+          .then(response => response.json())
+          .then(result => console.log(result))
+          .catch(error => console.log('ERROR AL ELIMINAR POST MI REY!', error));
+      },
+
       getAllDeafultGenres: async () => {
         //trae los generos por defecto, que son rock, rock alternativo, pop, etc
         //vienen en un arreglo y sirven para cuando se crea un perfil, se puedan seleccionar

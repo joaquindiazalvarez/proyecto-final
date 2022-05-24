@@ -4,8 +4,9 @@ import { Context } from "../store/appContext";
 
 export const Card = (props) => {
   const { store, actions } = useContext(Context);
-  const handleDelete = (e) => {
+  const handleDelete = () => {
     actions.deleteFromFavorites(props.name);
+    console.log(props.name);
   };
   useEffect(() => {
     actions.getAllFavorites();
