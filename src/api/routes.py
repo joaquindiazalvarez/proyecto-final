@@ -73,6 +73,15 @@ def signup():
         new_user.is_active = True
         db.session.add(new_user)
         db.session.commit()
+        new_profile = Profile()
+        new_profile.name = decoded_object['name']
+        new_profile.photo = ""
+        new_profile.description = ""
+        new_profile.soundcloud = ""
+        user = User.query.filter_by(email=new_user.email).first()
+        new_profile.user_id = user.id
+        db.session.add(new_profile)
+        db.session.commit()
         return jsonify({"message": "all went well"})
 
     return jsonify({"message":"this email is already in use"})
@@ -214,32 +223,28 @@ def posting():
     db.session.commit()
     return jsonify("Post Hecho")
 
-@api.route('/profile/getpost', methods=['GET'])
-@jwt_required()
+@api.route('/profile/getposts', methods=['POST'])
 def get_post():
-    get_token = get_jwt_identity()
-    user = User.query.filter_by(email=get_token).first()
-    profile = Profile.query.filter_by(user_id=user.id).first()
+    body = request.get_json()
+    profile = Profile.query.filter_by(name=body['profile']).first()
     posts_by_profile = Post.query.filter_by(profile_id=profile.id).all()
     post_serialized = list((map(lambda x: x.serialize(), posts_by_profile )))
-    return jsonify(post_serialized)
+    reversed_list = []
+    for i in range(len(post_serialized)-1, 0, -1):
+        reversed_list.append(post_serialized[i])
+    return jsonify(reversed_list)
 
 
 @api.route('/profile/deletepost', methods=['POST'])
 @jwt_required()
 def delete_post():
     get_token = get_jwt_identity()
+    body = request.get_json()
     user = User.query.filter_by(email=get_token).first()
     profile = Profile.query.filter_by(user_id=user.id).first()
-    posts_by_profile = Post.query.filter_by(profile_id=profile.id).all()
-    post_serialized = list((map(lambda x: x.serialize(), posts_by_profile )))
-    search_id = "id"
-    post_ids = [a_dict[search_id] for a_dict in post_serialized]
-    body = request.get_json()
-    post_id = body["id"]
-    delete_a_post = Post.query.filter_by(profile_id=profile.id, id=post_id ).first()
-    if post_id in post_ids:
-        db.session.delete(delete_a_post)
+    posts_by_profile = Post.query.filter_by(profile_id=profile.id, id=body["id"]).first()
+    if posts_by_profile:
+        db.session.delete(posts_by_profile)
         db.session.commit()
         return jsonify("Post eliminado compipa")
     else:

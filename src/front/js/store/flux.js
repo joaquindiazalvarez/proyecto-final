@@ -313,28 +313,25 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((result) => console.log(result))
           .catch((error) => console.log("error", error));
       },
-      getPost: async () => {
-        const store = getStore();
-        const token = sessionStorage.getItem("token");
+      getPost: async (name) => {
         var myHeaders = new Headers();
-        //myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          profile: name,
+        });
 
         var requestOptions = {
-          method: "GET",
+          method: 'POST',
           headers: myHeaders,
-          redirect: "follow",
+          body: raw,
+          redirect: 'follow'
         };
 
-        await fetch(
-          process.env.BACKEND_URL + "/api/profile/getpost",
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((result) => {
-            setStore({ post: result }), console.log("PRINT!!!", store.post);
-          })
-          .catch((error) => console.log("error", error));
+        await fetch(process.env.BACKEND_URL + "/api/profile/getposts", requestOptions)
+          .then(response => response.json())
+          .then(result =>  { setStore({ post:result})})
+          .catch(error => console.log('error', error));
       },
       deletePost: async (eliminatePost) => {
         var myHeaders = new Headers();
@@ -345,7 +342,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         var requestOptions = {
           method: "POST",
           headers: myHeaders,
-          body: JSON.stringify(eliminatePost),
+          body: JSON.stringify({id:eliminatePost}),
           redirect: "follow",
         };
 
