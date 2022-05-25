@@ -62,7 +62,7 @@ export const Navbar = () => {
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                 >
-                  Inicio de sesion
+                  Inicio de sesión
                 </button>
                 {/*MODAL */}
                 <div
@@ -115,7 +115,7 @@ export const Navbar = () => {
                           className="btn btnClose"
                           data-bs-dismiss="modal"
                         >
-                          Close
+                          Cerrar
                         </button>
                         <button
                           onClick={handleSubmit}
@@ -123,14 +123,14 @@ export const Navbar = () => {
                           className="btn btnRegister me-2"
                           data-bs-dismiss="modal"
                         >
-                          Inicia Sesion
+                          Iniciar sesión
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <Link to="/register" className="btn  BotonColor" type="button">
-                  Registrate
+                  Regístrate
                 </Link>
               </div>
             )}
@@ -163,8 +163,8 @@ export const Navbar = () => {
                             <p className="dropdown-item">
                               {notifications.name}
                               {notifications.type == "favorite"
-                                ? " added  you to  " + notifications.type
-                                : " has a new " + notifications.type}
+                                ? " te agrego a favoritos"
+                                : " ha hecho un nuevo post"}
                             </p>
                           </li>
                         );
@@ -194,7 +194,7 @@ export const Navbar = () => {
                     actions.logout();
                   }}
                 >
-                  Logout
+                  Cerrar sesión
                 </Link>
               </div>
             )}

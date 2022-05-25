@@ -60,18 +60,18 @@ export const Home = () => {
             <img src={rock} className="d-block w-100 imgCarousel" />
             <div className="carousel-caption d-none d-md-block">
               <h2>
-                ¿ESTAS BUSCANDO BANDAS, MUSICOS O TIENES ALGUN PROYECTO EN
+                ¿ESTÁS BUSCANDO BANDAS, MÚSICOS O TIENES ALGÚN PROYECTO EN
                 MENTE?
               </h2>
               <Link to="/register" className="btn  BotonColor" type="button">
-                Registrate
+                Regístrate
               </Link>
             </div>
           </div>
           <div className="carousel-item">
             <img src={festival} className="d-block w-100 imgCarousel" />
             <div className="carousel-caption d-none d-md-block">
-              <h2>AQUI PODRAS PATROCINAR BANDAS Y ARTISTAS EMERGENTES</h2>
+              <h2>AQUÍ PODÁS PATROCINAR BANDAS Y ARTISTAS EMERGENTES</h2>
             </div>
           </div>
           <div className="carousel-item">
@@ -122,10 +122,8 @@ export const Home = () => {
       {store.populated_genres.length > 0 &&
         store.populated_genres.map((genre, i) => {
           return (
-            <div>
-              <h3 className="ms-4 text-center" key={i}>
-                {genre.genre}
-              </h3>
+            <div key={i}>
+              <h3 className="ms-4 text-center">{genre.genre}</h3>
               <div className="cards">
                 <div className="card-group">
                   {genre.profiles_array.map((profile, j) => {
