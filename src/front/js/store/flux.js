@@ -130,6 +130,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       getProfileByUser: async () => {
+        const store = getStore();
         const token = sessionStorage.getItem("token");
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
@@ -146,6 +147,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((response) => response.json())
           .then((result) => {
             setStore({ user_profile: result["actual_profile"] });
+            console.log("miuserprofile", store.user_profile);
           })
           .catch((error) =>
             console.log("ERROR DE AUTENTICACION MI REY !", error)

@@ -157,7 +157,7 @@ def add_to_favorites():
         else:
             db.session.add(favorite)
             db.session.commit()
-            notifications=Profile_notifications_favorites()
+            notifications=Profile_favorites_notification()
             notifications.favorite_id = favorite.id
             notifications.read=False
             db.session.add(notifications)
@@ -189,7 +189,9 @@ def delete_favorite():
         favorite_target = Favorites.query.filter_by(user_id=user.id, profile_id=profile.id).first()
         #search_profile_id = "id"
         #profile_ids = [a_dict[search_profile_id] for a_dict in favorites_profiles_serialized]
+        notification = Profile_favorites_notification.query.filter_by(favorites_id = favorite_target.id).first()
         db.session.delete(favorite_target)
+        db.session.delete(notification)
         db.session.commit()
         return(f"se borró el favorito")
     else:

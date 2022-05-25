@@ -605,7 +605,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "facebook"
-        contact.value = "matias"
+        contact.value = "pierre_jean"
         contact.public = True
         contact.profile_id = 6
         db.session.add(contact)

@@ -29,8 +29,8 @@ export const Genre = (props) => {
   };
 
   return (
-    <div className="col text-start">
-      <div className="editGenres d-flex">
+    <div className="col text-start ms-3">
+      <div className="editGenres d-flex ">
         <h5 className="pt-2">Géneros</h5>
         {props.edit && !editGenres && (
           <button

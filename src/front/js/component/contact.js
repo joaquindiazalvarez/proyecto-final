@@ -31,7 +31,7 @@ export const Contact = (props) => {
   return (
     <div className="colt text-start">
       <div className="editContact d-flex">
-        <h5 className="pt-2">Contacto</h5>
+        <h5 className="pt-2 ms-3">Contacto</h5>
         {props.edit && !editContact && (
           <button
             type="button"

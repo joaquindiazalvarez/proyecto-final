@@ -329,7 +329,16 @@ export const Profile = () => {
           <div className="row">
             <div className="col-5">
               <div>
-                <Genre name={params.name} edit={true} />
+                <Genre
+                  name={params.name}
+                  edit={store.user_profile.name === params.name}
+                />
+              </div>
+              <div>
+                <Contact
+                  name={params.name}
+                  edit={store.user_profile.name === params.name}
+                />
               </div>
               {/*Soundcloud player-----------------------------------------------*/}
               <div className="row sticky-top">

@@ -3,7 +3,7 @@
   height: 250px;
   max-width: 250px;
   border: 1px solid whitesmoke;
-  box-shadow: 1px 1px 5px 1px rgb(194, 194, 194)
+  box-shadow: 1px 1px 5px 1px rgb(194, 194, 194);
 }
 
 .divbutton {
@@ -15,15 +15,13 @@
   border-radius: 20px;
   background: #47d4bd;
   color: rgb(91, 22, 22);
-  box-shadow: 1px 1px 5px 1px rgb(137, 137, 137)
+  box-shadow: 1px 1px 5px 1px rgb(137, 137, 137);
 }
-  
 
 .btnDonate:hover {
   border: 2px solid #47d4bd;
   border-radius: 20px;
   opacity: 0.8;
-
 }
 
 .btnFollow {
@@ -31,8 +29,8 @@
   border-radius: 20px;
   background: #47d4bd;
   color: rgb(101, 25, 25);
-  box-shadow: 1px 1px 5px 1px rgb(137, 137, 137)}
-  
+  box-shadow: 1px 1px 5px 1px rgb(137, 137, 137);
+}
 
 .btnFollow:hover {
   border: 2px solid #47d4bd;
@@ -45,14 +43,14 @@
   border-radius: 20px;
   background: #00ff8c;
   color: rgb(245, 62, 62);
-  box-shadow: 1px 1px 5px 1px rgb(137, 137, 137)
+  box-shadow: 1px 1px 5px 1px rgb(137, 137, 137);
 }
 .message {
   background-color: rgb(0, 200, 255);
   padding: 10px;
   border-radius: 20px;
   box-shadow: 1px 1px rgb(206, 206, 206);
-  box-shadow: 1px 1px 3px 1px rgb(194, 194, 194)
+  box-shadow: 1px 1px 3px 1px rgb(194, 194, 194);
 }
 
 .message:hover {
@@ -66,7 +64,7 @@
   display: block;
 }
 .deletebtn:hover {
-  background-color: rgb(254, 92, 11)
+  background-color: rgb(254, 92, 11);
 }
 .headbackground {
   background-color: #074755;
@@ -80,7 +78,7 @@
   border-radius: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
-  box-shadow: 1px 1px 10px 5px rgb(137, 137, 137)
+  box-shadow: 1px 1px 10px 5px rgb(137, 137, 137);
 }
 .webback {
   background-color: whitesmoke;
@@ -91,13 +89,13 @@
   margin: 5px;
   border-radius: 50px;
   border: 1px solid whitesmoke;
-  box-shadow: 1px 1px 5px 1px rgb(194, 194, 194)
+  box-shadow: 1px 1px 5px 1px rgb(194, 194, 194);
 }
-.bandname{
-  background-color:  #47d4bd;
+.bandname {
+  background-color: #47d4bd;
   border-radius: 50px;
   border: 1px solid whitesmoke;
-  box-shadow: 1px 1px 5px 1px rgb(170, 170, 170)
+  box-shadow: 1px 1px 5px 1px rgb(170, 170, 170);
 }
 
 .genre span {
@@ -125,4 +123,5 @@
 .contactdisplay div {
   margin-top: 5px;
   margin-bottom: 5px;
+  margin-left: 20px;
 }
