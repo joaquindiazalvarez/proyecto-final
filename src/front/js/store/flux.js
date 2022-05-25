@@ -400,7 +400,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
 
         var requestOptions = {
-          method: "GET",
+          method: "POST",
           headers: myHeaders,
           body: raw,
           redirect: "follow",
@@ -549,6 +549,31 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((result) => console.log(result))
           .catch((error) =>
             console.log("ERROR AL BORRAR GENERO MI REY !", error)
+          );
+      },
+      updateContact: async (media) => {
+        var myHeaders = new Headers();
+        const token = sessionStorage.getItem("token");
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify(media);
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        fetch(
+          process.env.BACKEND_URL + "/api/profile/contact/edit",
+          requestOptions
+        )
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) =>
+            console.log("ERROR AL ACTUALIZAR EL CONTACTO MI REY !", error)
           );
       },
     },

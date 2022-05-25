@@ -62,3 +62,8 @@
 .edit-genres {
   display: flex;
 }
+
+.contactdisplay div {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

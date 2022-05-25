@@ -334,16 +334,65 @@ def add_contact_info():
     else:
         return("must specify all parameters")
 
-@api.route('/contact/public/getbyprofilename', methods =["GET"])
+@api.route('/contact/public/getbyprofilename', methods =["POST"])
 def get_public_contact():
     body = request.get_json()
     if "profile" not in body:
         return("must specify profile")
     profile = Profile.query.filter_by(name = body['profile']).first()
-    contact = Contact.query.filter_by(public = True).all()
+    contact = Contact.query.filter_by(public = True, profile_id = profile.id).all()
     contact_serialized = list(map(lambda x: x.serialize(), contact))
     contact_serialized_dict = {"public_contact_list": contact_serialized}
     return jsonify(contact_serialized_dict)
+
+@api.route('/profile/contact/edit', methods=['POST'])
+@jwt_required()
+def edit_contact_info():
+    get_token = get_jwt_identity()
+    body = request.get_json()
+    if "facebook" in body and "instagram" in body and "youtube" in body:
+        user = User.query.filter_by(email = get_token).first()
+        profile = Profile.query.filter_by(user_id = user.id).first()
+        facebook = Contact.query.filter_by(profile_id = profile.id, type = "facebook").first()
+        if not facebook:
+            contact = Contact()
+            contact.type = "facebook"
+            contact.value = body['facebook']
+            contact.public = True
+            contact.profile_id = profile.id
+            db.session.add(contact)
+            db.session.commit()
+        elif facebook.value != body['facebook']:
+            facebook.value = body['facebook']
+            db.session.commit()
+        instagram = Contact.query.filter_by(profile_id = profile.id, type = "instagram").first()
+        if not instagram:
+            contact = Contact()
+            contact.type = "instagram"
+            contact.value = body['instagram']
+            contact.public = True
+            contact.profile_id = profile.id
+            db.session.add(contact)
+            db.session.commit()
+        elif instagram.value != body['instagram']:
+            instagram.value = body['instagram']
+            db.session.commit()
+        youtube = Contact.query.filter_by(profile_id = profile.id, type = "youtube").first()
+        if not youtube:
+            contact = Contact()
+            contact.type = "youtube"
+            contact.value = body['youtube']
+            contact.public = True
+            contact.profile_id = profile.id
+            db.session.add(contact)
+            db.session.commit()
+        elif youtube.value != body['youtube']:
+            youtube.value = body['youtube']
+            db.session.commit()
+        return("added changes")
+    else:
+        return("must specify facebook, instagram and youtube")
+
 
 @api.route('/contact/private/getfromfavorite', methods = ['GET'])
 @jwt_required()
@@ -383,3 +432,4 @@ def get_profiles_by_genre():
         all_names.append({"name":profile.name, "photo":profile.photo})
     names_dict = {"genre_profile_name":all_names}
     return jsonify(names_dict)
+
