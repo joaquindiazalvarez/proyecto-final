@@ -86,6 +86,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       postRegister: async (registerUser) => {
+        console.log(registerUser);
+        const actions = getActions();
+        const store = getStore();
         var myHeaders = new Headers();
         //myHeaders.append("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY1MDcyOTI0NSwianRpIjoiODcwYzY5YTAtMTNhNy00MzE3LTg5ZGYtYjllODgxMmNmNjk0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImVsdGVyY2Vyb0BnbWFpbC5jb20iLCJuYmYiOjE2NTA3MjkyNDUsImV4cCI6MTY1MDcyOTM2NX0.TDrQBQs1hLO9YZfaBjkqNBAo1_pYx2b6mrViaRWRMFs");
         myHeaders.append("Content-Type", "application/json");
@@ -102,8 +105,16 @@ const getState = ({ getStore, getActions, setStore }) => {
           requestOptions
         )
           .then((response) => response.json())
-          .then((result) => console.log(result))
+          .then((result) => {
+            console.log(result);
+            actions.postLogin({
+              email: registerUser.email,
+              password: registerUser.password,
+            });
+          })
           .catch((error) => console.log("ERROR AL REGISTRASE", error));
+        setStore({ user_profile: { name: registerUser.name } });
+        console.log(store.user_profile);
       },
       getProfileByName: async (name) => {
         var myHeaders = new Headers();

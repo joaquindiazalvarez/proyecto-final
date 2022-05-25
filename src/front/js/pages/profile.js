@@ -286,7 +286,7 @@ export const Profile = () => {
                 target="_blank"
                 className="btn btnDonate col-12"
               >
-                Donate
+                Donar
               </a>
             </div>
             {/*add to favorites button---------------------------------------*/}
