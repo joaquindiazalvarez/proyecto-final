@@ -86,6 +86,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       postRegister: async (registerUser) => {
+        console.log(registerUser);
+        const actions = getActions();
+        const store = getStore();
         var myHeaders = new Headers();
         //myHeaders.append("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY1MDcyOTI0NSwianRpIjoiODcwYzY5YTAtMTNhNy00MzE3LTg5ZGYtYjllODgxMmNmNjk0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImVsdGVyY2Vyb0BnbWFpbC5jb20iLCJuYmYiOjE2NTA3MjkyNDUsImV4cCI6MTY1MDcyOTM2NX0.TDrQBQs1hLO9YZfaBjkqNBAo1_pYx2b6mrViaRWRMFs");
         myHeaders.append("Content-Type", "application/json");
@@ -102,8 +105,16 @@ const getState = ({ getStore, getActions, setStore }) => {
           requestOptions
         )
           .then((response) => response.json())
-          .then((result) => console.log(result))
+          .then((result) => {
+            console.log(result);
+            actions.postLogin({
+              email: registerUser.email,
+              password: registerUser.password,
+            });
+          })
           .catch((error) => console.log("ERROR AL REGISTRASE", error));
+        setStore({ user_profile: { name: registerUser.name } });
+        console.log(store.user_profile);
       },
       getProfileByName: async (name) => {
         var myHeaders = new Headers();
@@ -292,48 +303,59 @@ const getState = ({ getStore, getActions, setStore }) => {
           redirect: "follow",
         };
 
-        await fetch(process.env.BACKEND_URL + "/api/profile/posting", requestOptions)
+        await fetch(
+          process.env.BACKEND_URL + "/api/profile/posting",
+          requestOptions
+        )
           .then((response) => response.json())
           .then((result) => console.log(result))
           .catch((error) => console.log("error", error));
       },
-      getPost: async () =>{
-        const store = getStore()
+      getPost: async () => {
+        const store = getStore();
         const token = sessionStorage.getItem("token");
         var myHeaders = new Headers();
         //myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", "Bearer " + token);
-      
+
         var requestOptions = {
-          method: 'GET',
+          method: "GET",
           headers: myHeaders,
-          redirect: 'follow'
+          redirect: "follow",
         };
 
-        await fetch(process.env.BACKEND_URL + "/api/profile/getpost", requestOptions)
-          .then(response => response.json())
-          .then(result =>  { setStore({ post:result}),
-            console.log("PRINT!!!",store.post)})
-          .catch(error => console.log('error', error));
-
+        await fetch(
+          process.env.BACKEND_URL + "/api/profile/getpost",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            setStore({ post: result }), console.log("PRINT!!!", store.post);
+          })
+          .catch((error) => console.log("error", error));
       },
       deletePost: async (eliminatePost) => {
         var myHeaders = new Headers();
         let token = sessionStorage.getItem("token");
         myHeaders.append("Authorization", "Bearer " + token);
         myHeaders.append("Content-Type", "application/json");
-        
+
         var requestOptions = {
-          method: 'POST',
+          method: "POST",
           headers: myHeaders,
           body: JSON.stringify(eliminatePost),
-          redirect: 'follow'
+          redirect: "follow",
         };
-        
-        await fetch(process.env.BACKEND_URL + "/api/profile/deletepost", requestOptions)
-          .then(response => response.json())
-          .then(result => console.log(result))
-          .catch(error => console.log('ERROR AL ELIMINAR POST MI REY!', error));
+
+        await fetch(
+          process.env.BACKEND_URL + "/api/profile/deletepost",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => console.log(result))
+          .catch((error) =>
+            console.log("ERROR AL ELIMINAR POST MI REY!", error)
+          );
       },
 
       getAllDeafultGenres: async () => {

@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import registroimg from "../../img/registroimg.jpg";
-import { Link, Redirect } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export const Register = () => {
+  const history = useHistory();
   const { store, actions } = useContext(Context);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -49,6 +50,7 @@ export const Register = () => {
 
   const handleSubmit = (e) => {
     actions.postRegister(registerUser), e.preventDefault();
+    history.push("/");
   };
   const preventDef = (e) => {
     e.preventDefault();
@@ -87,12 +89,12 @@ export const Register = () => {
                 </div>
                 <div className="col-xl-6">
                   <div className="card-body p-md-5 text-black">
-                    <h3 className="mb-5 text-uppercase">Registrate</h3>
+                    <h3 className="mb-5 text-uppercase">Regístrate</h3>
 
                     <div className="row">
                       <div className="form-outline mb-4">
                         <label className="form-label">
-                          Como quieres que te llamemos?
+                          ¿Cómo quieres que te llamemos?
                         </label>
                         <div className="form-outline mb-4">
                           <input
@@ -107,7 +109,7 @@ export const Register = () => {
                       <div className="form-outline mb-4">
                         <div className="form-outline">
                           <label className="form-label">
-                            Ingresa tu correo electronico
+                            Ingresa tu correo electrónico
                           </label>
                           <input
                             onChange={handleEmail}
@@ -129,11 +131,11 @@ export const Register = () => {
                         className={colorPassword}
                         placeholder="Ingresa tu clave"
                       />
-                      <p className="text-muted">Contraseña alfanumerica</p>
+                      <p className="text-muted">Contraseña alfanumérica</p>
                     </div>
 
                     <div className="d-md-flex justify-content-start align-items-center mb-4 py-2">
-                      <h6 className="mb-0 me-4">Genero: </h6>
+                      <h6 className="mb-0 me-4">Género: </h6>
 
                       <div className="form-check form-check-inline mb-0 me-4">
                         <input
@@ -186,7 +188,7 @@ export const Register = () => {
 
                     <div className="form-outline mb-4">
                       <div className="col-md-6 mb-4">
-                        <label>Selecciona tu genero favorito:</label>
+                        <label>Selecciona tu género favorito:</label>
 
                         <select
                           onChange={handlefavMusicgenre}
@@ -195,9 +197,9 @@ export const Register = () => {
                           <option value="rock">Rock</option>
                           <option value="pop">Pop</option>
                           <option value="rap">Rap</option>
-                          <option value="electronica">Electronica</option>
+                          <option value="electronica">Electrónica</option>
                           <option value="idependiente">Independiente</option>
-                          <option value="clasica">Clasica</option>
+                          <option value="clasica">Clásica</option>
                         </select>
                       </div>
                     </div>
@@ -216,7 +218,7 @@ export const Register = () => {
                     <div className="form-check-label ms-5 ">
                       He leido y acepto las
                       <Link to="/privacy" className="ms-1">
-                        politicas de privacidad.
+                        políticas de privacidad
                       </Link>
                     </div>
                   </div>
