@@ -141,6 +141,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       getProfileByUser: async () => {
+        const store = getStore();
         const token = sessionStorage.getItem("token");
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
@@ -157,6 +158,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((response) => response.json())
           .then((result) => {
             setStore({ user_profile: result["actual_profile"] });
+            console.log("miuserprofile", store.user_profile);
           })
           .catch((error) =>
             console.log("ERROR DE AUTENTICACION MI REY !", error)
@@ -480,7 +482,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
 
         var requestOptions = {
-          method: "GET",
+          method: "POST",
           headers: myHeaders,
           body: raw,
           redirect: "follow",
@@ -648,6 +650,31 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
           .catch((error) =>
             console.log("ERROR AL TRAER PERFILES POR GENERO MI REY !", error)
+          );
+      },
+      updateContact: async (media) => {
+        var myHeaders = new Headers();
+        const token = sessionStorage.getItem("token");
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify(media);
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        fetch(
+          process.env.BACKEND_URL + "/api/profile/contact/edit",
+          requestOptions
+        )
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) =>
+            console.log("ERROR AL ACTUALIZAR EL CONTACTO MI REY !", error)
           );
       },
     },

@@ -331,7 +331,7 @@ def setup_commands(app):
     def insert_contacts_to_first_profile():
         contact = Contact()
         contact.type = "facebook"
-        contact.value = "jorge"
+        contact.value = "note"
         contact.public = True
         contact.profile_id = 1
         db.session.add(contact)
@@ -341,7 +341,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "instagram"
-        contact.value = "jorge"
+        contact.value = "note"
         contact.public = True
         contact.profile_id = 1
         db.session.add(contact)
@@ -352,7 +352,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "youtube"
-        contact.value = "EsquizofreniaNatural"
+        contact.value = "note"
         contact.public = True
         contact.profile_id = 1
         db.session.add(contact)
@@ -374,7 +374,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "email"
-        contact.value = "jorge@cesar.com"
+        contact.value = "note@note.com"
         contact.public = False
         contact.profile_id = 1
         db.session.add(contact)
@@ -385,7 +385,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "facebook"
-        contact.value = "camilo"
+        contact.value = "krod"
         contact.public = True
         contact.profile_id = 2
         db.session.add(contact)
@@ -395,7 +395,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "instagram"
-        contact.value = "camilo"
+        contact.value = "krod"
         contact.public = True
         contact.profile_id = 2
         db.session.add(contact)
@@ -406,7 +406,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "youtube"
-        contact.value = "camilo"
+        contact.value = "krod"
         contact.public = True
         contact.profile_id = 2
         db.session.add(contact)
@@ -428,7 +428,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "email"
-        contact.value = "camilo@example"
+        contact.value = "krod@krod.com"
         contact.public = False
         contact.profile_id = 2
         db.session.add(contact)
@@ -440,7 +440,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "facebook"
-        contact.value = "daniel"
+        contact.value = "richi_chamoi"
         contact.public = True
         contact.profile_id = 2
         db.session.add(contact)
@@ -450,7 +450,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "instagram"
-        contact.value = "daniel"
+        contact.value = "richi_chamoi"
         contact.public = True
         contact.profile_id = 3
         db.session.add(contact)
@@ -461,7 +461,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "youtube"
-        contact.value = "EsquizofreniaNatural"
+        contact.value = "richi_chamoi"
         contact.public = True
         contact.profile_id = 3
         db.session.add(contact)
@@ -483,7 +483,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "email"
-        contact.value = "daniel@cesar.com"
+        contact.value = "richi@chamoi.com"
         contact.public = False
         contact.profile_id = 3
         db.session.add(contact)
@@ -495,7 +495,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "facebook"
-        contact.value = "andres"
+        contact.value = "tevvez"
         contact.public = True
         contact.profile_id = 4
         db.session.add(contact)
@@ -505,7 +505,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "instagram"
-        contact.value = "andre"
+        contact.value = "tevvez"
         contact.public = True
         contact.profile_id = 4
         db.session.add(contact)
@@ -516,7 +516,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "youtube"
-        contact.value = "EsquizofreniaNatural"
+        contact.value = "tevvez"
         contact.public = True
         contact.profile_id = 4
         db.session.add(contact)
@@ -538,7 +538,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "email"
-        contact.value = "andres@cesar.com"
+        contact.value = "tevvez@tevvez.com"
         contact.public = False
         contact.profile_id = 4
         db.session.add(contact)
@@ -550,7 +550,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "facebook"
-        contact.value = "claudio"
+        contact.value = "ellie_lapointe"
         contact.public = True
         contact.profile_id = 5
         db.session.add(contact)
@@ -560,7 +560,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "instagram"
-        contact.value = "claudio"
+        contact.value = "ellie_lapointe"
         contact.public = True
         contact.profile_id = 5
         db.session.add(contact)
@@ -571,7 +571,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "youtube"
-        contact.value = "EsquizofreniaNatural"
+        contact.value = "ellie_lapointe"
         contact.public = True
         contact.profile_id = 5
         db.session.add(contact)
@@ -593,7 +593,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "email"
-        contact.value = "claudio@cesar.com"
+        contact.value = "ellie@lapointe.com"
         contact.public = False
         contact.profile_id = 5
         db.session.add(contact)
@@ -605,7 +605,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "facebook"
-        contact.value = "matias"
+        contact.value = "pierre_jean"
         contact.public = True
         contact.profile_id = 6
         db.session.add(contact)
@@ -615,7 +615,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "instagram"
-        contact.value = "matias"
+        contact.value = "pierre_jean"
         contact.public = True
         contact.profile_id = 6
         db.session.add(contact)
@@ -626,7 +626,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "youtube"
-        contact.value = "EsquizofreniaNatural"
+        contact.value = "pierre_jean"
         contact.public = True
         contact.profile_id = 6
         db.session.add(contact)
@@ -648,7 +648,7 @@ def setup_commands(app):
 
         contact = Contact()
         contact.type = "email"
-        contact.value = "matias@cesar.com"
+        contact.value = "pierre@jean.com"
         contact.public = False
         contact.profile_id = 6
         db.session.add(contact)
