@@ -17,20 +17,18 @@ export const Profile = () => {
 
   const [editStatus, setEditStatus] = useState("");
   const post = { post: editStatus };
+  
   const submitPost = (e) => {
-    editStatus == "" ? null : actions.posting(post),
-      actions.getPost(),
+    editStatus == "" ? null : actions.posting(post).then(()=>{actions.getPost(params.name)}),
+      actions.getPost(params.name),
       e.preventDefault(),
       setEditStatus("");
   };
   //store.post.reverse();
 
-  const submitDeletePost = () => {
-    actions.deletePost(eliminatePost);
+  const submitDeletePost = (id) => {
+    actions.deletePost(id).then(()=>{actions.getPost(params.name)})
   };
-  const eliminatePost = { id: 40 }; //AQUI DEBO ENVIAR EL ID  Y SE ELIMINA EL POST LO QUE NO SE ME OCURRIó ES
-  //COMO ENVIO EL ID DEL POST AL QUE LE HICE CLICK
-  console.log(store.post, "SOY EL CONSOLE LOG");
 
   const submitFav = () => {
     actions.addToFavorites(params.name);
@@ -50,14 +48,15 @@ export const Profile = () => {
     setDeafult({ ...deafult, soundcloud: e.target.value });
   };
   const handleSubmit = (e) => {
-    actions.updateProfile(deafult),
-      {
-        /*e.preventDefault()*/
-      };
+    actions.updateProfile(deafult).then(()=>{actions.getProfileByName(params.name)})
+
   };
   useEffect(() => {
     actions.getProfileByName(params.name);
     setDeafult({ ...deafult, name: params.name });
+    actions.getProfileByUser()
+    actions.getPost(params.name)
+    console.log("SOY EL CONSOLELOG", store.user_profile)
   }, [params.name, editDescription, editPhoto, editSoundCloud, editName]);
   return (
     <div className=" webback d-flex justify-content-center">
@@ -88,7 +87,7 @@ export const Profile = () => {
                     ></input>
                   </div>
                 )}
-                {store.user_profile.name && (
+                {store.user_profile.name === params.name && (
                   <div className="divbutton">
                     {!editPhoto && (
                       <button
@@ -149,7 +148,7 @@ export const Profile = () => {
                         {store.profile["name"]}
                       </h1>
                     )}
-                    {editName && (
+                    {/* {editName && (
                       <div className="row text-center">
                         <div className="col pt-2">
                           <input
@@ -201,8 +200,8 @@ export const Profile = () => {
                             </svg>
                           </button>
                         )}
-                      </div>
-                    )}
+                      </div> 
+                    )} */}
                     {/*description-----------------------------------------------------------*/}
                     {!editDescription && (
                       <div className="row  p-3 m-2 description ">
@@ -228,7 +227,7 @@ export const Profile = () => {
                         </div>
                       </div>
                     )}
-                    {store.user_profile.name && (
+                    {store.user_profile.name === params.name &&  (
                       <div className="d-flex justify-content-end">
                         {!editDescription && (
                           <button
@@ -296,6 +295,7 @@ export const Profile = () => {
               </button>
             </div>
             {/*StatusButton and input---------------------------------------*/}
+            {store.user_profile.name === params.name &&  (
             <div className="ms-5 col-1">
               <button
                 type="button"
@@ -316,7 +316,8 @@ export const Profile = () => {
                   />
                 </svg>
               </button>
-            </div>
+            </div>)}
+            {store.user_profile.name === params.name &&  (
             <input
               type="text"
               className="input-group-sm mb-3 form-control col me-4 posting"
@@ -324,7 +325,7 @@ export const Profile = () => {
               aria-describedby="inputGroup-sizing-sm"
               value={editStatus}
               onChange={(e) => setEditStatus(e.target.value)}
-            />
+            />)}
           </div>
           <div className="row">
             <div className="col-5">
@@ -361,7 +362,7 @@ export const Profile = () => {
                     ></input>
                   </div>
                 )}
-                {store.user_profile.name && (
+                {store.user_profile.name === params.name &&  (
                   <div className="col-1">
                     {!editSoundCloud && (
                       <button
@@ -412,7 +413,8 @@ export const Profile = () => {
                 return (
                   <p className="message text" key={b}>
                     {value.post}
-                    <button className="deletebtn" onClick={submitDeletePost}>
+                    <button className="deletebtn" 
+                    onClick = { ()=> {submitDeletePost(value.id)}}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"

@@ -96,6 +96,7 @@
   border-radius: 50px;
   border: 1px solid whitesmoke;
   box-shadow: 1px 1px 5px 1px rgb(170, 170, 170);
+  margin-bottom: 30px;
 }
 
 .genre span {
