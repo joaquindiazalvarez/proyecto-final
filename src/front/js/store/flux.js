@@ -158,7 +158,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((response) => response.json())
           .then((result) => {
             setStore({ user_profile: result["actual_profile"] });
-            console.log("miuserprofile", store.user_profile);
           })
           .catch((error) =>
             console.log("ERROR DE AUTENTICACION MI REY !", error)
@@ -322,16 +321,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
 
         var requestOptions = {
-          method: 'POST',
+          method: "POST",
           headers: myHeaders,
           body: raw,
-          redirect: 'follow'
+          redirect: "follow",
         };
 
-        await fetch(process.env.BACKEND_URL + "/api/profile/getposts", requestOptions)
-          .then(response => response.json())
-          .then(result =>  { setStore({ post:result})})
-          .catch(error => console.log('error', error));
+        await fetch(
+          process.env.BACKEND_URL + "/api/profile/getposts",
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            setStore({ post: result });
+          })
+          .catch((error) => console.log("error", error));
       },
       deletePost: async (eliminatePost) => {
         var myHeaders = new Headers();
@@ -342,7 +346,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         var requestOptions = {
           method: "POST",
           headers: myHeaders,
-          body: JSON.stringify({id:eliminatePost}),
+          body: JSON.stringify({ id: eliminatePost }),
           redirect: "follow",
         };
 

@@ -17,9 +17,13 @@ export const Profile = () => {
 
   const [editStatus, setEditStatus] = useState("");
   const post = { post: editStatus };
-  
+
   const submitPost = (e) => {
-    editStatus == "" ? null : actions.posting(post).then(()=>{actions.getPost(params.name)}),
+    editStatus == ""
+      ? null
+      : actions.posting(post).then(() => {
+          actions.getPost(params.name);
+        }),
       actions.getPost(params.name),
       e.preventDefault(),
       setEditStatus("");
@@ -27,7 +31,9 @@ export const Profile = () => {
   //store.post.reverse();
 
   const submitDeletePost = (id) => {
-    actions.deletePost(id).then(()=>{actions.getPost(params.name)})
+    actions.deletePost(id).then(() => {
+      actions.getPost(params.name);
+    });
   };
 
   const submitFav = () => {
@@ -48,15 +54,15 @@ export const Profile = () => {
     setDeafult({ ...deafult, soundcloud: e.target.value });
   };
   const handleSubmit = (e) => {
-    actions.updateProfile(deafult).then(()=>{actions.getProfileByName(params.name)})
-
+    actions.updateProfile(deafult).then(() => {
+      actions.getProfileByName(params.name);
+    });
   };
   useEffect(() => {
     actions.getProfileByName(params.name);
     setDeafult({ ...deafult, name: params.name });
-    actions.getProfileByUser()
-    actions.getPost(params.name)
-    console.log("SOY EL CONSOLELOG", store.user_profile)
+    actions.getProfileByUser();
+    actions.getPost(params.name);
   }, [params.name, editDescription, editPhoto, editSoundCloud, editName]);
   return (
     <div className=" webback d-flex justify-content-center">
@@ -87,57 +93,58 @@ export const Profile = () => {
                     ></input>
                   </div>
                 )}
-                {store.user_profile.name === params.name && (
-                  <div className="divbutton">
-                    {!editPhoto && (
-                      <button
-                        type="button"
-                        className="btn"
-                        onClick={() => setEditPhoto(true)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="bi bi-person-circle"
-                          viewBox="0 0 16 16"
+                {store.user_profile?.name &&
+                  store.user_profile?.name === params.name && (
+                    <div className="divbutton">
+                      {!editPhoto && (
+                        <button
+                          type="button"
+                          className="btn"
+                          onClick={() => setEditPhoto(true)}
                         >
-                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                          <path
-                            fillRule="evenodd"
-                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
-                          />
-                        </svg>
-                      </button>
-                    )}
-                    {editPhoto && (
-                      <button
-                        type="button"
-                        className="btn"
-                        onClick={() => {
-                          setEditPhoto(false);
-                          handleSubmit();
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="bi bi-person-circle"
-                          viewBox="0 0 16 16"
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            className="bi bi-person-circle"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            <path
+                              fillRule="evenodd"
+                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                            />
+                          </svg>
+                        </button>
+                      )}
+                      {editPhoto && (
+                        <button
+                          type="button"
+                          className="btn"
+                          onClick={() => {
+                            setEditPhoto(false);
+                            handleSubmit();
+                          }}
                         >
-                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                          <path
-                            fillRule="evenodd"
-                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
-                          />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-                )}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            className="bi bi-person-circle"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            <path
+                              fillRule="evenodd"
+                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                            />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  )}
               </div>
               <div className="col-md-8">
                 <div className="card-body">
@@ -227,51 +234,52 @@ export const Profile = () => {
                         </div>
                       </div>
                     )}
-                    {store.user_profile.name === params.name &&  (
-                      <div className="d-flex justify-content-end">
-                        {!editDescription && (
-                          <button
-                            type="button"
-                            className="btn"
-                            onClick={() => {
-                              setEditDescription(true);
-                            }}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              fill="currentColor"
-                              className="bi bi-pencil"
-                              viewBox="0 0 16 16"
+                    {store.user_profile?.name &&
+                      store.user_profile?.name === params.name && (
+                        <div className="d-flex justify-content-end">
+                          {!editDescription && (
+                            <button
+                              type="button"
+                              className="btn"
+                              onClick={() => {
+                                setEditDescription(true);
+                              }}
                             >
-                              <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                            </svg>
-                          </button>
-                        )}
-                        {editDescription && (
-                          <button
-                            type="button"
-                            className="btn"
-                            onClick={() => {
-                              setEditDescription(false);
-                              handleSubmit();
-                            }}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              fill="currentColor"
-                              className="bi bi-pencil"
-                              viewBox="0 0 16 16"
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                className="bi bi-pencil"
+                                viewBox="0 0 16 16"
+                              >
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                              </svg>
+                            </button>
+                          )}
+                          {editDescription && (
+                            <button
+                              type="button"
+                              className="btn"
+                              onClick={() => {
+                                setEditDescription(false);
+                                handleSubmit();
+                              }}
                             >
-                              <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                            </svg>
-                          </button>
-                        )}
-                      </div>
-                    )}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                className="bi bi-pencil"
+                                viewBox="0 0 16 16"
+                              >
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                              </svg>
+                            </button>
+                          )}
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>
@@ -290,55 +298,68 @@ export const Profile = () => {
             </div>
             {/*add to favorites button---------------------------------------*/}
             <div className="col-1 text-center">
-              <button className="btn btnFollow" onClick={submitFav}>
-                Fav
-              </button>
+              {store.user_profile?.name &&
+                store.user_profile?.name != params.name && (
+                  <button className="btn btnFollow" onClick={submitFav}>
+                    Fav
+                  </button>
+                )}
             </div>
             {/*StatusButton and input---------------------------------------*/}
-            {store.user_profile.name === params.name &&  (
-            <div className="ms-5 col-1">
-              <button
-                type="button"
-                className="btn btnStatus mx-1 col-12"
-                onClick={submitPost}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                  className="bi bi-activity"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"
-                  />
-                </svg>
-              </button>
-            </div>)}
-            {store.user_profile.name === params.name &&  (
-            <input
-              type="text"
-              className="input-group-sm mb-3 form-control col me-4 posting"
-              aria-label="Sizing example input"
-              aria-describedby="inputGroup-sizing-sm"
-              value={editStatus}
-              onChange={(e) => setEditStatus(e.target.value)}
-            />)}
+            {store.user_profile?.name &&
+              store.user_profile?.name === params.name && (
+                <div className="ms-5 col-1">
+                  <button
+                    type="button"
+                    className="btn btnStatus mx-1 col-12"
+                    onClick={submitPost}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      className="bi bi-activity"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              )}
+            {store.user_profile?.name &&
+              store.user_profile?.name === params.name && (
+                <input
+                  type="text"
+                  className="input-group-sm mb-3 form-control col me-4 posting"
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-sm"
+                  value={editStatus}
+                  onChange={(e) => setEditStatus(e.target.value)}
+                />
+              )}
           </div>
           <div className="row">
             <div className="col-5">
               <div>
                 <Genre
                   name={params.name}
-                  edit={store.user_profile.name === params.name}
+                  edit={
+                    store.user_profile?.name &&
+                    store.user_profile?.name === params.name
+                  }
                 />
               </div>
               <div>
                 <Contact
                   name={params.name}
-                  edit={store.user_profile.name === params.name}
+                  edit={
+                    store.user_profile?.name &&
+                    store.user_profile?.name === params.name
+                  }
                 />
               </div>
               {/*Soundcloud player-----------------------------------------------*/}
@@ -362,49 +383,50 @@ export const Profile = () => {
                     ></input>
                   </div>
                 )}
-                {store.user_profile.name === params.name &&  (
-                  <div className="col-1">
-                    {!editSoundCloud && (
-                      <button
-                        type="button"
-                        className="btn"
-                        onClick={() => setEditSoundCloud(true)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="bi bi-disc-fill"
-                          viewBox="0 0 16 16"
+                {store.user_profile?.name &&
+                  store.user_profile?.name === params.name && (
+                    <div className="col-1">
+                      {!editSoundCloud && (
+                        <button
+                          type="button"
+                          className="btn"
+                          onClick={() => setEditSoundCloud(true)}
                         >
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-6 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0zM4 8a4 4 0 0 1 4-4 .5.5 0 0 0 0-1 5 5 0 0 0-5 5 .5.5 0 0 0 1 0zm9 0a.5.5 0 1 0-1 0 4 4 0 0 1-4 4 .5.5 0 0 0 0 1 5 5 0 0 0 5-5z" />
-                        </svg>
-                      </button>
-                    )}
-                    {editSoundCloud && (
-                      <button
-                        type="button"
-                        className="btn d-flex justify-content-start"
-                        onClick={() => {
-                          setEditSoundCloud(false);
-                          handleSubmit();
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="bi bi-disc-fill"
-                          viewBox="0 0 16 16"
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            className="bi bi-disc-fill"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-6 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0zM4 8a4 4 0 0 1 4-4 .5.5 0 0 0 0-1 5 5 0 0 0-5 5 .5.5 0 0 0 1 0zm9 0a.5.5 0 1 0-1 0 4 4 0 0 1-4 4 .5.5 0 0 0 0 1 5 5 0 0 0 5-5z" />
+                          </svg>
+                        </button>
+                      )}
+                      {editSoundCloud && (
+                        <button
+                          type="button"
+                          className="btn d-flex justify-content-start"
+                          onClick={() => {
+                            setEditSoundCloud(false);
+                            handleSubmit();
+                          }}
                         >
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-6 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0zM4 8a4 4 0 0 1 4-4 .5.5 0 0 0 0-1 5 5 0 0 0-5 5 .5.5 0 0 0 1 0zm9 0a.5.5 0 1 0-1 0 4 4 0 0 1-4 4 .5.5 0 0 0 0 1 5 5 0 0 0 5-5z" />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-                )}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            className="bi bi-disc-fill"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-6 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0zM4 8a4 4 0 0 1 4-4 .5.5 0 0 0 0-1 5 5 0 0 0-5 5 .5.5 0 0 0 1 0zm9 0a.5.5 0 1 0-1 0 4 4 0 0 1-4 4 .5.5 0 0 0 0 1 5 5 0 0 0 5-5z" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  )}
               </div>
             </div>
 
@@ -413,8 +435,12 @@ export const Profile = () => {
                 return (
                   <p className="message text" key={b}>
                     {value.post}
-                    <button className="deletebtn" 
-                    onClick = { ()=> {submitDeletePost(value.id)}}>
+                    <button
+                      className="deletebtn"
+                      onClick={() => {
+                        submitDeletePost(value.id);
+                      }}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
