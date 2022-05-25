@@ -221,6 +221,12 @@ def posting():
     #users = list((map(lambda x: x.serialize(),user)))
     db.session.add(new_post)
     db.session.commit()
+    post = Post.query.filter_by(post = new_post.post).first()
+    new_notification = User_post_notification()
+    new_notification.post_id= post.id
+    new_notification.read = False
+    db.session.add(new_notification)
+    db.session.commit()
     return jsonify("Post Hecho")
 
 @api.route('/profile/getposts', methods=['POST'])
@@ -244,7 +250,10 @@ def delete_post():
     profile = Profile.query.filter_by(user_id=user.id).first()
     posts_by_profile = Post.query.filter_by(profile_id=profile.id, id=body["id"]).first()
     if posts_by_profile:
+        notification = User_post_notification.query.filter_by(post_id = posts_by_profile.id).first()
         db.session.delete(posts_by_profile)
+        if notification:
+            db.session.delete(notification)
         db.session.commit()
         return jsonify("Post eliminado compipa")
     else:
