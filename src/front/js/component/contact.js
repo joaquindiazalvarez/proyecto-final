@@ -79,13 +79,13 @@ export const Contact = (props) => {
                 )}
                 {value.type === "instagram" && value.value != "" && (
                   <div>
-                    <i class="fab fa-instagram me-2"></i>
+                    <i className="fab fa-instagram me-2"></i>
                     {value.value}
                   </div>
                 )}
                 {value.type === "youtube" && value.value != "" && (
                   <div>
-                    <i class="fab fa-youtube me-2"></i>
+                    <i className="fab fa-youtube me-2"></i>
                     {value.value}
                   </div>
                 )}
@@ -107,13 +107,13 @@ export const Contact = (props) => {
                 )}
                 {value.type === "instagram" && value.value != "" && (
                   <div>
-                    <i class="fab fa-instagram me-2"></i>
+                    <i className="fab fa-instagram me-2"></i>
                     {value.value}
                   </div>
                 )}
                 {value.type === "youtube" && value.value != "" && (
                   <div>
-                    <i class="fab fa-youtube me-2"></i>
+                    <i className="fab fa-youtube me-2"></i>
                     {value.value}
                   </div>
                 )}
