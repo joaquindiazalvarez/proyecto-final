@@ -660,10 +660,13 @@ def setup_commands(app):
 
 
        #ALL COMMANDS
-       #flask insert-6-users-6-profiles
-       #flask insert-favorites
-       #flask insert-post
-       #flask insert-notifications
-       #flask insert-deafult-genres
-       #flask insert-profiles-genres
-       #flask insert-contacts-to-profiles
+"""
+flask insert-6-users-6-profiles;
+flask insert-favorites;
+flask insert-post;
+flask insert-notifications;
+flask insert-deafult-genres;
+flask insert-profiles-genres;
+flask insert-contacts-to-profiles; 
+"""
+#copiar y pegar todo, con los punto y coma se ejecutan uno detras del otro

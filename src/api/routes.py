@@ -154,25 +154,48 @@ def add_to_favorites():
         favorite = Favorites()
         favorite.profile_id = profile.id
         favorite.user_id = user.id
-        favorites_profiles_serialized = list(map( lambda x: Profile.query.filter_by(id=x.profile_id).first().serialize(), favorites_all))
+        favorites_profiles_serialized = list(map( lambda x: Profile.query.filter_by(id=x.profile_id).first().serialize()['id'], favorites_all))
+        if profile.user_id == user.id:
+            return("cannot add yourself to favorites")
+        elif profile.id in favorites_profiles_serialized:
+            return("your profile is already in favorites")
+        else:
+            db.session.add(favorite)
+            db.session.commit()
+            notifications=Profile_favorites_notification()
+            favorite_search = Favorites.query.all()
+            favorite_target = favorite_search[-1]
+            print(favorite_target)
+            print(favorite_target.id)
+            notifications.favorites_id = favorite_target.id
+            notifications.read=False
+            db.session.add(notifications)
+            db.session.commit()
+            return("added favorite successfully")
+
+        """
         fav_dict = {"favorites_list":favorites_profiles_serialized}
         search_profile_id = "id"
         profile_ids = [a_dict[search_profile_id] for a_dict in favorites_profiles_serialized]
         if profile.user_id == user.id:
             return jsonify("you cant add your own profile to favorites")
         #exist = Favorites.query.filter_by(profile_id=favorite.profile_id).first()
-        if profile.id in profile_ids:
+        elif profile.id in profile_ids:
             return jsonify("este perfil ya está en tus favoritos") #YA ESTÁ FUNCIONANDO EL AGREGAR ! PERO MIRA BIEN QUE FALTA !!!!!!!!
         else:
             db.session.add(favorite)
             db.session.commit()
             notifications=Profile_favorites_notification()
-            notifications.favorite_id = favorite.id
+            favorite_search = Favorites.query.all()
+            favorite_target = favorite_search[-1]
+            print(favorite_target)
+            print(favorite_target.id)
+            notifications.favorites_id = favorite_target.id
             notifications.read=False
             db.session.add(notifications)
             db.session.commit()
             return("added favorite successfully")
-
+"""
     else:
         return jsonify("must specify profile")
 
@@ -200,7 +223,8 @@ def delete_favorite():
         #profile_ids = [a_dict[search_profile_id] for a_dict in favorites_profiles_serialized]
         notification = Profile_favorites_notification.query.filter_by(favorites_id = favorite_target.id).first()
         db.session.delete(favorite_target)
-        db.session.delete(notification)
+        if notification:
+            db.session.delete(notification)
         db.session.commit()
         return(f"se borró el favorito")
     else:
@@ -221,9 +245,10 @@ def posting():
     #users = list((map(lambda x: x.serialize(),user)))
     db.session.add(new_post)
     db.session.commit()
-    post = Post.query.filter_by(post = new_post.post).first()
+    post = Post.query.all()
+    final_post = post[-1]
     new_notification = User_post_notification()
-    new_notification.post_id= post.id
+    new_notification.post_id= final_post.id
     new_notification.read = False
     db.session.add(new_notification)
     db.session.commit()
@@ -276,7 +301,9 @@ def get_all_notifications():
         user_who_added= User.query.filter_by(id=element.user_id).first()
         profile_who_added= Profile.query.filter_by(user_id=user_who_added.id).first()
         notification= Profile_favorites_notification.query.filter_by(favorites_id=element.id).first()
-        notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite"})
+        if notification:
+            print(notification.serialize())
+            notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite"})
     
     posts_all=[]
     favorites=Favorites.query.filter_by(user_id=user.id).all()
