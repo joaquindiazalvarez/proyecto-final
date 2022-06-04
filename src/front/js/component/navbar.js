@@ -182,7 +182,7 @@ export const Navbar = () => {
                 <Link
                   type="button"
                   className="btn BotonColor me-2"
-                  to={"/profile/" + store.user_profile.name}
+                  to={"/profile/" + store.user_profile?.name}
                 >
                   Perfil
                 </Link>

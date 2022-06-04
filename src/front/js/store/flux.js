@@ -29,6 +29,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       populated: [],
       profile_by_genre: [],
       populated_genres: [],
+      profile_photo: "",
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -677,6 +678,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           .catch((error) =>
             console.log("ERROR AL ACTUALIZAR EL CONTACTO MI REY !", error)
           );
+      },
+      storeProfileUrl: (url) => {
+        setStore({ profile_photo: url });
       },
     },
   };

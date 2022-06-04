@@ -24,7 +24,7 @@ class User(db.Model):
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(120), unique = True, nullable = False)
-    photo = db.Column(db.String(120), unique = False, nullable = True)
+    photo = db.Column(db.String(300), unique = False, nullable = True)
     description = db.Column(db.String(1000), unique = False, nullable = True)
     soundcloud = db.Column(db.String(120), unique = True, nullable = True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique = False, nullable = False)
@@ -38,6 +38,19 @@ class Profile(db.Model):
             "description": self.description,
             "soundcloud": self.soundcloud
             # do not serialize the password, its a security breach
+        }
+
+class Profile_photo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(300), unique=False, nullable=False)
+    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), unique = False, nullable = False)
+    profile = db.relationship(Profile)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "url": self.url,
+            "profile_id": self.profile_id
         }
 
 class Contact(db.Model):
