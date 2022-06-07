@@ -127,19 +127,40 @@
   margin-left: 20px;
 }
 
-input[type="file"] {
+/* input[type="file"] {
   display: none;
-}
-.custom-file-upload {
+} */
+/* .custom-file-upload {
   border: 2px solid #000000;
   border-radius: 20px;
   background: #47d4bd;
   color: rgb(91, 22, 22);
   box-shadow: 1px 1px 5px 1px rgb(137, 137, 137);
-  /*display: inline-block;*/
+  //display: inline-block;
   padding-top: 5px;
   padding-left: 10px;
   padding-right: 10px;
   margin-right: 10px;
   cursor: pointer;
+} */
+.modal-footer {
+  justify-content: flex-start;
+}
+.upload-box {
+  background: white;
+  border-radius: 50px;
+  box-shadow: 2px 2px 4px black;
+  width: 350px;
+  outline: none;
+  margin-right: 20px;
+}
+::-webkit-file-upload-button {
+  color: black;
+  background: #47d4bd;
+  padding: 10px;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 1px 0 1px 1px white;
+  outline: none;
+  border: 2px solid #000000;
 }

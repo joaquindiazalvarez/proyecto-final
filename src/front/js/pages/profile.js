@@ -193,20 +193,22 @@ export const Profile = () => {
                                       formHandler(e);
                                     }}
                                   >
-                                    <label
+                                    {/* <label
                                       htmlFor="photoFile"
                                       className="custom-file-upload"
                                     >
                                       Examinar...
-                                    </label>
-                                    <input
-                                      type="file"
-                                      accept="image/jpeg"
-                                      className="input"
-                                      id="photoFile"
+                                    </label> */}
+                                    <div className="containerinput">
+                                      <input
+                                        type="file"
+                                        accept="image/jpeg"
+                                        className="upload-box"
+                                        id="photoFile"
 
-                                      //style={{ visibility: "hidden" }}
-                                    />
+                                        //style={{ visibility: "hidden" }}
+                                      />
+                                    </div>
                                     <button
                                       type="submit"
                                       className="btn btnDonate"
