@@ -30,6 +30,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       profile_by_genre: [],
       populated_genres: [],
       profile_photo: "",
+      notifications_read: false,
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -681,6 +682,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       storeProfileUrl: (url) => {
         setStore({ profile_photo: url });
+      },
+      eraseNotificationAlert: () => {
+        setStore({ notifications_read: true });
+      },
+      notificationAlert: () => {
+        setStore({ notifications_read: false });
       },
     },
   };

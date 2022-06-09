@@ -8,6 +8,7 @@ export const Navbar = () => {
   const [token, setToken] = useState("");
   const [email, setEmail] = useState("");
   const [notifications, setNotifications] = useState(store.notifications);
+  const [oldNotifications, setOldNotifications] = useState(store.notifications);
   const [password, setPassword] = useState("");
   const user = { email: email, password: password };
 
@@ -26,11 +27,21 @@ export const Navbar = () => {
       actions.getAllNotifications();
     });
   };
-
   useEffect(() => {
     setToken(sessionStorage.getItem("token"));
+    console.log("cambia notifications");
     setNotifications(store.notifications);
   }, [store.loged, user]);
+  useEffect(() => {
+    setTimeout(function () {
+      if (oldNotifications === store.notifications) {
+        console.log("comparacion", oldNotifications, store.notifications);
+        actions.notificationAlert();
+        setOldNotifications(store.notifications);
+        console.log("old es distinto a new");
+      }
+    }, 500);
+  }, [store.notifications]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-black rounded">
@@ -143,30 +154,47 @@ export const Navbar = () => {
                     className="btn BotonColor position-relative dropdown-toggle me-2 "
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
+                    onClick={() => actions.eraseNotificationAlert()}
                   >
                     <i className="far fa-bell"></i>
 
-                    {notifications && notifications.length > 0 && (
-                      <span className="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                        <span className="visually-hidden">New alerts</span>
-                      </span>
-                    )}
+                    {notifications &&
+                      store.notifications_read === false &&
+                      notifications.length > 0 && (
+                        <span className="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                          <span className="visually-hidden">New alerts</span>
+                        </span>
+                      )}
                   </button>
                   <ul
                     className="dropdown-menu  dropdown-menu-dark"
                     aria-labelledby="dropdownMenuButton1"
                   >
                     {notifications &&
-                      notifications.map((notifications, i) => {
+                      notifications.slice(0, 8).map((notifications, i) => {
                         return (
-                          <li key={i}>
-                            <p className="dropdown-item">
-                              {notifications.name}
-                              {notifications.type == "favorite"
-                                ? " te agrego a favoritos"
-                                : " ha hecho un nuevo post"}
-                            </p>
-                          </li>
+                          <Link
+                            to={"/profile/" + notifications.name}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <li key={i}>
+                              <p className="dropdown-item">
+                                {notifications.name}
+                                {notifications.type == "favorite"
+                                  ? " te agrego a favoritos"
+                                  : " ha hecho un nuevo post"}
+                                <p
+                                  className="date"
+                                  style={{
+                                    textDecoration: "none",
+                                    fontSize: "10px",
+                                  }}
+                                >
+                                  {notifications.date.slice(0, -10)}
+                                </p>
+                              </p>
+                            </li>
+                          </Link>
                         );
                       })}
                   </ul>

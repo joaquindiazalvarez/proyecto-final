@@ -35,7 +35,7 @@ def login():
         if user.password == body['password']:
             #"usuario y clave correctos"
             #defino que el token tendrá un tiempo de vida dependiendo de los minutos indicados
-            expiration = datetime.timedelta(minutes=20) 
+            expiration = datetime.timedelta(minutes=60) 
 
             access_token = create_access_token(
                 identity=user.email,
@@ -169,6 +169,7 @@ def add_to_favorites():
             print(favorite_target.id)
             notifications.favorites_id = favorite_target.id
             notifications.read=False
+            notifications.date=datetime.datetime.now()
             db.session.add(notifications)
             db.session.commit()
             return("added favorite successfully")
@@ -234,7 +235,6 @@ def delete_favorite():
 @jwt_required()
 def posting():
     get_token = get_jwt_identity()
-    #user = User.query.all()
     user = User.query.filter_by(email=get_token).first()
     profile = Profile.query.filter_by(user_id=user.id).first()
     body = request.get_json()
@@ -242,7 +242,6 @@ def posting():
     new_post = Post()
     new_post.post = post
     new_post.profile_id = profile.id
-    #users = list((map(lambda x: x.serialize(),user)))
     db.session.add(new_post)
     db.session.commit()
     post = Post.query.all()
@@ -250,6 +249,7 @@ def posting():
     new_notification = User_post_notification()
     new_notification.post_id= final_post.id
     new_notification.read = False
+    new_notification.date = datetime.datetime.now()
     db.session.add(new_notification)
     db.session.commit()
     return jsonify("Post Hecho")
@@ -303,7 +303,7 @@ def get_all_notifications():
         notification= Profile_favorites_notification.query.filter_by(favorites_id=element.id).first()
         if notification:
             print(notification.serialize())
-            notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite"})
+            notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite", "date": notification.date})
     
     posts_all=[]
     favorites=Favorites.query.filter_by(user_id=user.id).all()
@@ -311,22 +311,19 @@ def get_all_notifications():
     for element in favorites:
         #user_who_added= User.query.filter_by(id=element.user_id).first()
         profile=Profile.query.filter_by(id=element.profile_id).first()
-        print(profile)
         posts=Post.query.filter_by(profile_id=profile.id).all()
-        print(posts)
         #posts_serialized= list(map(lambda x:{"post": x.serialze()["post"],post},posts ))
 
         post_by_user=[]
         for element2 in posts:
            # profile=Profile.query.filter_by(id=element.profile_id).first()
-            notification= User_post_notification.query.filter_by(post_id=element.id).first()
-            post_dict={"name":profile.name, "read":notification.read, "type":"post"}
+            notification= User_post_notification.query.filter_by(post_id=element2.id).first()
+            post_dict={"name":profile.name, "read":notification.read, "type":"post", "date":notification.date}
             post_by_user.append(post_dict)
-            print(post_dict)
-
         posts_all= posts_all+post_by_user
-
-    notifications_dict= {"notification_list":notifications_serialized + posts_all}
+    notification_list_unsorted=notifications_serialized + posts_all
+    notification_list = sorted(notification_list_unsorted, key=lambda x:x['date'], reverse=True)
+    notifications_dict= {"notification_list":notification_list}
 
     return jsonify(notifications_dict)
 

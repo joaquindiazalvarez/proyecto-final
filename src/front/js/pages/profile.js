@@ -106,6 +106,12 @@ export const Profile = () => {
     console.log(defaultVar);
     handleSubmit();
   }, [defaultVar]);
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      actions.getAllNotifications();
+    }
+  }, []);
   return (
     <div className=" webback d-flex justify-content-center">
       <div className="row w-75 cardbackground">

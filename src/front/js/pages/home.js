@@ -24,6 +24,10 @@ export const Home = () => {
     actions.getPopulated().then(() => {
       console.log(store.populated_genres);
     });
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      actions.getAllNotifications();
+    }
   }, []);
 
   return (
