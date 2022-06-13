@@ -32,16 +32,33 @@ export const Navbar = () => {
     console.log("cambia notifications");
     setNotifications(store.notifications);
   }, [store.loged, user]);
-  useEffect(() => {
-    setTimeout(function () {
-      if (oldNotifications === store.notifications) {
-        console.log("comparacion", oldNotifications, store.notifications);
-        actions.notificationAlert();
-        setOldNotifications(store.notifications);
-        console.log("old es distinto a new");
+  function areEqual(arr1, arr2) {
+    console.log("arrays", arr1, arr2);
+    if (arr1.length !== arr2.length) {
+      return false;
+    } else if ((arr1.length === 0 && arr2.length === 0) || arr2.length === 0) {
+      return true;
+    } else if (arr1.length === arr2.length && arr1.length > 0) {
+      if (
+        arr1[arr1.length - 1]["id"] !== arr2[arr2.length - 1]["id"] ||
+        arr1[arr1.length - 1]["type"] != arr2[arr2.length - 1]["type"]
+      ) {
+        return false;
+      } else {
+        return true;
       }
-    }, 500);
-  }, [store.notifications]);
+    }
+    console.log(arr1.length - 1);
+  }
+  useEffect(() => {
+    if (areEqual(oldNotifications, notifications)) {
+      console.log("son iguales");
+    } else {
+      setOldNotifications(notifications);
+      actions.notificationAlert();
+      console.log("son distintos");
+    }
+  }, [notifications]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-black rounded">

@@ -303,7 +303,7 @@ def get_all_notifications():
         notification= Profile_favorites_notification.query.filter_by(favorites_id=element.id).first()
         if notification:
             print(notification.serialize())
-            notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite", "date": notification.date})
+            notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite", "date": notification.date, "id":notification.id})
     
     posts_all=[]
     favorites=Favorites.query.filter_by(user_id=user.id).all()
@@ -318,7 +318,7 @@ def get_all_notifications():
         for element2 in posts:
            # profile=Profile.query.filter_by(id=element.profile_id).first()
             notification= User_post_notification.query.filter_by(post_id=element2.id).first()
-            post_dict={"name":profile.name, "read":notification.read, "type":"post", "date":notification.date}
+            post_dict={"name":profile.name, "read":notification.read, "type":"post", "date":notification.date, "id":notification.id}
             post_by_user.append(post_dict)
         posts_all= posts_all+post_by_user
     notification_list_unsorted=notifications_serialized + posts_all
