@@ -34,14 +34,16 @@ export const Navbar = () => {
   }, [store.loged, user]);
   function areEqual(arr1, arr2) {
     console.log("arrays", arr1, arr2);
-    if (arr1.length !== arr2.length) {
+    if (arr2 == undefined || arr1 == undefined) {
+      return false;
+    } else if (arr1.length !== arr2.length) {
       return false;
     } else if ((arr1.length === 0 && arr2.length === 0) || arr2.length === 0) {
       return true;
     } else if (arr1.length === arr2.length && arr1.length > 0) {
       if (
         arr1[arr1.length - 1]["id"] !== arr2[arr2.length - 1]["id"] ||
-        arr1[arr1.length - 1]["type"] != arr2[arr2.length - 1]["type"]
+        arr1[arr1.length - 1]["type"] !== arr2[arr2.length - 1]["type"]
       ) {
         return false;
       } else {

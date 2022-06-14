@@ -129,8 +129,21 @@ export const Profile = () => {
                       src={store.profile.photo}
                       className="profilePhoto"
                     ></img>
+                    <div className="col-1 text-center btnFav">
+                      {store.user_profile?.name &&
+                        store.user_profile?.name != params.name && (
+                          <button
+                            className="btn"
+                            id="btnFav"
+                            onClick={submitFav}
+                          >
+                            Fav
+                          </button>
+                        )}
+                    </div>
                   </div>
                 )}
+
                 {/* {editPhoto && (
                   <div className="col text-center">
                     <h6>URL de tu foto</h6>
@@ -398,7 +411,7 @@ export const Profile = () => {
           </div>
           <div className="row">
             {/*donate button----------------------------------------------------*/}
-            <div className="col-2 text-center ms-1">
+            {/*     <div className="col-2 text-center ms-1">
               <a
                 href="https://ko-fi.com/"
                 target="_blank"
@@ -406,16 +419,7 @@ export const Profile = () => {
               >
                 Donar
               </a>
-            </div>
-            {/*add to favorites button---------------------------------------*/}
-            <div className="col-1 text-center">
-              {store.user_profile?.name &&
-                store.user_profile?.name != params.name && (
-                  <button className="btn btnFollow" onClick={submitFav}>
-                    Fav
-                  </button>
-                )}
-            </div>
+            </div> */}
             {/*StatusButton and input---------------------------------------*/}
             {store.user_profile?.name &&
               store.user_profile?.name === params.name && (

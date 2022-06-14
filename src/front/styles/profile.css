@@ -164,3 +164,20 @@
   outline: none;
   border: 2px solid #000000;
 }
+.btnFav {
+  margin-left: -80px;
+  margin-top: -30px;
+  margin-bottom: 10px;
+}
+#btnFav {
+  border: 2px solid #000000;
+  border-radius: 20px;
+  background: #47d4bd;
+  color: rgb(101, 25, 25);
+  box-shadow: 1px 1px 5px 1px rgb(137, 137, 137);
+}
+#btnFav:hover {
+  border: 2px solid #47d4bd;
+  border-radius: 20px;
+  opacity: 0.8;
+}
