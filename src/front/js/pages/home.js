@@ -24,6 +24,10 @@ export const Home = () => {
     actions.getPopulated().then(() => {
       console.log(store.populated_genres);
     });
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      actions.getAllNotifications();
+    }
   }, []);
 
   return (
@@ -71,7 +75,7 @@ export const Home = () => {
           <div className="carousel-item">
             <img src={festival} className="d-block w-100 imgCarousel" />
             <div className="carousel-caption d-none d-md-block">
-              <h2>AQUÍ PODÁS PATROCINAR BANDAS Y ARTISTAS EMERGENTES</h2>
+              <h2>AQUÍ PODRÁS PATROCINAR BANDAS Y ARTISTAS EMERGENTES</h2>
             </div>
           </div>
           <div className="carousel-item">

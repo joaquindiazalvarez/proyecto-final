@@ -29,6 +29,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       populated: [],
       profile_by_genre: [],
       populated_genres: [],
+      profile_photo: "",
+      notifications_read: false,
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -80,6 +82,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             sessionStorage.setItem("token", result.token);
             // console.log(result);
             setStore({ loged: true });
+            actions.notificationAlert();
           })
           .catch((error) => console.log("ERROR AL LOGUEAR MI REY !", error));
         // cuando no se hace el login da un error , poder traer los mensajes de error del back al front
@@ -258,7 +261,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           process.env.BACKEND_URL + "/api/favorites/add",
           requestOptions
         )
-          .then((response) => response.json())
+          .then((response) => response.text())
           .then((result) => console.log(result))
           .catch((error) =>
             console.log("ERROR AL AGREGAR A FAVORITOS MI REY !", error)
@@ -677,6 +680,15 @@ const getState = ({ getStore, getActions, setStore }) => {
           .catch((error) =>
             console.log("ERROR AL ACTUALIZAR EL CONTACTO MI REY !", error)
           );
+      },
+      storeProfileUrl: (url) => {
+        setStore({ profile_photo: url });
+      },
+      eraseNotificationAlert: () => {
+        setStore({ notifications_read: true });
+      },
+      notificationAlert: () => {
+        setStore({ notifications_read: false });
       },
     },
   };

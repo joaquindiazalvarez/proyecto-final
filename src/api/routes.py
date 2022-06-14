@@ -35,7 +35,7 @@ def login():
         if user.password == body['password']:
             #"usuario y clave correctos"
             #defino que el token tendrá un tiempo de vida dependiendo de los minutos indicados
-            expiration = datetime.timedelta(minutes=20) 
+            expiration = datetime.timedelta(minutes=60) 
 
             access_token = create_access_token(
                 identity=user.email,
@@ -154,25 +154,49 @@ def add_to_favorites():
         favorite = Favorites()
         favorite.profile_id = profile.id
         favorite.user_id = user.id
-        favorites_profiles_serialized = list(map( lambda x: Profile.query.filter_by(id=x.profile_id).first().serialize(), favorites_all))
+        favorites_profiles_serialized = list(map( lambda x: Profile.query.filter_by(id=x.profile_id).first().serialize()['id'], favorites_all))
+        if profile.user_id == user.id:
+            return("cannot add yourself to favorites")
+        elif profile.id in favorites_profiles_serialized:
+            return("your profile is already in favorites")
+        else:
+            db.session.add(favorite)
+            db.session.commit()
+            notifications=Profile_favorites_notification()
+            favorite_search = Favorites.query.all()
+            favorite_target = favorite_search[-1]
+            print(favorite_target)
+            print(favorite_target.id)
+            notifications.favorites_id = favorite_target.id
+            notifications.read=False
+            notifications.date=datetime.datetime.now()
+            db.session.add(notifications)
+            db.session.commit()
+            return("added favorite successfully")
+
+        """
         fav_dict = {"favorites_list":favorites_profiles_serialized}
         search_profile_id = "id"
         profile_ids = [a_dict[search_profile_id] for a_dict in favorites_profiles_serialized]
         if profile.user_id == user.id:
             return jsonify("you cant add your own profile to favorites")
         #exist = Favorites.query.filter_by(profile_id=favorite.profile_id).first()
-        if profile.id in profile_ids:
+        elif profile.id in profile_ids:
             return jsonify("este perfil ya está en tus favoritos") #YA ESTÁ FUNCIONANDO EL AGREGAR ! PERO MIRA BIEN QUE FALTA !!!!!!!!
         else:
             db.session.add(favorite)
             db.session.commit()
             notifications=Profile_favorites_notification()
-            notifications.favorite_id = favorite.id
+            favorite_search = Favorites.query.all()
+            favorite_target = favorite_search[-1]
+            print(favorite_target)
+            print(favorite_target.id)
+            notifications.favorites_id = favorite_target.id
             notifications.read=False
             db.session.add(notifications)
             db.session.commit()
             return("added favorite successfully")
-
+"""
     else:
         return jsonify("must specify profile")
 
@@ -200,7 +224,8 @@ def delete_favorite():
         #profile_ids = [a_dict[search_profile_id] for a_dict in favorites_profiles_serialized]
         notification = Profile_favorites_notification.query.filter_by(favorites_id = favorite_target.id).first()
         db.session.delete(favorite_target)
-        db.session.delete(notification)
+        if notification:
+            db.session.delete(notification)
         db.session.commit()
         return(f"se borró el favorito")
     else:
@@ -210,7 +235,6 @@ def delete_favorite():
 @jwt_required()
 def posting():
     get_token = get_jwt_identity()
-    #user = User.query.all()
     user = User.query.filter_by(email=get_token).first()
     profile = Profile.query.filter_by(user_id=user.id).first()
     body = request.get_json()
@@ -218,13 +242,14 @@ def posting():
     new_post = Post()
     new_post.post = post
     new_post.profile_id = profile.id
-    #users = list((map(lambda x: x.serialize(),user)))
     db.session.add(new_post)
     db.session.commit()
-    post = Post.query.filter_by(post = new_post.post).first()
+    post = Post.query.all()
+    final_post = post[-1]
     new_notification = User_post_notification()
-    new_notification.post_id= post.id
+    new_notification.post_id= final_post.id
     new_notification.read = False
+    new_notification.date = datetime.datetime.now()
     db.session.add(new_notification)
     db.session.commit()
     return jsonify("Post Hecho")
@@ -276,7 +301,9 @@ def get_all_notifications():
         user_who_added= User.query.filter_by(id=element.user_id).first()
         profile_who_added= Profile.query.filter_by(user_id=user_who_added.id).first()
         notification= Profile_favorites_notification.query.filter_by(favorites_id=element.id).first()
-        notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite"})
+        if notification:
+            print(notification.serialize())
+            notifications_serialized.append({"name":profile_who_added.name,"read":notification.read, "type":"favorite", "date": notification.date, "id":notification.id})
     
     posts_all=[]
     favorites=Favorites.query.filter_by(user_id=user.id).all()
@@ -284,22 +311,19 @@ def get_all_notifications():
     for element in favorites:
         #user_who_added= User.query.filter_by(id=element.user_id).first()
         profile=Profile.query.filter_by(id=element.profile_id).first()
-        print(profile)
         posts=Post.query.filter_by(profile_id=profile.id).all()
-        print(posts)
         #posts_serialized= list(map(lambda x:{"post": x.serialze()["post"],post},posts ))
 
         post_by_user=[]
         for element2 in posts:
            # profile=Profile.query.filter_by(id=element.profile_id).first()
-            notification= User_post_notification.query.filter_by(post_id=element.id).first()
-            post_dict={"name":profile.name, "read":notification.read, "type":"post"}
+            notification= User_post_notification.query.filter_by(post_id=element2.id).first()
+            post_dict={"name":profile.name, "read":notification.read, "type":"post", "date":notification.date, "id":notification.id}
             post_by_user.append(post_dict)
-            print(post_dict)
-
         posts_all= posts_all+post_by_user
-
-    notifications_dict= {"notification_list":notifications_serialized + posts_all}
+    notification_list_unsorted=notifications_serialized + posts_all
+    notification_list = sorted(notification_list_unsorted, key=lambda x:x['date'], reverse=True)
+    notifications_dict= {"notification_list":notification_list}
 
     return jsonify(notifications_dict)
 

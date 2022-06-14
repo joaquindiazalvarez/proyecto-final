@@ -69,7 +69,7 @@ def setup_commands(app):
 
         profile3 = Profile()
         profile3.name = "Richi Chamoi"
-        profile3.photo = "https://i1.sndcdn.com/avatars-isaOJM13mJFtKRgk-MF4KhQ-t500x500.jpg"
+        profile3.photo = "https://i1.sndcdn.com/avatars-07apsVlou4yrZdVN-oSffhA-t500x500.jpg"
         profile3.description = "𝖏𝖆𝖗𝖉í𝖓 𝖉𝖊 𝖗𝖔𝖘𝖆𝖘🦧"
         profile3.soundcloud = "https://soundcloud.com/ricardo-sepulveda-villa/me-haces-sentir-que-la-vida-es-hermosa"
         profile3.user_id = 3
@@ -176,6 +176,7 @@ def setup_commands(app):
         notifications1= Profile_favorites_notification()
         notifications1.favorites_id = 1
         notifications1.read= False
+        notifications1.date= "2022-06-08 14:46:13.148089"
         db.session.add(notifications1)
         db.session.commit()
         print('the first notification was created')
@@ -183,6 +184,7 @@ def setup_commands(app):
         notifications2= Profile_favorites_notification()
         notifications2.favorites_id = 2
         notifications2.read = False
+        notifications2.date= "2022-06-08 14:46:13.148089"
         db.session.add(notifications2)
         db.session.commit()
         print('the second notification was created')
@@ -190,6 +192,7 @@ def setup_commands(app):
         notifications = Profile_favorites_notification()
         notifications.favorites_id = 3
         notifications.read = False
+        notifications.date= "2022-06-08 14:46:13.148089"
         db.session.add(notifications)
         db.session.commit()
         print('the third notification was created')
@@ -197,6 +200,7 @@ def setup_commands(app):
         notifications = Profile_favorites_notification()
         notifications.favorites_id = 4
         notifications.read = False
+        notifications.date= "2022-06-08 14:46:13.148089"
         db.session.add(notifications)
         db.session.commit()
         print('the fourth notification was created')
@@ -204,6 +208,7 @@ def setup_commands(app):
         notifications= Profile_favorites_notification()
         notifications.favorites_id = 5
         notifications.read = False
+        notifications.date= "2022-06-08 14:46:13.148089"
         db.session.add(notifications)
         db.session.commit()
         print('the fifth notification was created')
@@ -211,6 +216,7 @@ def setup_commands(app):
         notifications = Profile_favorites_notification()
         notifications.favorites_id = 6
         notifications.read = False
+        notifications.date= "2022-06-08 14:46:13.148089"
         db.session.add(notifications)
         db.session.commit()
         print('the sixth notification was created')
@@ -218,12 +224,14 @@ def setup_commands(app):
         notifications = User_post_notification()
         notifications.post_id = 1
         notifications.read = False 
+        notifications.date= "2022-06-08 12:46:13.148089"
         db.session.add(notifications)
         db.session.commit()
 
         notifications = User_post_notification()
         notifications.post_id = 2
-        notifications.read = False 
+        notifications.read = False
+        notifications.date= "2022-06-08 11:46:13.148089" 
         db.session.add(notifications)
         db.session.commit()
 
@@ -660,10 +668,13 @@ def setup_commands(app):
 
 
        #ALL COMMANDS
-       #flask insert-6-users-6-profiles
-       #flask insert-favorites
-       #flask insert-post
-       #flask insert-notifications
-       #flask insert-deafult-genres
-       #flask insert-profiles-genres
-       #flask insert-contacts-to-profiles
+"""
+flask insert-6-users-6-profiles;
+flask insert-favorites;
+flask insert-post;
+flask insert-notifications;
+flask insert-deafult-genres;
+flask insert-profiles-genres;
+flask insert-contacts-to-profiles; 
+"""
+#copiar y pegar todo, con los punto y coma se ejecutan uno detras del otro

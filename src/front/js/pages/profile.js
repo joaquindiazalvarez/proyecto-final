@@ -1,3 +1,4 @@
+import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
@@ -5,17 +6,19 @@ import { Genre } from "../component/genre.js";
 import { Contact } from "../component/contact.js";
 import ReactPlayer from "react-player";
 import "../../styles/profile.css";
+import { storage } from "./firebase";
 
 export const Profile = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
-  const [deafult, setDeafult] = useState(store.profile);
+  const [defaultVar, setDefaultVar] = useState(store.profile);
   const [editName, setEditName] = useState(false);
   const [editPhoto, setEditPhoto] = useState(false);
   const [editDescription, setEditDescription] = useState(false);
   const [editSoundCloud, setEditSoundCloud] = useState(false);
-
-  const [editStatus, setEditStatus] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [browse, setBrowse] = useState(store);
+  const [editStatus, setEditStatus] = useState(store.profile.photo);
   const post = { post: editStatus };
 
   const submitPost = (e) => {
@@ -40,30 +43,75 @@ export const Profile = () => {
     actions.addToFavorites(params.name);
   };
 
-  const onChangePhoto = (e) => {
-    setDeafult({ ...deafult, photo: e.target.value });
+  const onChangePhoto = (url) => {
+    setDefaultVar({ ...defaultVar, photo: url });
   };
   const onChangeName = (e) => {
-    setDeafult({ ...deafult, name: e.target.value });
+    setDefaultVar({ ...defaultVar, name: e.target.value });
   };
   const onChangeDescription = (e) => {
-    setDeafult({ ...deafult, description: e.target.value });
+    setDefaultVar({ ...defaultVar, description: e.target.value });
   };
 
   const onChangeSoundcloud = (e) => {
-    setDeafult({ ...deafult, soundcloud: e.target.value });
+    setDefaultVar({ ...defaultVar, soundcloud: e.target.value });
   };
-  const handleSubmit = (e) => {
-    actions.updateProfile(deafult).then(() => {
+  const handleSubmit = () => {
+    actions.updateProfile(defaultVar).then(() => {
       actions.getProfileByName(params.name);
     });
   };
+  const handleEditPhoto = () => {
+    setEditPhoto(true);
+  };
+  const formHandler = async (e) => {
+    e.preventDefault();
+    const file = e.target[0].files[0];
+    uploadFiles(file);
+    console.log("miprofileurl", store.profile.photo);
+  };
+  const handleBrowse = (e) => {
+    const file = e.target;
+    uploadFiles(file);
+  };
+  const uploadFiles = (file) => {
+    if (!file) return;
+    const storageRef = ref(storage, `/files/${params.name}/profile.jpeg`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(prog);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          console.log("miurl", url);
+          onChangePhoto(url);
+        });
+      }
+    );
+  };
+
   useEffect(() => {
     actions.getProfileByName(params.name);
-    setDeafult({ ...deafult, name: params.name });
+    setDefaultVar({ ...defaultVar, name: params.name });
     actions.getProfileByUser();
     actions.getPost(params.name);
   }, [params.name, editDescription, editPhoto, editSoundCloud, editName]);
+  useEffect(() => {
+    console.log(defaultVar);
+    handleSubmit();
+  }, [defaultVar]);
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      actions.getAllNotifications();
+    }
+  }, []);
   return (
     <div className=" webback d-flex justify-content-center">
       <div className="row w-75 cardbackground">
@@ -81,9 +129,22 @@ export const Profile = () => {
                       src={store.profile.photo}
                       className="profilePhoto"
                     ></img>
+                    <div className="col-1 text-center btnFav">
+                      {store.user_profile?.name &&
+                        store.user_profile?.name != params.name && (
+                          <button
+                            className="btn"
+                            id="btnFav"
+                            onClick={submitFav}
+                          >
+                            Fav
+                          </button>
+                        )}
+                    </div>
                   </div>
                 )}
-                {editPhoto && (
+
+                {/* {editPhoto && (
                   <div className="col text-center">
                     <h6>URL de tu foto</h6>
                     <input
@@ -91,32 +152,94 @@ export const Profile = () => {
                       value={deafult.photo || store.profile.photo}
                       onChange={(e) => onChangePhoto(e)}
                     ></input>
-                  </div>
-                )}
+                  </div> 
+                )}*/}
                 {store.user_profile?.name &&
                   store.user_profile?.name === params.name && (
                     <div className="divbutton">
                       {!editPhoto && (
-                        <button
-                          type="button"
-                          className="btn"
-                          onClick={() => setEditPhoto(true)}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            className="bi bi-person-circle"
-                            viewBox="0 0 16 16"
+                        <div>
+                          <button
+                            type="button"
+                            className="btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#photoModal"
                           >
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                            <path
-                              fillRule="evenodd"
-                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
-                            />
-                          </svg>
-                        </button>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              fill="currentColor"
+                              className="bi bi-person-circle"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                              <path
+                                fillRule="evenodd"
+                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                              />
+                            </svg>
+                          </button>
+                          {/*modal */}
+                          <div
+                            className="modal fade"
+                            id="photoModal"
+                            tabIndex="-1"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true"
+                          >
+                            <div className="modal-dialog">
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h5
+                                    className="modal-title"
+                                    id="exampleModalLabel"
+                                  >
+                                    Subir foto de perfil
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                  ></button>
+                                </div>
+                                {/* <div className="modal-body"></div> */}
+                                <div className="modal-footer">
+                                  <form
+                                    className="d-flex"
+                                    onSubmit={(e) => {
+                                      formHandler(e);
+                                    }}
+                                  >
+                                    {/* <label
+                                      htmlFor="photoFile"
+                                      className="custom-file-upload"
+                                    >
+                                      Examinar...
+                                    </label> */}
+                                    <div className="containerinput">
+                                      <input
+                                        type="file"
+                                        accept="image/jpeg"
+                                        className="upload-box"
+                                        id="photoFile"
+
+                                        //style={{ visibility: "hidden" }}
+                                      />
+                                    </div>
+                                    <button
+                                      type="submit"
+                                      className="btn btnDonate"
+                                    >
+                                      Subir
+                                    </button>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       )}
                       {editPhoto && (
                         <button
@@ -227,7 +350,8 @@ export const Profile = () => {
                             rows={5}
                             type="text"
                             value={
-                              deafult.description || store.profile.description
+                              defaultVar.description ||
+                              store.profile.description
                             }
                             onChange={(e) => onChangeDescription(e)}
                           ></textarea>
@@ -287,7 +411,7 @@ export const Profile = () => {
           </div>
           <div className="row">
             {/*donate button----------------------------------------------------*/}
-            <div className="col-2 text-center ms-1">
+            {/*     <div className="col-2 text-center ms-1">
               <a
                 href="https://ko-fi.com/"
                 target="_blank"
@@ -295,16 +419,7 @@ export const Profile = () => {
               >
                 Donar
               </a>
-            </div>
-            {/*add to favorites button---------------------------------------*/}
-            <div className="col-1 text-center">
-              {store.user_profile?.name &&
-                store.user_profile?.name != params.name && (
-                  <button className="btn btnFollow" onClick={submitFav}>
-                    Fav
-                  </button>
-                )}
-            </div>
+            </div> */}
             {/*StatusButton and input---------------------------------------*/}
             {store.user_profile?.name &&
               store.user_profile?.name === params.name && (
@@ -378,7 +493,7 @@ export const Profile = () => {
                     <h5>Editar URL de soundcloud</h5>
                     <input
                       type="text"
-                      value={deafult.soundcloud || store.profile.soundcloud}
+                      value={defaultVar.soundcloud || store.profile.soundcloud}
                       onChange={(e) => onChangeSoundcloud(e)}
                     ></input>
                   </div>

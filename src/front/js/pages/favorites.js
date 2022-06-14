@@ -6,6 +6,10 @@ export const Favorites = () => {
   const { store, actions } = useContext(Context);
   useEffect(() => {
     actions.getAllFavorites();
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      actions.getAllNotifications();
+    }
   }, []);
   return (
     <div>
@@ -14,7 +18,7 @@ export const Favorites = () => {
         <div className="row">
           {store.favorites["favorites_list"]?.map((value, index) => {
             return (
-              <div className="col-4">
+              <div key={index} className="col-4">
                 <Card index={index} name={value.name} />
               </div>
             );

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 17bc583ed052
+Revision ID: c6069f26b3ce
 Revises: 
-Create Date: 2022-05-26 00:08:59.730027
+Create Date: 2022-06-08 16:59:19.698332
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '17bc583ed052'
+revision = 'c6069f26b3ce'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -38,7 +38,7 @@ def upgrade():
     op.create_table('profile',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=120), nullable=False),
-    sa.Column('photo', sa.String(length=120), nullable=True),
+    sa.Column('photo', sa.String(length=300), nullable=True),
     sa.Column('description', sa.String(length=1000), nullable=True),
     sa.Column('soundcloud', sa.String(length=120), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -90,6 +90,13 @@ def upgrade():
     sa.ForeignKeyConstraint(['profile_id'], ['profile.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('profile_photo',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('url', sa.String(length=300), nullable=False),
+    sa.Column('profile_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['profile_id'], ['profile.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('profile_donation_notification',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('donation_id', sa.Integer(), nullable=False),
@@ -122,6 +129,7 @@ def downgrade():
     op.drop_table('user_post_notification')
     op.drop_table('profile_favorites_notification')
     op.drop_table('profile_donation_notification')
+    op.drop_table('profile_photo')
     op.drop_table('post')
     op.drop_table('genre_profile')
     op.drop_table('favorites')
